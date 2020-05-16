@@ -23,21 +23,11 @@ class NavbarDash extends Component {
           </button>
 
           <div className="collapse navbar-collapse" id="mobile-nav">
-            <ul className="navbar-nav">
-              <li className="nav-item">
-                <a className="nav-link" href="/companyProfile">
-                  {" "}
-                  Profile
-                </a>
-              </li>
-            </ul>
-
-           
-
+            
             <ul className="navbar-nav ml-auto">
               <li className="nav-item">
                 <a className="nav-link" href="/">
-                  About us
+                  Hi, John
                 </a>
               </li>
               <li className="nav-item">
