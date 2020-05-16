@@ -21,17 +21,17 @@ class SideNav extends React.Component {
             activePath: props.location.pathname,
             items: [
                 { 
-                  path: '/AllCases', /* path is used as id to check which NavItem is active basically */
+                  path: '/dashboard', /* path is used as id to check which NavItem is active basically */
                   name: 'All Cases',
                   key: 1 /* Key is required, else console throws error. Does this please you Mr. Browser?! */
                 },
                 {
-                  path: '/ResolvedCases',
+                  path: '/dashboard',
                   name: 'Resolved cases',
                   key: 2
                 },
                 {
-                  path: '/PendingCases',
+                  path: '/dashboard',
                   name: 'Pending cases',
                   key: 3
                 },
