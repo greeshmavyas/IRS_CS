@@ -8,7 +8,7 @@ const mongoose = require('mongoose');
 
 const caseCreationRoute = express.Router();
 
-let Case = require('../Models/CaseModel');
+let Case = require('./CaseModel');
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -106,10 +106,11 @@ caseCreationRoute.route('/status/:userID').post(function(req, res) {
 
 // creating a case
 caseCreationRoute.route('/add').post(function(req, res) {
-	console.log("End Point to create an Case")
+	console.log("End Point to create a Case")
+    console.log(req.body)
 	let newCase = new Case(req.body);
-	newCase.save()
-	.then(newCase => {
+    console.log("HIIII")
+	newCase.save().then(newCase => {
             res.status(200).json({'Case': 'Your case created successfully'});
         })
         .catch(err => {
