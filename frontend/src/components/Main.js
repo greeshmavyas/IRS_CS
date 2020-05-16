@@ -6,11 +6,11 @@ import Dashboard from "./Dashboard";
  class Main extends Component {
     render() {
         return (
-          <div>
-            <Route exact path="/" component={login} />
-            <Route exact path="/dashboard" component={Dashboard} />
-          </div>
-        );
+            <div>
+                <Route exact path="/" component={login} />
+                <Route exact path = "/dashboard" component ={Dashboard}/>
+            </div>
+        )
     }
 }
 
