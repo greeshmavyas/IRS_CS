@@ -1,7 +1,5 @@
 //Libraries
 var express = require("express");
-var path = require("path");
-
 // App Instance
 var app = express();
 var bodyParser = require("body-parser");
@@ -11,13 +9,6 @@ var cors = require("cors");
 // Log requests to console
 var morgan = require("morgan");
 var config = require("./config/settings");
-//var passport = require("passport");
-
-// console.log("Initializing passport");
-// app.use(passport.initialize());
-
-// Bring in defined Passport Strategy
-//require("./config/passport").passport;
 
 // Set up Database connection
 var mongoose = require("mongoose");

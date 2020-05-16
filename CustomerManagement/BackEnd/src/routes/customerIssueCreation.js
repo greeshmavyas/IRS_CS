@@ -1,6 +1,7 @@
 var express = require("express");
 var router = express.Router();
 let Case = require("../models/CaseModel");
+var kafka = require("../routes/kafka/client");
 
 // Retreive all cases
 router.route("/").get(function (req, res) {
@@ -91,20 +92,51 @@ router.route("/status/:userID").post(function (req, res) {
   });
 });
 
-// creating a case
+//creating a case - kafka API
 router.route("/add").post(function (req, res) {
-  console.log("End Point to create a Case");
-  console.log(req.body);
-  let newCase = new Case(req.body);
-  console.log("HIIII");
-  newCase
-    .save()
-    .then((newCase) => {
-      res.status(200).json({ Case: "Your case created successfully" });
-    })
-    .catch((err) => {
-      res.status(400).send("Can not create Case");
-    });
+  // let newCase = new Case(req.body);
+  var newCase = {
+    UserID: req.body.UserID,
+    CaseID: req.body.CaseID,
+    Category: req.body.Category,
+    Information: req.body.Information,
+    Status: req.body.Status,
+    AgentID: req.body.AgentID,
+  };
+  console.log("i am herrrr");
+  kafka.make_request(
+    req.body.Category,
+    { path: "issuecreate", newCase: newCase },
+    function (err, result) {
+      if (err) {
+        console.log(err);
+        res
+          .status(400)
+          .json({ responseMessage: "Unable to find restaurants info" });
+      } else {
+        res.writeHead(200, {
+          "content-type": "application/json",
+        });
+        res.end(JSON.stringify(result.newcase));
+      }
+    }
+  );
 });
+
+// // creating a case
+// router.route("/add").post(function (req, res) {
+//   console.log("End Point to create a Case");
+//   console.log(req.body);
+//   let newCase = new Case(req.body);
+//   console.log("HIIII");
+//   newCase
+//     .save()
+//     .then((newCase) => {
+//       res.status(200).json({ Case: "Your case created successfully" });
+//     })
+//     .catch((err) => {
+//       res.status(400).send("Can not create Case");
+//     });
+// });
 
 module.exports = router;
