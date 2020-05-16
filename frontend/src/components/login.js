@@ -1,4 +1,10 @@
 import React, { Component } from "react";
+import Nav from './Nav';
+import Sidebar from './Sidebar';
+import Card from 'react-bootstrap/Card'
+import Card from 'react-bootstrap/Card'
+
+
 
 class login extends Component {
   constructor() {
@@ -12,30 +18,29 @@ class login extends Component {
     //this.onChange = this.onChange.bind(this);
     //this.onSubmit = this.onSubmit.bind(this);
   }
-
-  onChange = (e) => {
-    this.setState({
-      [e.target.name]: e.target.value,
-    });
-  };
-  
   render() {
     return (
       <div>
-        <div className="container">
+        <card>
+        <br></br>
+        <br></br>
+        <br></br>
+        <br></br>
+        <center>
+        <Card style={{ width: '22rem' }}>
+          <div className="container">
           <div className="row">
             <div className="col-md-8 m-auto">
-              <h1 className="display-4 text-center">Log In</h1>
+            <br></br>
+              <h4 >Agent Login</h4>
               <p className="lead text-center">Sign in to your account</p>
-              <form onSubmit={this.onSubmit}>
+              <form  >
                 <div className="form-group">
                   <input
                     type="email"
                     className="form-control form-control-lg"
                     placeholder="Email Address"
                     name="email"
-                    value={this.state.email}
-                    onChange={this.onChange}
                   />
                 </div>
                 <div className="form-group">
@@ -44,39 +49,16 @@ class login extends Component {
                     className="form-control form-control-lg"
                     placeholder="Password"
                     name="password"
-                    value={this.state.password}
-                    onChange={this.onChange}
                   />
                 </div>
 
-                {/* <div className="custom-control custom-radio custom-control-inline">
-                  <input
-                    type="radio"
-                    className="custom-control-input"
-                    id="student"
-                    name="userType"
-                    value="student"
-                    onChange={this.onChange}
-                  />
-                  <label className="custom-control-label" htmlFor="student">
-                    Student
-                  </label>
-                </div>
-                <div className="custom-control custom-radio custom-control-inline">
-                  <input
-                    type="radio"
-                    className="custom-control-input"
-                    id="company"
-                    name="userType"
-                    value="company"
-                    onChange={this.onChange}
-                  />
-                  <label className="custom-control-label" htmlFor="company">
-                    Company
-                  </label>
-                </div> */}
+                
+                <form action="/dashboard">
+    <input type="submit" value="submit"  className="btn btn-info btn-block mt-4"/>
+</form>
 
-                <input type="submit" className="btn btn-info btn-block mt-4" />
+                <input type="submit"   />
+                <br></br>
                 {/* <a href="/login" class="btn btn-lg btn-light">
                     Login
                   </a> */}
@@ -84,6 +66,10 @@ class login extends Component {
             </div>
           </div>
         </div>
+        <br></br>
+        </Card>
+        </center>
+        </card>
       </div>
     );
   }
