@@ -5,6 +5,7 @@ class Case extends Component {
   state = {
     Category: "",
     Information: "",
+    Response: "",
   };
 
   change = (e) => {
@@ -31,7 +32,9 @@ class Case extends Component {
         console.log("Status Code : ", response.status);
         if (response.status === 200) {
           this.setState({
-            authFlag: true,
+            Response: "Case Created Successfully" + cid.toString(),
+            Category: "",
+            Information: "",
           });
         }
       })
@@ -44,20 +47,27 @@ class Case extends Component {
       });
   };
 
-  refreshPage = (e) => {
-    window.location.reload(false);
-  };
-
   render() {
     return (
       <div>
         <form onSubmit={this.sub}>
           <label>Category:</label>
-          <input type="text" id="Category" onChange={this.change}></input>
+          <input
+            type="text"
+            id="Category"
+            value={this.state.Category}
+            onChange={this.change}
+          ></input>
           <label>Information:</label>
-          <input type="text" id="Information" onChange={this.change}></input>
-          <button onClick={this.refreshPage}>Create</button>
+          <input
+            type="text"
+            id="Information"
+            value={this.state.Information}
+            onChange={this.change}
+          ></input>
+          <button>Create</button>
         </form>
+        <div>{this.state.Response}</div>
       </div>
     );
   }
