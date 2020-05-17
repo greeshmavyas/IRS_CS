@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
+import Header from "./Header";
+import Card from 'react-bootstrap/Card'
 
 class Case extends Component {
   state = {
@@ -49,25 +51,67 @@ class Case extends Component {
 
   render() {
     return (
-      <div>
-        <form onSubmit={this.sub}>
-          <label>Category:</label>
-          <input
-            type="text"
-            id="Category"
-            value={this.state.Category}
-            onChange={this.change}
-          ></input>
-          <label>Information:</label>
-          <input
-            type="text"
-            id="Information"
-            value={this.state.Information}
-            onChange={this.change}
-          ></input>
-          <button>Create</button>
-        </form>
-        <div>{this.state.Response}</div>
+      <div style={{height: "100%"}} className="bg-dark">
+        <Header style={{height: "10%"}}></Header>
+       
+        
+        <br></br>
+        <br></br>
+        <br></br>
+        <div  style={{height: "90%"}}>
+        <center>
+          
+          <Card style={{ width: '35rem' }}>
+          <div className="container">
+            <div className="row">
+              <div className="col-md-10 m-auto">
+              <br></br>
+                <br></br>
+                <form onSubmit={this.sub}>
+                  <div className="form-group">
+                  <strong>Category:</strong>
+                    <input
+                      type="text"
+                      className="form-control form-control-lg"
+                      id="Category"
+                      value={this.state.Category}
+                      onChange={this.change}
+                      placeholder="Category"
+                    />
+                  </div>
+                  <div className="form-group">
+                  <strong>Information:</strong>
+                    <textarea
+                      type="text"
+                      id="Information"
+                      className="form-control form-control-lg"
+                      placeholder="Information"
+                      name="Information"
+                      value={this.state.Information}
+  
+                      onChange={this.change}
+                    />
+                  </div>
+  
+                    <button className = "btn btn-info btn-block mt-4">Create</button>
+  
+                    <br></br>
+                    <br></br>
+                </form>
+                <h6>{this.state.Response}</h6>
+                <br></br>
+                <br></br>
+              </div>
+            </div>
+          </div>
+          </Card>
+          </center>
+  
+        </div>
+        
+
+
+
       </div>
     );
   }
