@@ -14,7 +14,7 @@ exports.customerIssueCreationBillingService = function customerIssueCreationBill
 
 //Place order
 function issuecreate(msg, callback) {
-  Case.create(msg.newcase, function (err, newcase) {
+  Case.create(msg.newCase, function (err, newcase) {
     if (err) {
       console.log(err);
       console.log("unable to place order");
