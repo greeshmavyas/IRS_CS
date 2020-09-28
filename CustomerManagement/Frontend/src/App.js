@@ -5,8 +5,11 @@ import Home from "./Components/Home";
 import OrgLogin from "./Components/OrgLogin";
 import CasePage from "./Components/CasePage";
 import Case from "./Components/Case";
-import { withCookies } from "react-cookie";
 import CaseRetrieve from "./Components/CaseRetrieve";
+import AgentLogin from "./Components/AgentFunctionalities/login";
+import AgentDashboard from "./Components/AgentFunctionalities/Dashboard";
+import AgentSettings from './Components/AgentFunctionalities/Settings';
+
 
 function App() {
   return (
@@ -18,9 +21,13 @@ function App() {
         <Route exact path="/cases" component={CasePage}></Route>
         <Route exact path="/createCase" component={Case}></Route>
         <Route exact path="/retrieveCase" component={CaseRetrieve}></Route>
+       
+        <Route exact path="/AgentLogin" component={AgentLogin} />
+        <Route exact path="/AgentDashboard" component={AgentDashboard} />
+        <Route exact path="/AgentSettings" component={AgentSettings} />
       </Switch>
     </Router>
   );
 }
 
-export default withCookies(App);
+export default App;

@@ -1,54 +1,19 @@
-//Libraries
-var express = require("express");
-// App Instance
-var app = express();
-var bodyParser = require("body-parser");
-var session = require("express-session");
-var cors = require("cors");
+const express = require("express");
+const app = express();
+const bodyParser = require("body-parser");
+const cors = require("cors");
+const port = process.env.PORT || 3001;
 
-// Log requests to console
-var morgan = require("morgan");
-var config = require("./config/settings");
+const getCases = require('./src/routes/getCase')
+const agentDetails = require('./src/routes/agentDetails')
 
-// Set up Database connection
-var mongoose = require("mongoose");
-var connStr =
-  config.database_type +
-  "+srv://" +
-  config.database_username +
-  ":" +
-  config.database_password +
-  "@" +
-  config.database_host +
-  ":" +
-  "/" +
-  config.database_name;
-console.log(connStr);
-mongoose.connect(connStr, { useNewUrlParser: true, poolSize: 10 }, function (
-  err
-) {
-  if (err) throw err;
-  else {
-    console.log("Successfully connected to MongoDB");
-  }
-});
+const mongoose = require("mongoose");
+var config = require('./config/settings');
+var connStr = config.mongoDB_connection_string;
 
-//server configuration
-var basePath = "/irs";
+app.set("view engine", "ejs");
+app.use(cors({ origin: "http://localhost:3000", credentials: true }));
 
-//use express session to maintain session data
-app.use(
-  session({
-    secret: "cmpe295_irs_mongodb",
-    resave: false, // Forces the session to be saved back to the session store, even if the session was never modified during the request
-    saveUninitialized: false, // Force to save uninitialized session to db. A session is uninitialized when it is new but not modified.
-    duration: 60 * 60 * 1000, // Overall duration of Session : 30 minutes : 1800 seconds
-    activeDuration: 5 * 60 * 1000,
-  })
-);
-
-//Allow Access Control
-//replace here with ec2 instance id
 app.use(function (req, res, next) {
   res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
   res.setHeader("Access-Control-Allow-Credentials", "true");
@@ -58,38 +23,39 @@ app.use(function (req, res, next) {
   );
   res.setHeader(
     "Access-Control-Allow-Headers",
-    "Access-Control-Allow-Headers, Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers"
+    "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers"
   );
   res.setHeader("Cache-Control", "no-cache");
   next();
 });
 
-// Log requests to console
-app.use(morgan("dev"));
-
-// Routes and Backend Funcioncalities
-var caseCreationRoute = require("./src/routes/customerIssueCreation");
-
-app.use(express.static("public"));
-app.use(express.static("uploads"));
-//use cors to allow cross origin resource sharing
 app.use(
-  cors({
-    origin: "http://localhost:3000",
-    credentials: true,
+  bodyParser.urlencoded({
+    extended: true,
   })
 );
-
-// parse application/x-www-form-urlencoded
-// for easier testing with Postman or plain HTML forms
-app.use(bodyParser.urlencoded({ extended: true }));
-
-// parse application/json
 app.use(bodyParser.json());
 
-app.use(basePath, caseCreationRoute);
 
-// Execute App
-app.listen(config.backend_port, () => {
-  console.log("IRS Backend running on Port:", config.backend_port);
+var options = {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  poolSize: 500,
+  bufferMaxEntries: 0,
+};
+
+mongoose.connect(connStr, options, (err, res) => {
+  if (err) {
+    console.log(err);
+    console.log(`MongoDB Connection Failed`);
+  } else {
+    console.log(`MongoDB Connected`);
+  }
 });
+
+app.use('/', getCases);
+app.use('/', agentDetails);
+
+
+
+app.listen(port, () => console.log(`Prototype running on port ${port}`));
