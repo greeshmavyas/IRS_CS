@@ -8,7 +8,7 @@ Final Project: CMPE295A, CMPE295B
 Go to server folder
 Open command line <br />
 Execute command 'npm install' <br />
-Execute command 'node app.js' This will start the backend server in http://:3001.
+Execute command 'node index.js' This will start the backend server in http://:3001.
 
 #### 2.To run kafka backend
 Go to kafka-backend folder
