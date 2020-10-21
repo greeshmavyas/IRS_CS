@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
+//import CaseHistoryView from "./Components/CaseHistoryView";
+
 import {
   Button,
   Modal,
@@ -21,8 +23,8 @@ class CaseRetrieve extends Component {
 
   async componentDidMount() {
     let userId = localStorage.getItem("userId");
-    debugger;
-    await axios("http://localhost:4000/case/" + userId, {
+    //debugger;
+    await axios("http://localhost:4000/irs/" + userId, {
       method: "get",
       config: { headers: { "Content-Type": "application/json" } },
     })
@@ -35,6 +37,8 @@ class CaseRetrieve extends Component {
 
   render() {
     var casedetails;
+    // console.log("LLLLLLLLLL")
+    console.log(this.state.cases);
     if (this.state.cases !== null) {
       casedetails = this.state.cases.map((cas) => {
         return (
@@ -57,7 +61,12 @@ class CaseRetrieve extends Component {
                     <button
                       type="button"
                       className="btn btn-outline-success"
-                      onClick={() => this.showModal1(cas)} //changed this.showmodal
+                      // onClick={() => this.showModal1(cas)} //changed this.showmodal
+
+                      onClick={() => {
+                        window.localStorage.setItem("caseId", cas.CaseID);
+                        window.location = "/retrieveCaseHistory";
+                      }}
                     >
                       View Details
                     </button>
@@ -69,31 +78,13 @@ class CaseRetrieve extends Component {
                 <p className="card-text">
                   <strong>Category : {cas.Category}</strong>
                 </p>
-                {/* <p className="card-text">
-                   <strong>Information: {cas.Information}</strong>
-                 </p> */}
+
                 <p className="card-text">
                   <strong>Status: {cas.Status} </strong>
                   <p></p>
-                  {/* <strong> Application Deadline : </strong>
-                  <strong></strong> */}
                 </p>
 
                 <div className="col-10"></div>
-                {/* <a
-                 href="/studentApplyJob"
-                 className="btn btn-primary"
-                 onClick={this.apply(job.job_id)}
-               >
-                 Apply
-               </a> */}
-                {/* <button
-                   type="button"
-                   className="btn btn-primary"
-                   onClick={() => this.showModal11(job)} //changed this.showmodal1
-                 >
-                   Apply
-                 </button> */}
               </div>
             </div>
           </div>
@@ -106,7 +97,9 @@ class CaseRetrieve extends Component {
           <div className="col-2"></div>
           <div className="container col-9">
             {this.state.cases.length > 0 ? (
-              <div className="col-10">{casedetails}</div>
+              <div id="caseID" className="col-10">
+                {casedetails}
+              </div>
             ) : (
               <div>
                 <h4 style={{ margin: "3em" }}>No new cases to display!</h4>

@@ -7,6 +7,7 @@ import CasePage from "./Components/CasePage";
 import Case from "./Components/Case";
 import { withCookies } from "react-cookie";
 import CaseRetrieve from "./Components/CaseRetrieve";
+import CaseHistoryView from "./Components/CaseHistoryView";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route exact path="/cases" component={CasePage}></Route>
         <Route exact path="/createCase" component={Case}></Route>
         <Route exact path="/retrieveCase" component={CaseRetrieve}></Route>
+        <Route exact path="/retrieveCaseHistory" component={CaseHistoryView}></Route>
       </Switch>
     </Router>
   );

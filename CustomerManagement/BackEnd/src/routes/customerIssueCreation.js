@@ -1,7 +1,9 @@
 var express = require("express");
 var router = express.Router();
 let Case = require("../models/CaseModel");
+let CaseHistory = require("../models/CaseHistory");
 var kafka = require("../routes/kafka/client");
+//let case
 
 // Retreive all cases
 router.route("/").get(function (req, res) {
@@ -78,65 +80,142 @@ router.route("/activeCases/:userID").get(function (req, res) {
 router.route("/status/:userID").post(function (req, res) {
   console.log("End Point to update the status of an issue");
   let userID = req.params.userID;
-  let caseID = req.body.caseID;
+  let caseID = req.body.CaseID;
   let caseStatus = req.body.Status;
   Case.findOne({ UserID: userID, CaseID: caseID }, function (err, resCase) {
     if (err) {
       console.log(err);
     } else {
-      console.log(resIssue);
+      //console.log(resIssue);
       resCase.Status = caseStatus;
       resCase.save();
-      res.json(resCase);
+      let history = new CaseHistory();
+      history.UserID = userID;
+      history.CaseID = caseID;
+      history.Status = caseStatus;
+      var today = new Date();
+      var date =
+        today.getFullYear() +
+        "-" +
+        (today.getMonth() + 1) +
+        "-" +
+        today.getDate();
+      var time =
+        today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+      var dateTime = date + " " + time;
+      history.UpdatedOn = dateTime;
+      history
+        .save()
+        .then((history) => {
+          res
+            .status(200)
+            .json({ Case: "Your case updated in history successfully" });
+        })
+        .catch((err) => {
+          res.status(400).send("Can not create Case");
+        });
+
+      //res.json(resCase);
     }
   });
 });
 
-//creating a case - kafka API
-router.route("/add").post(function (req, res) {
-  // let newCase = new Case(req.body);
-  var newCase = {
-    UserID: req.body.UserID,
-    CaseID: req.body.CaseID,
-    Category: req.body.Category,
-    Information: req.body.Information,
-    Status: req.body.Status,
-    AgentID: req.body.AgentID,
-  };
-  console.log("i am herrrr");
-  kafka.make_request(
-    req.body.Category,
-    { path: "issuecreate", newCase: newCase },
-    function (err, result) {
-      if (err) {
-        console.log(err);
-        res
-          .status(400)
-          .json({ responseMessage: "Unable to find restaurants info" });
-      } else {
-        res.writeHead(200, {
-          "content-type": "application/json",
+//Updating case Resolution comments
+router.route("/resolutionComments/:userID").post(function (req, res) {
+  console.log("End Point to update the status of an issue");
+  let userID = req.params.userID;
+  let caseID = req.body.CaseID;
+  let resolutionComments = req.body.ResolutionComments;
+  Case.findOne({ UserID: userID, CaseID: caseID }, function (err, resCase) {
+    if (err) {
+      console.log(err);
+    } else {
+      //console.log(resIssue);
+      resCase.ResolutionComments = resolutionComments;
+      resCase.save();
+      let history = new CaseHistory();
+      history.UserID = userID;
+      history.CaseID = caseID;
+      history.ResolutionComments = resolutionComments;
+      var today = new Date();
+      var date =
+        today.getFullYear() +
+        "-" +
+        (today.getMonth() + 1) +
+        "-" +
+        today.getDate();
+      var time =
+        today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+      var dateTime = date + " " + time;
+      history.UpdatedOn = dateTime;
+      history
+        .save()
+        .then((history) => {
+          res
+            .status(200)
+            .json({ Case: "Your case updated in history successfully" });
+        })
+        .catch((err) => {
+          res.status(400).send("Can not create Case");
         });
-        res.end(JSON.stringify(result.newcase));
-      }
+
+      //res.json(resCase);
     }
-  );
+  });
 });
 
-// // creating a case
-// router.route("/add").post(function (req, res) {
-//   console.log("End Point to create a Case");
-//   console.log(req.body);
-//   let newCase = new Case(req.body);
-//   console.log("HIIII");
-//   newCase
-//     .save()
-//     .then((newCase) => {
-//       res.status(200).json({ Case: "Your case created successfully" });
-//     })
-//     .catch((err) => {
-//       res.status(400).send("Can not create Case");
-//     });
-// });
+//Retreiving history of  case
+router.route("/history/:userID/:caseID").get(function (req, res) {
+  console.log("End Point to retreive the history of a case");
+  let userID = req.params.userID;
+  let caseID = req.params.caseID;
+  CaseHistory.find({ UserID: userID, CaseID: caseID })
+    .sort({ UpdatedOn: -1 })
+    .exec(function (err, resCase) {
+      if (err) {
+        console.log(err);
+      } else {
+        res.json(resCase);
+      }
+    });
+});
+
+// creating a case
+router.route("/add").post(function (req, res) {
+  console.log("End Point to create a Case");
+  console.log(req.body);
+  let newCase = new Case(req.body);
+  var today = new Date();
+  var date =
+    today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate();
+  var time =
+    today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+  var dateTime = date + " " + time;
+  newCase.CreatedOn = dateTime;
+  let history = new CaseHistory(req.body);
+  history.CreatedOn = dateTime;
+  history.UpdatedOn = dateTime;
+  //historyUpdate(req.body);
+  console.log("HIIII");
+
+  newCase
+    .save()
+    .then((newCase) => {
+      history
+        .save()
+        .then((history) => {
+          res
+            .status(200)
+            .json({ Case: "Your case updated in history successfully" });
+        })
+        .catch((err) => {
+          res.status(400).send("Can not create Case");
+        });
+      //res.status(200).json({ Case: "Your case created successfully" });
+    })
+    .catch((err) => {
+      res.status(400).send("Can not create Case");
+    });
+});
 
 module.exports = router;
