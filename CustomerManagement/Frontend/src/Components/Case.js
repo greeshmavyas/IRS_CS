@@ -30,7 +30,7 @@ class Case extends Component {
       AgentID: "1",
     };
     axios
-      .post("http://localhost:4000/case/add", data)
+      .post("http://localhost:4000/irs/add", data)
       .then((response) => {
         console.log("Status Code : ", response.status);
         if (response.status === 200) {
