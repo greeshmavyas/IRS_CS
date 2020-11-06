@@ -33,6 +33,7 @@ function handleTopicRequest(topic_name, fname) {
   console.log("topic_name:", topic_name);
   var consumer = connection.getConsumer(topic_name);
   var producer = connection.getProducer();
+  var str = JSON.stringify(producer);
   consumer.on("error", function (err) {
     console.log("Kafka Error: Consumer - " + err);
   });
