@@ -77,9 +77,6 @@ export default class Settings extends Component {
         throw new Error("Bad response from server");
     }else{
       console.log(response);
-      this.setState({
-        message: "Profile Updated"
-      })
     }
     
 })
@@ -102,8 +99,6 @@ this.setState({
         <center>
         <div style={{ width: '25rem' }}>
           <h2>Update Profile</h2>
-          <br></br>
-          <br></br>
         <Form onSubmit={this.updateProfile}>
           <Table>
             <tbody>
@@ -133,13 +128,10 @@ this.setState({
 
                    
                  
-                    <Button className="btn btn-info btn-block mt-4" type="submit">
+                    <Button variant="primary" type="submit">
                         Update Profile
                      </Button>
                 </Form>
-                <br></br>
-            
-                <p>{this.state.message}</p>
                 </div>
                 </center>
       </div>

@@ -141,8 +141,8 @@ class Dashboard extends Component {
           <Table>
           <tr>
             <th style={{ width: '10rem' }}>ID</th>
-            <th style={{ width: '15rem' }}>Status</th>
-            <th style={{ width: '50rem' }}>Details</th>
+            <th style={{ width: '10rem' }}>Status</th>
+            <th style={{ width: '10rem' }}>Details</th>
           </tr>
           </Table>
           {this.state.allCases.length > 0 ? (

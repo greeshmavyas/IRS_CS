@@ -27,7 +27,7 @@ var agentSchema = new Schema({
     type: [],
   },
   phoneNumber:{
-    type: String,
+    type: String
   }
 });
 

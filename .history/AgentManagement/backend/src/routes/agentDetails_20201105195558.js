@@ -50,7 +50,7 @@ router.get("/getCases", async function (req, res) {
 
     let { agentID, organisationID } = req.query;
 
-    cases.find({ $and: [{ "AgentID": agentID }, { "organisationID": organisationID }] }).then(cases => {
+    cases.find({ $and: [{"AgentID": agentID},{ "organisationID": organisationID}] }).then(cases => {
         console.log(cases)
         if (!cases) {
             res.status(500).json({ responseMessage: 'Cases not found' });
@@ -65,21 +65,21 @@ router.get("/getCases", async function (req, res) {
 })
 //get agent details
 router.get("/getProfile", async function (req, res) {
-    console.log("In get profile");
+    console.log("In get cases");
     console.log("Request query:");
     console.log(req.query);
 
     let { agentID, organisationID } = req.query;
 
-    agentDetails.find({ $and: [{ "agentID": agentID }, { "organisationID": organisationID }] }).then(agent => {
+    agentDetails.find({ $and: [{"AgentID": agentID},{ "organisationID": organisationID}] }).then(agent => {
         console.log(agent)
         if (!agent) {
             res.status(500).json({ responseMessage: 'Cases not found' });
         } else {
-            console.log("agent details :", agent[0])
+            console.log("Cases :", agent)
             res.status(200).json({
-                responseMessage: 'agent setails Retrived',
-                agent: agent[0]
+                responseMessage: 'Cases Retrived',
+                agent: agent
             });
         }
     })
@@ -91,23 +91,25 @@ router.post('/updateProfile', function (req, res) {
     console.log("Request query:");
     console.log(req.query);
 
-    let { phoneNumber, password, agentID, organisationID } = req.query;
+    let {phoneNumber,password,agentID,organisationID } = req.query;
+ 
 
-     agentDetails.updateOne({ $and: [{ "agentID": agentID }, { "organisationID": organisationID }] },
-        { $set: { phoneNumber, password } },  (err, result) => {
-            if (err) {
-                console.log(err);
-                res.status(500).json({ responseMessage: 'update failed' });
-            } else {
-                console.log(" got user ");
-                console.log(result)
+    agentDetails.findOneAndUpdate(({ $and: [{"AgentID": agentID},{ "organisationID": organisationID}]}, phoneNumber,password).then(user => {
+        console.log(user)
+        if (!user) {
+            res.status(404).json({ responseMessage: 'User not found' });
+        } else {
+            console.log("user :", user)
+            if (user.password === password) {
+                console.log("Status is 200");
                 res.status(200).json({
                     responseMessage: 'updated Successfully',
                 });
+            } else {
+                res.status(500).json({ responseMessage: 'Invalid password' });
             }
-        })
+        }
+    }));
+
 })
-
-
-
-module.exports = router;
+    module.exports = router;

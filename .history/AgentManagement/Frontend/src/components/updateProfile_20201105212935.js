@@ -7,8 +7,6 @@ import NavbarDash from "./NavbarDash";
 import axios from 'axios';
 import config from '../config/settings'
 import { Row, Col } from 'react-foundation';
-import Table from 'react-bootstrap/Table'
-
 
 
 
@@ -77,9 +75,6 @@ export default class Settings extends Component {
         throw new Error("Bad response from server");
     }else{
       console.log(response);
-      this.setState({
-        message: "Profile Updated"
-      })
     }
     
 })
@@ -100,47 +95,23 @@ this.setState({
         <Sidebar />
         <NavbarDash />
         <center>
-        <div style={{ width: '25rem' }}>
-          <h2>Update Profile</h2>
-          <br></br>
-          <br></br>
+        <Card style={{ width: '25rem' }}>
         <Form onSubmit={this.updateProfile}>
-          <Table>
-            <tbody>
-              <tr>
-                <td>
-                <Form.Label >  Phone Number</Form.Label>
-                </td>
-                <td>
-                <Form.Control type="text" name="phoneNumber" defaultValue={this.state.phoneNumber} required readOnly={this.state.readonly} />
-                </td>
+                    <Form.Group controlId="formBasicPhone">
+                        <Form.Label>Phone Number</Form.Label>
+                        <Form.Control type="text" name="phoneNumber" defaultValue={this.state.phoneNumber} required readOnly={this.state.readonly} />
+                    </Form.Group>
 
-              </tr>
-              <tr>
-                <td>
-                <Form.Label>Password</Form.Label>
-
-                </td>
-                <td>
-                <Form.Control type="password" name="password" defaultValue={this.state.password} required readOnly={this.state.readonly} />
-
-                </td>
-
-              </tr>
-            </tbody>
-          </Table>
-                   
-
-                   
+                    <Form.Group controlId="formBasicEmailId">
+                        <Form.Label>Password</Form.Label>
+                        <Form.Control type="password" name="password" defaultValue={this.state.password} required readOnly={this.state.readonly} />
+                    </Form.Group>
                  
-                    <Button className="btn btn-info btn-block mt-4" type="submit">
+                    <Button variant="primary" type="submit">
                         Update Profile
                      </Button>
                 </Form>
-                <br></br>
-            
-                <p>{this.state.message}</p>
-                </div>
+                </Card>
                 </center>
       </div>
     )

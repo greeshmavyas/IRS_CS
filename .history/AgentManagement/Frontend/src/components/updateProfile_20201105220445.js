@@ -77,9 +77,6 @@ export default class Settings extends Component {
         throw new Error("Bad response from server");
     }else{
       console.log(response);
-      this.setState({
-        message: "Profile Updated"
-      })
     }
     
 })
@@ -137,9 +134,6 @@ this.setState({
                         Update Profile
                      </Button>
                 </Form>
-                <br></br>
-            
-                <p>{this.state.message}</p>
                 </div>
                 </center>
       </div>

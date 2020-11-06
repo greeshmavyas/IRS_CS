@@ -7,8 +7,6 @@ import NavbarDash from "./NavbarDash";
 import axios from 'axios';
 import config from '../config/settings'
 import { Row, Col } from 'react-foundation';
-import Table from 'react-bootstrap/Table'
-
 
 
 
@@ -75,13 +73,12 @@ export default class Settings extends Component {
   }).then((response) => {
     if (response.status == 500) {
         throw new Error("Bad response from server");
-    }else{
-      console.log(response);
-      this.setState({
-        message: "Profile Updated"
-      })
     }
-    
+    console.log(response);
+    if (response.data && response.data.updateResult && response.data.affectedRows === 1) {
+        console.log(response.data.responseMessage);
+    }
+    return response.data;
 })
 .catch(function (err) {
     console.log(err)
@@ -99,49 +96,9 @@ this.setState({
       <div>
         <Sidebar />
         <NavbarDash />
-        <center>
-        <div style={{ width: '25rem' }}>
-          <h2>Update Profile</h2>
-          <br></br>
-          <br></br>
-        <Form onSubmit={this.updateProfile}>
-          <Table>
-            <tbody>
-              <tr>
-                <td>
-                <Form.Label >  Phone Number</Form.Label>
-                </td>
-                <td>
-                <Form.Control type="text" name="phoneNumber" defaultValue={this.state.phoneNumber} required readOnly={this.state.readonly} />
-                </td>
-
-              </tr>
-              <tr>
-                <td>
-                <Form.Label>Password</Form.Label>
-
-                </td>
-                <td>
-                <Form.Control type="password" name="password" defaultValue={this.state.password} required readOnly={this.state.readonly} />
-
-                </td>
-
-              </tr>
-            </tbody>
-          </Table>
-                   
-
-                   
-                 
-                    <Button className="btn btn-info btn-block mt-4" type="submit">
-                        Update Profile
-                     </Button>
-                </Form>
-                <br></br>
-            
-                <p>{this.state.message}</p>
-                </div>
-                </center>
+        
+       
+          
       </div>
     )
   }

@@ -139,11 +139,13 @@ class Dashboard extends Component {
             <br></br>
           </form>
           <Table>
+            <center>
           <tr>
             <th style={{ width: '10rem' }}>ID</th>
             <th style={{ width: '15rem' }}>Status</th>
             <th style={{ width: '50rem' }}>Details</th>
           </tr>
+          </center>
           </Table>
           {this.state.allCases.length > 0 ? (
               <div className="col-10">

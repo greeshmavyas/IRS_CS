@@ -107,8 +107,8 @@ class Dashboard extends Component {
                   <Table>
                     <tbody >
                       <tr >
-                        <td style={{ width: '10rem' }}>{ticket.CaseID}</td>
-                        <td style={{ width: '15rem' }}>{ticket.Status}</td>
+                        <td style={{ width: '10rem' }}> ID: {ticket.CaseID}</td>
+                        <td style={{ width: '15rem' }}>Status: {ticket.Status}</td>
                         <td style={{ width: '50rem' }}>{ticket.Information} </td>
                       </tr>
                     </tbody>
@@ -138,13 +138,6 @@ class Dashboard extends Component {
             <br></br>
             <br></br>
           </form>
-          <Table>
-          <tr>
-            <th style={{ width: '10rem' }}>ID</th>
-            <th style={{ width: '15rem' }}>Status</th>
-            <th style={{ width: '50rem' }}>Details</th>
-          </tr>
-          </Table>
           {this.state.allCases.length > 0 ? (
               <div className="col-10">
                 {casedetails}

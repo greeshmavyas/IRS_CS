@@ -137,8 +137,6 @@ this.setState({
                         Update Profile
                      </Button>
                 </Form>
-                <br></br>
-            
                 <p>{this.state.message}</p>
                 </div>
                 </center>

@@ -7,8 +7,6 @@ import NavbarDash from "./NavbarDash";
 import axios from 'axios';
 import config from '../config/settings'
 import { Row, Col } from 'react-foundation';
-import Table from 'react-bootstrap/Table'
-
 
 
 
@@ -77,9 +75,6 @@ export default class Settings extends Component {
         throw new Error("Bad response from server");
     }else{
       console.log(response);
-      this.setState({
-        message: "Profile Updated"
-      })
     }
     
 })
@@ -99,49 +94,36 @@ this.setState({
       <div>
         <Sidebar />
         <NavbarDash />
-        <center>
-        <div style={{ width: '25rem' }}>
-          <h2>Update Profile</h2>
-          <br></br>
-          <br></br>
         <Form onSubmit={this.updateProfile}>
-          <Table>
-            <tbody>
-              <tr>
-                <td>
-                <Form.Label >  Phone Number</Form.Label>
-                </td>
-                <td>
-                <Form.Control type="text" name="phoneNumber" defaultValue={this.state.phoneNumber} required readOnly={this.state.readonly} />
-                </td>
+                    <Form.Group controlId="formBasicName">
+                        <Form.Label>Full Name</Form.Label>
+                        <Form.Control type="text" name="buyerName" defaultValue={this.state.buyerName} required readOnly={this.state.readonly} />
+                    </Form.Group>
+                    <Form.Group controld="formBasicAddress">
+                        <Form.Label>buyerAddress</Form.Label>
+                        <Form.Control type="text" name="buyerAddress" defaultValue={this.state.buyerAddress} required readOnly={this.state.readonly} />
+                    </Form.Group>
 
-              </tr>
-              <tr>
-                <td>
-                <Form.Label>Password</Form.Label>
+                    <Form.Group controlId="formBasicPhone">
+                        <Form.Label>Phone Number</Form.Label>
+                        <Form.Control type="text" name="buyerPhone" defaultValue={this.state.buyerPhone} required readOnly={this.state.readonly} />
+                    </Form.Group>
 
-                </td>
-                <td>
-                <Form.Control type="password" name="password" defaultValue={this.state.password} required readOnly={this.state.readonly} />
-
-                </td>
-
-              </tr>
-            </tbody>
-          </Table>
-                   
-
-                   
-                 
-                    <Button className="btn btn-info btn-block mt-4" type="submit">
+                    <Form.Group controlId="formBasicEmailId">
+                        <Form.Label>E-Mail ID</Form.Label>
+                        <Form.Control type="text" name="buyerPhone" defaultValue={this.state.buyerEmailId} required readOnly={this.state.readonly} />
+                    </Form.Group>
+                    <Form.Group controlId='buyerImage'>
+                        <Form.Label>Buyer Profile Pic</Form.Label>
+                        {imageDiv}
+                        <Form.Control as='input' type='file' onChange={this.onPicUpload}/>
+                    </Form.Group>
+                    <Button variant="primary" type="submit">
                         Update Profile
                      </Button>
                 </Form>
-                <br></br>
-            
-                <p>{this.state.message}</p>
-                </div>
-                </center>
+       
+          
       </div>
     )
   }

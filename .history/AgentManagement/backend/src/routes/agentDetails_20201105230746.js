@@ -50,7 +50,7 @@ router.get("/getCases", async function (req, res) {
 
     let { agentID, organisationID } = req.query;
 
-    cases.find({ $and: [{ "AgentID": agentID }, { "organisationID": organisationID }] }).then(cases => {
+    cases.find({ $and: [{"AgentID": agentID},{ "organisationID": organisationID}] }).then(cases => {
         console.log(cases)
         if (!cases) {
             res.status(500).json({ responseMessage: 'Cases not found' });
@@ -71,7 +71,7 @@ router.get("/getProfile", async function (req, res) {
 
     let { agentID, organisationID } = req.query;
 
-    agentDetails.find({ $and: [{ "agentID": agentID }, { "organisationID": organisationID }] }).then(agent => {
+    agentDetails.find({ $and: [{"agentID": agentID},{ "organisationID": organisationID}] }).then(agent => {
         console.log(agent)
         if (!agent) {
             res.status(500).json({ responseMessage: 'Cases not found' });
@@ -91,23 +91,41 @@ router.post('/updateProfile', function (req, res) {
     console.log("Request query:");
     console.log(req.query);
 
-    let { phoneNumber, password, agentID, organisationID } = req.query;
-
-     agentDetails.updateOne({ $and: [{ "agentID": agentID }, { "organisationID": organisationID }] },
-        { $set: { phoneNumber, password } },  (err, result) => {
-            if (err) {
-                console.log(err);
-                res.status(500).json({ responseMessage: 'update failed' });
-            } else {
-                console.log(" got user ");
-                console.log(result)
+    let {phoneNumber,password,agentID,organisationID } = req.query;
+    agentDetails.update({ $and: [{"AgentID": agentID},{ "organisationID": organisationID }, { $addToSet: { "followers": msg.data.follower } }, async (err, result) => {
+        if (err) {
+            console.log(err);
+            callback(err, "Database Error");
+        } else {
+            console.log(msg.data.follower)
+            console.log(result)
+            await Users.update({ "username": msg.data.follower }, { $addToSet: {"phoneNumber":phoneNumber, "password":password} }, async (err, result) => {
+                if (err) {
+                    console.log(err);
+                    res.status(500).json({ responseMessage: 'update failed' });
+                } else {
+                    console.log(" got user ");
+                    res.status(200).json({
+                        responseMessage: 'updated Successfully',
+                    });
+                }
+            })
+        }
+    })
+    agentDetails.update(({ $and: [{"AgentID": agentID},{ "organisationID": organisationID}]},
+        { $set:{"phoneNumber":phoneNumber, "password":password}})
+        .then(user => {
+        console.log(user)
+        if (!user) {
+            res.status(500).json({ responseMessage: 'update failed' });
+        } else {
+            console.log("user :", user)
+            
                 res.status(200).json({
                     responseMessage: 'updated Successfully',
                 });
-            }
-        })
+            } 
+    }));
+
 })
-
-
-
-module.exports = router;
+    module.exports = router;

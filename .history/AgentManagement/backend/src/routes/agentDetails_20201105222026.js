@@ -50,7 +50,7 @@ router.get("/getCases", async function (req, res) {
 
     let { agentID, organisationID } = req.query;
 
-    cases.find({ $and: [{ "AgentID": agentID }, { "organisationID": organisationID }] }).then(cases => {
+    cases.find({ $and: [{"AgentID": agentID},{ "organisationID": organisationID}] }).then(cases => {
         console.log(cases)
         if (!cases) {
             res.status(500).json({ responseMessage: 'Cases not found' });
@@ -71,7 +71,7 @@ router.get("/getProfile", async function (req, res) {
 
     let { agentID, organisationID } = req.query;
 
-    agentDetails.find({ $and: [{ "agentID": agentID }, { "organisationID": organisationID }] }).then(agent => {
+    agentDetails.find({ $and: [{"agentID": agentID},{ "organisationID": organisationID}] }).then(agent => {
         console.log(agent)
         if (!agent) {
             res.status(500).json({ responseMessage: 'Cases not found' });
@@ -91,23 +91,24 @@ router.post('/updateProfile', function (req, res) {
     console.log("Request query:");
     console.log(req.query);
 
-    let { phoneNumber, password, agentID, organisationID } = req.query;
+    let {phoneNumber,password,agentID,organisationID } = req.query;
+ 
 
-     agentDetails.updateOne({ $and: [{ "agentID": agentID }, { "organisationID": organisationID }] },
-        { $set: { phoneNumber, password } },  (err, result) => {
-            if (err) {
-                console.log(err);
-                res.status(500).json({ responseMessage: 'update failed' });
-            } else {
-                console.log(" got user ");
-                console.log(result)
-                res.status(200).json({
-                    responseMessage: 'updated Successfully',
-                });
-            }
-        })
-})
+    agentDetails.findOneAndUpdate(({ $and: [{"AgentID": agentID},{ "organisationID": organisationID}]},
+        { $addToSet:{"phoneNumber":phoneNumber, "password":password}}), (err, result) =>{
+                if (err) {
+                    console.log("update suc");
+                    res.status(500).json({ responseMessage: 'update failed' });
+                } else {
+                    console.log("user :", result)
+                    
+                        res.status(200).json({
+                           
+                            responseMessage: 'updated Successfully',
+                        });
+                    } 
+            })
+        }
+    );
 
-
-
-module.exports = router;
+    module.exports = router;
