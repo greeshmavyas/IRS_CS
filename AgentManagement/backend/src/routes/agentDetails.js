@@ -92,9 +92,12 @@ router.post('/updateProfile', function (req, res) {
     console.log(req.query);
 
     let { phoneNumber, password, agentID, organisationID } = req.query;
+   
+    console.log(phoneNumber)
+    console.log(password)
 
-     agentDetails.updateOne({ $and: [{ "agentID": agentID }, { "organisationID": organisationID }] },
-        { $set: { phoneNumber, password } },  (err, result) => {
+    agentDetails.findOneAndUpdate({ $and: [{ "agentID": agentID }, { "organisationID": organisationID }] } ,
+        { $set: { "phoneNumber":phoneNumber, "password":password } },  (err, result) => {
             if (err) {
                 console.log(err);
                 res.status(500).json({ responseMessage: 'update failed' });
