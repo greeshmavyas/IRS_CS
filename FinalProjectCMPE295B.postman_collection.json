@@ -294,7 +294,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"OrgID\": \"5faa2ce925c3b017fa0854d2\",\n\t\"Category\": \"shipping300001\"\n}",
+					"raw": "{\n\t\"OrgID\": \"5faa2ce925c3b017fa0854d2\",\n\t\"Category\": \"5faa2ce925c3b017fa0854d2shipping\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
