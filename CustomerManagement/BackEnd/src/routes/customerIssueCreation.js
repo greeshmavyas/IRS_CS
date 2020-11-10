@@ -196,6 +196,7 @@ router.route("/add").post(function (req, res) {
   console.log("End Point to create a Case");
   console.log(req.body);
   let newCase = new Case(req.body);
+  
   var today = new Date();
   var date =
     today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate();

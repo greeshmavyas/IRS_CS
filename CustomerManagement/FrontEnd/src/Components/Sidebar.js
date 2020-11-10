@@ -24,6 +24,10 @@ class SideNav extends React.Component {
                   path: '/customerDashboard', /* path is used as id to check which NavItem is active basically */
                   name: 'All Cases',
                   key: 1 /* Key is required, else console throws error. Does this please you Mr. Browser?! */
+                },{
+                    path:'/createCase',
+                    name: 'CreateCase',
+                    key:2
                 }
               ]
         }

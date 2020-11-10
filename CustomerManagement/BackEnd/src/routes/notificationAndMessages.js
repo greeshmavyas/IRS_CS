@@ -27,7 +27,7 @@ router.route('/addMessage').post(function(req, res) {
             } else {
                 if(result){
                    //TODO: send true status to client after adding value in history
-                    genericApis.addHistory(userId, caseId, "Comment added by "+userType+":"+message)
+                    genericApis.addHistory(userId, caseId, message +" (added by " + userType +")")
 
                     let subject = "Case "+caseId+" has been updated";
                     let body = "The " + userType + ":" + userId + " posted the following message: \n'" + message + "'";

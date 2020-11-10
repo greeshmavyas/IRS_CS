@@ -105,8 +105,9 @@ Format:
 
           //axios.defaults.withCredentials = true;
           let url = config.rooturl+'/addMessage/';
+          let {messageText} = this.state;
           let data = {
-              "message" : this.state.messageText,
+              "message" : messageText,
               userId,
               caseId,
               userType,
@@ -128,7 +129,7 @@ Format:
                 if(responseData.status){
                     console.log("message added");
                     this.props.updateMessage({
-                        Message: this.state.messageText,
+                        Message: messageText,
                         UserType: userType,
                         UserName: userName,
                         UserID: userId,
