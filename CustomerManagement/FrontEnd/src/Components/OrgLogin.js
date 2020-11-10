@@ -7,9 +7,10 @@ class OrgLogin extends Component {
   constructor() {
     super();
     this.state = {
-      userId: "",
-      password: "",
-      name: "",
+      customerId: "",
+      organisationId: "",
+      customerFirstName:"",
+      customerEmail:"",
       errors: {},
     };
   }
@@ -21,13 +22,15 @@ class OrgLogin extends Component {
   };
 
   loginHandler = () => {
-    let userId = this.state.userId;
-    window.localStorage.setItem("userId", userId);
+    let {customerId, organisationId, customerFirstName, customerEmail} = this.state;
+    window.localStorage.setItem("customerId", customerId);
+    window.localStorage.setItem("organisationId", organisationId);
+    window.localStorage.setItem("customerUserName", customerUserName);
+    window.localStorage.setItem("customerEmail", customerEmail);
     window.localStorage.setItem("userType", "customer");
   };
 
   render() {
-    let userId = localStorage.getItem("userId");
 
     return (
       <div>
@@ -45,24 +48,46 @@ class OrgLogin extends Component {
                   <br></br>
                   <form onSubmit={this.onSubmit}>
                     <div className="form-group">
-                      <strong>UserID</strong>
+                      <strong>Customer ID</strong>
                       <input
                         type="text"
                         className="form-control form-control-lg"
-                        placeholder="User ID"
-                        name="userId"
-                        value={this.state.userId}
+                        placeholder="Customer ID"
+                        name="customerId"
+                        value={this.state.customerId}
                         onChange={this.onChange}
                       />
                     </div>
                     <div className="form-group">
-                      <strong>Password</strong>
+                      <strong>Organisation ID</strong>
                       <input
-                        type="password"
+                        type="text"
                         className="form-control form-control-lg"
-                        placeholder="Password"
-                        name="password"
-                        value={this.state.password}
+                        placeholder="Organisation ID"
+                        name="organisationId"
+                        value={this.state.organisationId}
+                        onChange={this.onChange}
+                      />
+                    </div>
+                    <div className="form-group">
+                      <strong>Customer User Name</strong>
+                      <input
+                        type="text"
+                        className="form-control form-control-lg"
+                        placeholder="Customer User Name"
+                        name="customerUserName"
+                        value={this.state.customerUserName}
+                        onChange={this.onChange}
+                      />
+                    </div>
+                    <div className="form-group">
+                      <strong>Customer Email</strong>
+                      <input
+                        type="text"
+                        className="form-control form-control-lg"
+                        placeholder="Customer Email"
+                        name="customerEmail"
+                        value={this.state.customerEmail}
                         onChange={this.onChange}
                       />
                     </div>

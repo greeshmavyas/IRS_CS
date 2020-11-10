@@ -19,10 +19,18 @@ class CaseHistory extends Component{
         this.state={
             caseId: props.caseId,
             userId:props.userId,
-            history:""
+            history:props.history,
+            caseId:props.caseId
         }
     }
-    componentDidMount =async ()=> {
+    componentDidUpdate(prevProps){
+      if(prevProps.caseId !== this.props.caseId){
+        this.setState({
+          history: this.props.history
+        })
+      }
+    }
+    /*componentDidMount =async ()=> {
         if(this.props.caseId && this.props.userId){
             await axios(config.rooturl + "/history/" + this.props.userId +"/"+this.props.caseId , {
                 method: "get",
@@ -34,11 +42,11 @@ class CaseHistory extends Component{
                 })
                 .catch((error) => console.log(error.response.data));
         }
-    }
+    }*/
     render(){
         let {history} = this.state;
         if(history && history.length > 0){
-                history = history.map((cas) => {
+                history = history.map((cas,id) => {
                   var resComments = "";
                   if (cas.ResolutionComments != null && cas.ResolutionComments != "") {
                       {/*<p className="card-text">
@@ -66,6 +74,15 @@ class CaseHistory extends Component{
                      </Row>
                     );
                   }
+                  let comment = "";
+                  if (cas.Comment != null) {
+                    comment = (
+                     <Row>
+                        <Col xs={4}>Comment:</Col>
+                        <Col xs={8}>{cas.Comment}</Col>
+                     </Row>
+                    );
+                  }
                   {
                     /*
                     <p className="card-text">
@@ -73,13 +90,14 @@ class CaseHistory extends Component{
                           </p>
                   */}
                   return (
-                    <div id="casescard">
+                    <div id="casescard" key={id}>
                       <div
                         className="card"
                       >
                         <div className="card-body">
                           {status}
                           {resComments}
+                          {comment}
                           <Row>
                               <Col xs={4}>Updated On:</Col>
                               <Col xs={8}>{cas.UpdatedOn}</Col>

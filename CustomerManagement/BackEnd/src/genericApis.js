@@ -49,20 +49,20 @@ const notify = async (subscribers, subject, body) => {
 
 }
 
-const addHistory = (userID, caseID, caseStatus)=>{
-    console.log("userID:"+userID+"..caseID:"+caseID+"..caseStatus:"+caseStatus)
+const addHistory = (userID, caseID, comment)=>{
+    console.log("userID:"+userID+"..caseID:"+caseID+"..comment:"+comment)
     Case.findOne({ UserID: userID, CaseID: caseID }, function (err, resCase) {
         if (err) {
           console.log(err);
           return false;
         } else {
           //console.log(resIssue);
-          resCase.Status = caseStatus;
-          resCase.save();
+          //resCase.Status = comment;
+          //resCase.save();
           let history = new CaseHistory();
           history.UserID = userID;
           history.CaseID = caseID;
-          history.Status = caseStatus;
+          history.Comment = comment;
           var today = new Date();
           var date =
             today.getFullYear() +

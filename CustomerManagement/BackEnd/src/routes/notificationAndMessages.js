@@ -16,18 +16,18 @@ router.route('/addMessage').post(function(req, res) {
     //console.log(caseId);
     //console.log(message);
     //console.log(userId+".."+userType);
-    if(!caseId || !message || !userType || !userId){
+    if(!caseId || !message || !userType || !userId || !userName){
         res.status(200).json({ status: false, message: "message cannot be added!" });
     } else {
         //add message
-        Case.updateOne({"CaseID": caseId}, {$push:{'Messages': { UserType: userType, Message: message, UserId: userId,TimeStamp:genericApis.getTodayDate() } } }, (err, result)=>{
+        Case.updateOne({"CaseID": caseId}, {$push:{'Messages': { UserType: userType, Message: message, UserID: userId,TimeStamp:genericApis.getTodayDate(), UserName: userName } } }, (err, result)=>{
             if (err) {
                 console.log("unable to insert into database", err);
                 res.status(500).send('Can not add message');
             } else {
                 if(result){
                    //TODO: send true status to client after adding value in history
-                    genericApis.addHistory(userId, caseId, "Message is added by "+userType)
+                    genericApis.addHistory(userId, caseId, "Comment added by "+userType+":"+message)
 
                     let subject = "Case "+caseid+" has been updated";
                     let body = "The " + usertype + ":" + userid + " posted the following message: \n'" + message + "'";

@@ -12,7 +12,7 @@ import {
     Card
   } from "react-bootstrap";
   import "../css/customer.css"
-  const {getUserType, getUserId}  = require('./utils.js');
+  const {getUserType, getCustomerId, getUserName}  = require('./utils.js');
   const config = require("../settings.js");
 /*
 Format:
@@ -73,8 +73,8 @@ Format:
           return(
               <Card key = {index} className="messageComponent">
                   <Row>
-                      <Col><b>{message.UserId}({message.UserType})</b></Col>
-                      <Col><span class="float-right">{message.TimeStamp}</span></Col>
+                      <Col><b>{message.UserName}({message.UserID},{message.UserType})</b></Col>
+                      <Col><span className="float-right">{message.TimeStamp}</span></Col>
                   </Row>
                   <Row>
                       <Col>{message.Message}</Col>
@@ -100,14 +100,17 @@ Format:
       submitHandler = () =>{
           let userType = getUserType();
           let {caseId} = this.state;
-          let userId = getUserId()
+          let userId = getCustomerId();
+          let userName = getUserName();
+
           //axios.defaults.withCredentials = true;
           let url = config.rooturl+'/addMessage/';
           let data = {
               "message" : this.state.messageText,
               userId,
               caseId,
-              userType
+              userType,
+              userName
           }
           axios({
             method: 'post',

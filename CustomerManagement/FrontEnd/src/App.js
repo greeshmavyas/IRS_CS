@@ -6,7 +6,7 @@ import OrgLogin from "./Components/OrgLogin";
 import CasePage from "./Components/CasePage";
 import Case from "./Components/Case";
 import { withCookies } from "react-cookie";
-import CaseRetrieve from "./Components/CaseRetrieve";
+import CustomerDashboard from "./Components/CustomerDashboard";
 import CaseDisplay from "./Components/CaseDisplay";
 
 function App() {
@@ -18,8 +18,8 @@ function App() {
         <Route exact path="/home" render={() => <Home />}></Route>
         <Route exact path="/cases" component={CasePage}></Route>
         <Route exact path="/createCase" component={Case}></Route>
-        <Route exact path="/retrieveCase" component={CaseRetrieve}></Route>
-        <Route exact path = "/CaseDisplay" component = {CaseDisplay}></Route>
+        <Route exact path="/customerDashboard" component={CustomerDashboard}></Route>
+        <Route exact path = "/caseDisplay" component = {CaseDisplay}></Route>
       </Switch>
     </Router>
   );

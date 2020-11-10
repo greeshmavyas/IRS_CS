@@ -18,16 +18,17 @@ router.route("/").get(function (req, res) {
 });
 
 //Retreive cases of that user
-router.route("/:userID").get(function (req, res) {
+router.route("/customerDashboard").get(function (req, res) {
   console.log("End Point to fetch all the cases created by that user");
-  let userID = req.params.userID;
-  Case.find({ UserID: userID }, function (err, result) {
-    if (err) {
+  let customerId = req.query.customerId;
+  let organisationId = req.query.organisationId
+  Case.find({ UserID: customerId, organisationID: organisationId }, function (err, result) {
+    if (err || !result) {
       console.log(err);
-      res.json({"status":false,"message":"cannot retrieve cases"})
+      res.json({"status":false,"cases":"","message":"cannot retrieve cases"})
     } else {
      // console.log(result);
-      res.json(result);
+      res.json({"status":true, "cases":result});
     }
   });
 });

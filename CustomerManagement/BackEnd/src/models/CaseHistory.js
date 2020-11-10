@@ -28,6 +28,9 @@ let CaseHistory = new Schema({
   },
   UpdatedOn: {
     type: String,
+  },
+  Comment:{
+    type:String,
   }
 });
 

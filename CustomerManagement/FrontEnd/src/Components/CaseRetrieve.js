@@ -1,6 +1,6 @@
 import React, { Component, useState } from "react";
 import axios from "axios";
-import CaseDisplay from "./CaseDisplay";
+import CaseDisplay from "./CaseDisplay3";
 
 import {
   Button,

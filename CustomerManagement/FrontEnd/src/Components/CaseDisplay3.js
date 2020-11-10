@@ -2,6 +2,7 @@ import React, { Component,useState } from "react";
 import axios from "axios";
 import {
     Button,
+    Modal,
     Row,
     Col,
     Container,
@@ -9,77 +10,40 @@ import {
     Tab,
     Nav
   } from "react-bootstrap";
-import { Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import '../css/customer.css';
 import CaseHistory from './CaseHistory';
 import Messages from './Messages';
-import {} from "./utils.js";
+import {getCustomerEmailId} from "./utils.js";
 import swal from 'sweetalert'
-import {getCustomerEmailId} from './utils';
 
 const config = require("../settings.js");
 
-class CaseDisplay extends Component{
+class CaseDisplay3 extends Component{
     constructor(props){
         super(props);
        
         this.state={
-            //show:false,
-            //case: null,
+            show:false,
+            case: null,
             caseDetails: props.caseDetails,
-            subscribed: false,
-            history:"",
-            caseId:"",
-            isLoaded: false
+            subscribed: false
         }
     }
   
     handleClose = () => this.setState({show:false});
     handleShow = () => this.setState({show:true});
     componentDidMount(){
-        this.updateSubscribed(this.props.caseDetails)
-        this.getHistory(this.props.caseDetails)
-     
-    }
-    componentDidUpdate(prevProps){
-      if(prevProps.caseId != this.props.caseId){
-        this.setState({
-          caseDetails: this.props.caseDetails,
-          caseId: this.props.caseId,
-          isLoaded: false
-        })
-        this.updateSubscribed(this.props.caseDetails)
-        this.getHistory(this.props.caseDetails)
-      }
-    }
-
-    updateSubscribed = (caseDetails) =>{
       const emailId = getCustomerEmailId();
-      if(caseDetails && caseDetails.Subscribers){
-        let subscribers = caseDetails.Subscribers;
+      if(this.state.caseDetails && this.state.caseDetails.Subscribers){
+        let subscribers = this.state.caseDetails.Subscribers;
         if(subscribers.indexOf(emailId)){
           this.setState({
             subscribed: true
           })
         }
+        
       }
     }
-    
-
-    getHistory = async (caseDetails)=>{
-      if(caseDetails && caseDetails.CaseID && caseDetails.UserID){
-        await axios(config.rooturl + "/history/" + caseDetails.UserID +"/"+caseDetails.CaseID  , {
-            method: "get",
-            config: { headers: { "Content-Type": "application/json" } }
-          })
-            .then((res) => {
-              this.setState({ history: res.data, isLoaded:true });
-              console.log("history: ", this.state.history);
-            })
-            .catch((error) => console.log(error.response.data));
-      }
-    }
-
     getSubscribeMessage = ()=>{
       return this.state.subscribed ? "Unsubscribe": "Subscribe"
     }
@@ -127,31 +91,19 @@ class CaseDisplay extends Component{
     }
 
     render(){
-      //console.log("in casedisplay render method..state is..")
-      //console.log(this.state)
-       let {caseDetails, isLoaded} = this.state;
-       const closeBtn = (
-        <button className="close" onClick={() => this.props.showModal()}>
-          &times;
-         </button>
-      );
-      if(caseDetails && isLoaded){
+       let {caseDetails} = this.state;
         return (
-            
-              <Modal  
-              isOpen={this.props.modal}
-              toggle={() => this.props.showModal()}
-              className="modal-xl"
-              scrollable>
-                <ModalHeader
-                      size="lg"
-                      toggle={() => this.props.showModal()}
-                      close={closeBtn}
-                    >
-                    Case ID: {caseDetails.CaseID}
+            <>
+              <Button variant="primary" onClick={this.handleShow}>
+                View Details
+              </Button>
+        
+              {caseDetails && <Modal  size="lg" show={this.state.show} onHide={this.handleClose}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Case ID: {caseDetails.CaseID}</Modal.Title>
                     <Nav.Link  onClick={this.subscribeOrUnsubscribe}>{this.getSubscribeMessage()}</Nav.Link>
-                </ModalHeader>
-                <ModalBody>
+                </Modal.Header>
+                <Modal.Body>
                     <Container>
                         <Row>
                             <Col><b>Description:</b></Col>
@@ -179,21 +131,21 @@ class CaseDisplay extends Component{
                             <Messages messages={caseDetails.Messages} caseId={caseDetails.CaseID}/>
                         </Tab>
                         <Tab eventKey="history" title="Case History" tabClassName = "halfWidth">
-                            {/*<CaseHistory caseId={caseDetails.CaseID} userId={caseDetails.UserID}/>*/}
-                            <CaseHistory caseId = {this.state.caseId} history={this.state.history}/>
+                            <CaseHistory caseId={caseDetails.CaseID} userId={caseDetails.UserID}/>
                         </Tab>
                     </Tabs>
                   
-                </ModalBody>
-                <ModalFooter>
-                </ModalFooter>
-              </Modal>
-          )
-        } else {
-          return <div></div>
-        }
+                </Modal.Body>
+                <Modal.Footer>
+                  <Button variant="secondary" onClick={this.handleClose}>
+                    Close
+                  </Button>
+                </Modal.Footer>
+              </Modal>}
+            </>
+          );
     }
     
   }
   
-export default CaseDisplay;
+export default CaseDisplay3;

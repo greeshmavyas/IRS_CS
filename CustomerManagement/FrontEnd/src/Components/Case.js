@@ -3,6 +3,7 @@ import axios from "axios";
 import Header from "./Header";
 import Card from "react-bootstrap/Card";
 const config = require("../settings.js");
+import {getCustomerId, getOrganisationId} from './utils'
 
 class Case extends Component {
   state = {
@@ -22,13 +23,14 @@ class Case extends Component {
     var cid = Math.floor(Math.random() * 10000);
     let userId = localStorage.getItem("userId");
     const data = {
-      UserID: userId,
+      UserID: getCustomerId(),
       CaseID: cid.toString(),
       Category: this.state.Category,
       Information: this.state.Information,
       Status: "New",
       ResolutionComments: "",
-      AgentID: "1",
+      OrganisationID: getOrganisationId()
+      //AgentID: "1",
     };
     axios
       .post(config.rooturl + "/add", data)

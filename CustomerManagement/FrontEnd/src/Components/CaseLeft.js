@@ -23,7 +23,7 @@ class CaseLeft extends Component {
           </Col>
 
           <Col className="col-3 offset-md-5">
-            <a href="/retrieveCase" className="btn btn-primary">
+            <a href="/customerDashboard" className="btn btn-primary">
               Retrieve a case
             </a>
           </Col>
