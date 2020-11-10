@@ -71,8 +71,9 @@ app.use(morgan("dev"));
 //var caseCreationRoute = require("./src/routes/customerIssueCreation");
 var orgOwnerRoute = require("./src/routes/orgRegistration");
 var agentRoute = require("./src/routes/agentOperationsByOrgOwner");
-var orgOwnerRegRoute = require("./src/routes/orgOwnerReg.js");
+var orgOwnerRegRoute = require("./src/routes/orgOwnerReg");
 var customerRoute = require("./src/routes/customerActions");
+var updateByOrgOwnerRoute = require("./src/routes/updateByOrgOwner");
 app.use(express.static("public"));
 app.use(express.static("uploads"));
 //use cors to allow cross origin resource sharing
@@ -94,6 +95,7 @@ app.use(basePath, orgOwnerRoute);
 app.use(basePath, agentRoute);
 app.use(basePath, customerRoute);
 app.use(basePath, orgOwnerRegRoute);
+app.use(basePath, updateByOrgOwnerRoute);
 
 // Execute App
 app.listen(config.backend_port, () => {

@@ -1,0 +1,322 @@
+{
+	"info": {
+		"_postman_id": "aa97eb46-8003-4307-b466-c6aa8c395a8e",
+		"name": "Final Project CMPE 295B",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "OrgOwner SIgn Up",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"FirstName\":\"Greeshma\",\n\t\"LastName\":\"Vyas\",\n\t\"Username\":\"greeshmavyas2\",\n\t\"Email\":\"greeshma.vyas@abc.com\",\n\t\"Password\":\"password\",\n\t\"ZipCode\":\"95134\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:4000/irs/orgOwner/signUp",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"irs",
+						"orgOwner",
+						"signUp"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "OrgOwner Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"Username\":\"greeshmavyas2\",\n\t\"Password\":\"password\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:4000/irs/orgOwner/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"irs",
+						"orgOwner",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "OrgOwner Profile Save",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"Username\":\"greeshmavyas2\",\n\t\"FirstName\":\"greeshmaaa\",\n\t\"LastName\":\"vyasss\",\n\t\"ZipCode\":\"95135\",\n\t\"Email\":\"gree@sjsu.edu\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:4000/irs/orgOwner/profileSave",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"irs",
+						"orgOwner",
+						"profileSave"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "OrgOwner fetch by username",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:4000/irs/orgOwner/profile/greeshmavyas2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"irs",
+						"orgOwner",
+						"profile",
+						"greeshmavyas2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Register Org [Create Kafka topics]",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\"token\":\"JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmYTIxYjYzMTY2ZTEwZTMxYWZjZWU5MyIsInVzZXJuYW1lIjoiZ3JlZXNobWF2eWFzMiIsImlhdCI6MTYwNDk4NjMzMCwiZXhwIjoxNjA0OTkzNTMwfQ.jOEWdJ25KpgFh3WtofAIG90NDoF3G8r1dZAIYawUokc\",\n\"OrgName\" : \"amazon\",\n\"Categories\": [\"5fa21b63166e10e31afcee93billing\",\"5fa21b63166e10e31afcee93taxes\",\"5fa21b63166e10e31afcee93salary\",\"5fa21b63166e10e31afcee93others\"],\n\"Domain\":\"ecommerce\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:4000/irs/registerOrg",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"irs",
+						"registerOrg"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Organization Fetch by username",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:4000/irs/org/greeshmavyas2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"irs",
+						"org",
+						"greeshmavyas2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add agent",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\"OrgId\":\"5fa21e7ee53264e361aba7d8\",\n\"Categories\":[\"billing\",\"others\"],\n\"FirstName\":\"Greeshma\",\n\"LastName\":\"Vyas\",\n\"Email\":\"agent@abc.com\",\n\"Username\":\"agent_123\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:4000/irs/addAgent",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"irs",
+						"addAgent"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "All agents fetch",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:4000/irs/agents",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"irs",
+						"agents"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Customer create case",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\n{\n\t\"UserID\":\"100\",\n\t\"Category\":\"billing\",\n\t\"Information\":\"billed twice\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:4000/irs/add",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"irs",
+						"add"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cases by category for dashboard",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:4000/irs/casesByCategory/billing",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"irs",
+						"casesByCategory",
+						"billing"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cases by status for dashboard",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:4000/irs/casesByStatus/Assigned",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"irs",
+						"casesByStatus",
+						"Assigned"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update org category by orgOwner",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"OrgID\": \"5faa2ce925c3b017fa0854d2\",\n\t\"Category\": \"shipping300001\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:4000/irs/org/category",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"irs",
+						"org",
+						"category"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

@@ -3,13 +3,19 @@ var router = express.Router();
 let Organization = require("../models/OrganizationModel");
 var kafka = require("../routes/kafka/client");
 var OrgOwner = require("../models/OrgOwnerModel");
+const jwt_decode = require("jwt-decode");
 
 //Register the organization
 router.route("/registerOrg").post(function (req, res) {
   //From frontend, categories to be sent along with orgOwnerId as orgOwnerIDcategory Eg 7billing
   //which will be stored as it is in both kafka and DB
+
+  //get orgOwnerId from jwt token
+  const token = req.body.token;
+  let jwt_decoded = jwt_decode(token);
+
   var org = {
-    OrgOwnerId: req.body.OrgOwnerId,
+    OrgOwnerId: jwt_decoded.id,
     OrgName: req.body.OrgName,
     Categories: req.body.Categories,
     Domain: req.body.Domain,
