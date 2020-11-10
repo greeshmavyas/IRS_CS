@@ -12,7 +12,7 @@ import {
     Card
   } from "react-bootstrap";
   import "../css/customer.css"
-  const {getUserType, getCustomerId, getUserName}  = require('./utils.js');
+  const {getUserType, getUserId, getUserName}  = require('./utils.js');
   const config = require("../settings.js");
 /*
 Format:
@@ -100,7 +100,7 @@ Format:
       submitHandler = () =>{
           let userType = getUserType();
           let {caseId} = this.state;
-          let userId = getCustomerId();
+          let userId = getUserId();
           let userName = getUserName();
 
           //axios.defaults.withCredentials = true;
@@ -130,7 +130,8 @@ Format:
                     this.props.updateMessage({
                         Message: this.state.messageText,
                         UserType: userType,
-                        UserId: userId,
+                        UserName: userName,
+                        UserID: userId,
                         CaseID: caseId
                     })
                     this.setState({
@@ -149,9 +150,9 @@ Format:
         return (
             <Form className = "addMessage">
             <Form.Group controlId="addmessage">
-                <Form.Control type="text" as="textarea" className = "messageTextArea" placeholder="Add message" onChange={this.changeHandler}/>
+                <Form.Control type="text" as="textarea" className = "messageTextArea" placeholder="Add Comment" onChange={this.changeHandler}/>
             </Form.Group>
-            <Button variant="primary" className="float-right"  onClick = {this.submitHandler}>
+            <Button variant="info" className="float-right"  onClick = {this.submitHandler}>
                 Submit
             </Button>
             <br/><br/>

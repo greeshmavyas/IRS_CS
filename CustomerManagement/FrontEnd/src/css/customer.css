@@ -21,3 +21,12 @@
 .black{
     color:black;
 }
+.flex{
+    display:flex;
+    margin-left:15px;
+}
+.subscribeLink{
+    font-size: 15px;
+    color: #0000005c;
+    text-decoration: underline;
+}

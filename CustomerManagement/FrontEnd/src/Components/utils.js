@@ -1,9 +1,12 @@
 export const getUserName = () => {
     return localStorage.getItem("userName");
 }
-/*export const getUserId = () => {
+export const getUserId = () => {
     return localStorage.getItem("userId");
-}*/
+}
+export const getEmailId = () =>{
+    return localStorage.getItem("emailId") || "";
+}
 export const getFirstName = ()=>{
     return localStorage.getItem("firstName") || "John";
 }

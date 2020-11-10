@@ -15,7 +15,7 @@ import CaseHistory from './CaseHistory';
 import Messages from './Messages';
 import {} from "./utils.js";
 import swal from 'sweetalert'
-import {getCustomerEmailId} from './utils';
+import {getEmailId} from './utils';
 
 const config = require("../settings.js");
 
@@ -24,8 +24,6 @@ class CaseDisplay extends Component{
         super(props);
        
         this.state={
-            //show:false,
-            //case: null,
             caseDetails: props.caseDetails,
             subscribed: false,
             history:"",
@@ -54,10 +52,10 @@ class CaseDisplay extends Component{
     }
 
     updateSubscribed = (caseDetails) =>{
-      const emailId = getCustomerEmailId();
+      const emailId = getEmailId();
       if(caseDetails && caseDetails.Subscribers){
         let subscribers = caseDetails.Subscribers;
-        if(subscribers.indexOf(emailId)){
+        if(subscribers.indexOf(emailId) !== -1){
           this.setState({
             subscribed: true
           })
@@ -92,7 +90,7 @@ class CaseDisplay extends Component{
       console.log("url is:"+url)
 
       let data = {
-        emailId: getCustomerEmailId(),
+        emailId: getEmailId(),
         caseId: this.state.caseDetails.CaseID
       }
       axios({
@@ -148,8 +146,10 @@ class CaseDisplay extends Component{
                       toggle={() => this.props.showModal()}
                       close={closeBtn}
                     >
-                    Case ID: {caseDetails.CaseID}
-                    <Nav.Link  onClick={this.subscribeOrUnsubscribe}>{this.getSubscribeMessage()}</Nav.Link>
+                    <div className="flex">
+                    <span>Case ID: {caseDetails.CaseID}</span>
+                    <span><Nav.Link  className="subscribeLink" onClick={this.subscribeOrUnsubscribe}>{this.getSubscribeMessage()}</Nav.Link></span>
+                    </div>
                 </ModalHeader>
                 <ModalBody>
                     <Container>
@@ -175,7 +175,7 @@ class CaseDisplay extends Component{
                     <br></br>
 
                     <Tabs defaultActiveKey="messages" id="casetab">
-                        <Tab eventKey="messages" title="Messages" tabClassName = "halfWidth">
+                        <Tab eventKey="messages" title="Comments" tabClassName = "halfWidth">
                             <Messages messages={caseDetails.Messages} caseId={caseDetails.CaseID}/>
                         </Tab>
                         <Tab eventKey="history" title="Case History" tabClassName = "halfWidth">

@@ -1,3 +1,6 @@
+"use strict";
+const nodemailer = require("nodemailer");
+
 let Case = require("../src/models/CaseModel");
 let CaseHistory = require("../src/models/CaseHistory");
 
@@ -15,7 +18,8 @@ const sendNotification = (caseId, subject, body) =>{
   Case.findOne({CaseID: caseId}, function(err, resCase){
     if(err){
       console.log(err)
-    } else if(resCase){
+    } else if(resCase){ 
+      console.log("in send notiifcation");
       let subscribers = resCase.Subscribers
       notify(subscribers, subject, body)
     }
@@ -23,6 +27,10 @@ const sendNotification = (caseId, subject, body) =>{
 }
 
 const notify = async (subscribers, subject, body) => {
+  console.log("in notify:");
+  console.log(subscribers);
+  console.log(subject);
+  console.log(body);
   if(!subscribers || !subject || !body){
     return
   }
@@ -33,14 +41,14 @@ const notify = async (subscribers, subject, body) => {
   let transporter = nodemailer.createTransport({
     service: "Gmail",
     auth: {
-      user: "anbandar01@gmail.com", // generated ethereal user
-      pass: "", // generated ethereal password
+      user: "irs.system1@gmail.com", // generated ethereal user
+      pass: "irs@sjsu", // generated ethereal password
     },
   });
 
   // send mail with defined transport object
   let info = await transporter.sendMail({
-    from: '"Anjali Bandaru" <anbandar01@gmail.com>', // sender address
+    from: '"IRS Service" <irs.system1@gmail.com>', // sender address
     to: subscribers, // list of receivers
     subject: subject, // Subject line
     text: body, // plain text body

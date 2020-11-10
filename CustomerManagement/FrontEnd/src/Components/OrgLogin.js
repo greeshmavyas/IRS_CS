@@ -7,10 +7,10 @@ class OrgLogin extends Component {
   constructor() {
     super();
     this.state = {
-      customerId: "",
+      userId: "",
       organisationId: "",
-      customerFirstName:"",
-      customerEmail:"",
+      userName:"",
+      emailId:"",
       errors: {},
     };
   }
@@ -22,11 +22,11 @@ class OrgLogin extends Component {
   };
 
   loginHandler = () => {
-    let {customerId, organisationId, customerFirstName, customerEmail} = this.state;
-    window.localStorage.setItem("customerId", customerId);
+    let {userId, organisationId, userName, emailId} = this.state;
+    window.localStorage.setItem("userId", userId);
     window.localStorage.setItem("organisationId", organisationId);
-    window.localStorage.setItem("customerUserName", customerUserName);
-    window.localStorage.setItem("customerEmail", customerEmail);
+    window.localStorage.setItem("userName", userName);
+    window.localStorage.setItem("emailId", emailId);
     window.localStorage.setItem("userType", "customer");
   };
 
@@ -53,8 +53,8 @@ class OrgLogin extends Component {
                         type="text"
                         className="form-control form-control-lg"
                         placeholder="Customer ID"
-                        name="customerId"
-                        value={this.state.customerId}
+                        name="userId"
+                        value={this.state.userId}
                         onChange={this.onChange}
                       />
                     </div>
@@ -75,8 +75,8 @@ class OrgLogin extends Component {
                         type="text"
                         className="form-control form-control-lg"
                         placeholder="Customer User Name"
-                        name="customerUserName"
-                        value={this.state.customerUserName}
+                        name="userName"
+                        value={this.state.userName}
                         onChange={this.onChange}
                       />
                     </div>
@@ -86,8 +86,8 @@ class OrgLogin extends Component {
                         type="text"
                         className="form-control form-control-lg"
                         placeholder="Customer Email"
-                        name="customerEmail"
-                        value={this.state.customerEmail}
+                        name="emailId"
+                        value={this.state.emailId}
                         onChange={this.onChange}
                       />
                     </div>

@@ -13,7 +13,7 @@ import {
 import '../css/customer.css';
 import CaseHistory from './CaseHistory';
 import Messages from './Messages';
-import {getCustomerEmailId} from "./utils.js";
+import {getEmailId} from "./utils.js";
 import swal from 'sweetalert'
 
 const config = require("../settings.js");
@@ -33,7 +33,7 @@ class CaseDisplay3 extends Component{
     handleClose = () => this.setState({show:false});
     handleShow = () => this.setState({show:true});
     componentDidMount(){
-      const emailId = getCustomerEmailId();
+      const emailId = getEmailId();
       if(this.state.caseDetails && this.state.caseDetails.Subscribers){
         let subscribers = this.state.caseDetails.Subscribers;
         if(subscribers.indexOf(emailId)){
@@ -56,7 +56,7 @@ class CaseDisplay3 extends Component{
       console.log("url is:"+url)
 
       let data = {
-        emailId: getCustomerEmailId(),
+        emailId: getEmailId(),
         caseId: this.state.caseDetails.CaseID
       }
       axios({

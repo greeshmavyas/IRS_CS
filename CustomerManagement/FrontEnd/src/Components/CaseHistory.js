@@ -30,28 +30,15 @@ class CaseHistory extends Component{
         })
       }
     }
-    /*componentDidMount =async ()=> {
-        if(this.props.caseId && this.props.userId){
-            await axios(config.rooturl + "/history/" + this.props.userId +"/"+this.props.caseId , {
-                method: "get",
-                config: { headers: { "Content-Type": "application/json" } }
-              })
-                .then((res) => {
-                  this.setState({ history: res.data });
-                  console.log("history: ", this.state.history);
-                })
-                .catch((error) => console.log(error.response.data));
-        }
-    }*/
     render(){
         let {history} = this.state;
+        console.log("history is:");
+        console.log(history);
+        history = history.reverse();
         if(history && history.length > 0){
                 history = history.map((cas,id) => {
                   var resComments = "";
                   if (cas.ResolutionComments != null && cas.ResolutionComments != "") {
-                      {/*<p className="card-text">
-                        <strong>ResolutionComments: {cas.ResolutionComments} </strong>
-                    </p>*/}
                     resComments = (
                     <Row>
                         <Col xs={4}>ResolutionComments:</Col>
@@ -61,11 +48,6 @@ class CaseHistory extends Component{
                   }
           
                   var status = "";
-                  {/*
-                     <p className="card-text">
-                        <strong>Status: {cas.Status} </strong>
-                      </p>
-                  */}
                   if (cas.Status != null) {
                     status = (
                      <Row>
@@ -83,12 +65,6 @@ class CaseHistory extends Component{
                      </Row>
                     );
                   }
-                  {
-                    /*
-                    <p className="card-text">
-                            <strong>Updated On: {cas.UpdatedOn} </strong>
-                          </p>
-                  */}
                   return (
                     <div id="casescard" key={id}>
                       <div

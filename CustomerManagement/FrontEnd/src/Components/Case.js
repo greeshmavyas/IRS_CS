@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import axios from "axios";
 import Header from "./Header";
 import Card from "react-bootstrap/Card";
+import {getUserId, getOrganisationId} from './utils';
 const config = require("../settings.js");
-import {getCustomerId, getOrganisationId} from './utils'
 
 class Case extends Component {
   state = {
@@ -23,7 +23,7 @@ class Case extends Component {
     var cid = Math.floor(Math.random() * 10000);
     let userId = localStorage.getItem("userId");
     const data = {
-      UserID: getCustomerId(),
+      UserID: getUserId(),
       CaseID: cid.toString(),
       Category: this.state.Category,
       Information: this.state.Information,

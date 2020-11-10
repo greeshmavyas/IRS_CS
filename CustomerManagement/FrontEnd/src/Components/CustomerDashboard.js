@@ -8,7 +8,7 @@ import Table from 'react-bootstrap/Table'
 import Pagination from 'react-bootstrap/Pagination'
 import PageItem from 'react-bootstrap/PageItem'
 import { stat } from 'fs';
-import {getOrganisationId, getCustomerId} from "./utils";
+import {getOrganisationId, getUserId} from "./utils";
 import CaseDisplay from './CaseDisplay';
 
 class CustomerDashboard extends Component {
@@ -81,10 +81,10 @@ class CustomerDashboard extends Component {
   async componentDidMount() {
     console.log("in get all cases frontend")
 
-    let customerId = getCustomerId();
+    let customerId = getUserId();
     let organisationId = getOrganisationId()
    // let count = 0
-   // axios.defaults.withCredentials = true;
+   //axios.defaults.withCredentials = true;
     if (customerId) {
      // count = count + 1
       let data = {
@@ -150,12 +150,6 @@ class CustomerDashboard extends Component {
   render() {
     console.log("status");
     console.log(this.state.status);
-    const closeBtn = (
-      <button className="close" onClick={() => this.showModal()}>
-        &times;
-       </button>
-    );
-
     var casedetails;
     let searchResults;
     let status = this.state.status; 

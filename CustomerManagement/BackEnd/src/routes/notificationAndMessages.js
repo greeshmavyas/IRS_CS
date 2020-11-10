@@ -11,7 +11,7 @@ let Case = require("../models/CaseModel");
 
 router.route('/addMessage').post(function(req, res) {
     console.log("End Point to add message");
-    let {message, caseId, userType, userId} = req.body;
+    let {message, caseId, userType, userId, userName} = req.body;
     
     //console.log(caseId);
     //console.log(message);
@@ -29,8 +29,8 @@ router.route('/addMessage').post(function(req, res) {
                    //TODO: send true status to client after adding value in history
                     genericApis.addHistory(userId, caseId, "Comment added by "+userType+":"+message)
 
-                    let subject = "Case "+caseid+" has been updated";
-                    let body = "The " + usertype + ":" + userid + " posted the following message: \n'" + message + "'";
+                    let subject = "Case "+caseId+" has been updated";
+                    let body = "The " + userType + ":" + userId + " posted the following message: \n'" + message + "'";
                     genericApis.sendNotification(caseId, subject, body)
 
                     res.status(200).json({ status: true, message: "message is added successfully!" });
@@ -56,7 +56,7 @@ router.route('/subscribe').post(function(req, res) {
     console.log(caseId);
     console.log(emailId);
     if(!caseId || !emailId)
-        res.json({"status":false, "message":"cannot unsubscribe"});
+        res.json({"status":false, "message":"cannot subscribe"});
     Case.updateOne({"CaseID" : caseId }, {$addToSet:{"Subscribers":emailId}}, function(err, resCase) {
         if (err) {
             console.log(err);
@@ -79,18 +79,20 @@ router.route('/unsubscribe').post(function(req, res) {
     console.log(emailId);
     if(!caseId || !emailId)
         res.json({"status":false, "message":"cannot unsubscribe"});
-
-    Case.updateOne({"CaseID" : caseId }, {$pull:{"Subscribers":emailId}}, function(err, resCase) {
-        if (err) {
-            console.log(err);
-            res.json({"status":false, "message":"cannot unsubscribe"});
-        } else if(resCase){
-            console.log(resCase);
-            res.json({"status":true, "message":"successfully unsubscribed"});
-        } else {
-            res.json({"status":false, "message":"cannot unsubscribe"});
-        }
-    });
+    else {
+        Case.updateOne({"CaseID" : caseId }, {$pull:{"Subscribers":emailId}}, function(err, resCase) {
+            if (err) {
+                console.log(err);
+                res.json({"status":false, "message":"cannot unsubscribe"});
+            } else if(resCase){
+                console.log(resCase);
+                res.json({"status":true, "message":"successfully unsubscribed"});
+            } else {
+                res.json({"status":false, "message":"cannot unsubscribe"});
+            }
+        });
+    }
+   
 });
 
 module.exports = router;
