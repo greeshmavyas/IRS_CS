@@ -48,6 +48,7 @@ router.route("/orgOwner/login").post(function (req, res) {
             cookie2: trimUsername,
             cookie3: orgOwner.FirstName,
             cookie4: orgOwner.LastName,
+            cookie5: orgOwner._id,
           });
           console.log("OrgOwner found in DB");
         } else {
@@ -114,6 +115,7 @@ router.route("/orgOwner/signUp").post(function (req, res) {
                 cookie2: trimUsername,
                 cookie3: req.body.FirstName,
                 cookie4: req.body.LastName,
+                cookie5: orgOwner._id,
               });
             }
           });
