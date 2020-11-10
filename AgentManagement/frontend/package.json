@@ -13,9 +13,11 @@
     "react-foundation": "^0.9.6",
     "react-native": "^0.63.3",
     "react-native-web": "^0.14.4",
+    "react-paginate": "^6.5.0",
     "react-router-dom": "^5.2.0",
     "react-router-native": "^5.2.0",
     "react-scripts": "3.4.1",
+    "react-select": "^3.1.0",
     "reactstrap": "^8.4.1",
     "styled-components": "^5.2.0"
   },
