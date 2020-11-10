@@ -9,6 +9,7 @@ var OrgOwner = require("../models/OrgOwnerModel");
 var jwt = require("jsonwebtoken");
 
 // Validate orgOwner login details and get a JSON Web Token to include in the header of future requests.
+// if orgOwnerID is required, use the other api to get orgownerid by username
 router.route("/orgOwner/login").post(function (req, res) {
   console.log("Inside orgOwner Login Post");
   var username = req.body.Username;
@@ -48,7 +49,6 @@ router.route("/orgOwner/login").post(function (req, res) {
             cookie2: trimUsername,
             cookie3: orgOwner.FirstName,
             cookie4: orgOwner.LastName,
-            cookie5: orgOwner._id,
           });
           console.log("OrgOwner found in DB");
         } else {
@@ -115,7 +115,6 @@ router.route("/orgOwner/signUp").post(function (req, res) {
                 cookie2: trimUsername,
                 cookie3: req.body.FirstName,
                 cookie4: req.body.LastName,
-                cookie5: orgOwner._id,
               });
             }
           });
