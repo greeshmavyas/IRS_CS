@@ -68,6 +68,7 @@ export default class Settings extends Component {
       phoneNumber: this.state.phoneNumber,
       password: this.state.password
     };
+    console.log(data)
     axios({
       method: 'post',
       url: 'http://' + config.hostname + ':' + config.backendPort + '/updateProfile',
