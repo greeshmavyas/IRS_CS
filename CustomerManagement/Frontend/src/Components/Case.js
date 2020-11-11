@@ -2,10 +2,12 @@ import React, { Component } from "react";
 import axios from "axios";
 import Header from "./Header";
 import Card from "react-bootstrap/Card";
+import {getUserId, getOrganisationId} from './utils';
+const config = require("../settings.js");
 
 class Case extends Component {
   state = {
-    Category: "",
+    Category: "Others",
     Information: "",
     Response: "",
   };
@@ -19,24 +21,22 @@ class Case extends Component {
   sub = (e) => {
     e.preventDefault();
     var cid = Math.floor(Math.random() * 10000);
-    let userId = localStorage.getItem("userId");
     const data = {
-      UserID: userId,
+      UserID: getUserId(),
+      organisationID: getOrganisationId(),
       CaseID: cid.toString(),
       Category: this.state.Category,
       Information: this.state.Information,
       Status: "New",
-      ResolutionComments: "",
-      AgentID: "1",
+      ResolutionComments: ""
     };
     axios
-      .post("http://localhost:4000/case/add", data)
+      .post(config.rooturl + "/add", data)
       .then((response) => {
         console.log("Status Code : ", response.status);
         if (response.status === 200) {
           this.setState({
             Response: "Case Created Successfully CaseID: " + cid.toString(),
-            Category: "",
             Information: "",
           });
         }
@@ -48,6 +48,18 @@ class Case extends Component {
         });
         console.log("Error is:", error);
       });
+
+      //calling Lambda func to get category
+      axios.get(config.awsLambda).then((response) => {
+        console.log(response);
+        if(response){
+          const category = response;
+          //TODO: call Kafka API
+
+        }
+      }).catch((error)=>{
+        console.log(error);
+      })
   };
 
   render() {
@@ -67,17 +79,6 @@ class Case extends Component {
                     <br></br>
                     <br></br>
                     <form onSubmit={this.sub}>
-                      <div className="form-group">
-                        <strong>Category:</strong>
-                        <input
-                          type="text"
-                          className="form-control form-control-lg"
-                          id="Category"
-                          value={this.state.Category}
-                          onChange={this.change}
-                          placeholder="Category"
-                        />
-                      </div>
                       <div className="form-group">
                         <strong>Information:</strong>
                         <textarea

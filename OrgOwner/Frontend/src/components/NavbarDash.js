@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {getUserName} from "./utils";
+import {getName} from './utils.js'
 
 class NavbarDash extends Component {
     
@@ -11,7 +11,7 @@ class NavbarDash extends Component {
     return (
       <nav className="navbar navbar-expand-sm navbar-dark bg-dark mb-4">
         <div className="container">
-          <a className="navbar-brand" href="/customerDashboard">
+          <a className="navbar-brand" href="/AgentDashboard">
             IRS Dashboard
           </a>
           <button
@@ -28,7 +28,7 @@ class NavbarDash extends Component {
             <ul className="navbar-nav ml-auto">
               <li className="nav-item">
                 <p className="nav-link" >
-                  Hi, {getUserName()}
+                  Hi, {getName()}
                 </p>
               </li>
               <li className="nav-item">

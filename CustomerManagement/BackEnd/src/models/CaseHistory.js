@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-let Case = new Schema({
+let CaseHistory = new Schema({
   UserID: {
     type: String,
   },
@@ -26,9 +26,12 @@ let Case = new Schema({
   CreatedOn: {
     type: String,
   },
-  Messages:[],
-  Subscribers:[],
-  organisationID:""
+  UpdatedOn: {
+    type: String,
+  },
+  Comment:{
+    type:String,
+  }
 });
 
-module.exports = mongoose.model("Case", Case);
+module.exports = mongoose.model("CaseHistory", CaseHistory);

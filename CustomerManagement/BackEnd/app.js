@@ -50,7 +50,7 @@ app.use(
 //Allow Access Control
 //replace here with ec2 instance id
 app.use(function (req, res, next) {
-  res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+  res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Credentials", "true");
   res.setHeader(
     "Access-Control-Allow-Methods",
@@ -69,13 +69,14 @@ app.use(morgan("dev"));
 
 // Routes and Backend Funcioncalities
 var caseCreationRoute = require("./src/routes/customerIssueCreation");
+var notificationAndMessages = require("./src/routes/notificationAndMessages");
 
 app.use(express.static("public"));
 app.use(express.static("uploads"));
 //use cors to allow cross origin resource sharing
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: "*",
     credentials: true,
   })
 );
@@ -88,6 +89,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 app.use(basePath, caseCreationRoute);
+app.use(basePath, notificationAndMessages);
 
 // Execute App
 app.listen(config.backend_port, () => {
