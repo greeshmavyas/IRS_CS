@@ -23,6 +23,6 @@ Execute command 'npm install' <br />
 Execute command 'npm start' This will start the application in your default server in http://:3000
 
 #### 4.To run NLP Model ipynb file
-Do the required pip installations given in 1st ipynb block
+Do the required pip installations given in 1st ipynb block <br />
 Execute (Shift+Enter) each block in ipynb after installations
 
