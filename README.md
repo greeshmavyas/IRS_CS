@@ -26,3 +26,12 @@ Execute command 'npm start' This will start the application in your default serv
 Do the required pip installations given in 1st ipynb block <br />
 Execute (Shift+Enter) each block in ipynb after installations
 
+#### 4.To run Flask 
+pipenv shell <br />
+$ env FLASK_APP=app.py flask run <br />
+End point: http://127.0.0.1:5000/ <br />
+Request body : {
+    "case": "When can I get my delivery"
+} (json) <br />
+Response : Shipping (String) <br />
+
