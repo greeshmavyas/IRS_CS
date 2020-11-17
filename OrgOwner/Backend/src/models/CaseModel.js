@@ -20,7 +20,7 @@ let Case = new Schema({
   ResolutionComments: {
     type: String,
   },
-  AgentId: {
+  AgentID: {
     type: String,
   },
 });

@@ -6,6 +6,26 @@
 	},
 	"item": [
 		{
+			"name": "SetUp API |Populate topics_agents, agents_count maps",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:4000/irs/populateMaps",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"irs",
+						"populateMaps"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "OrgOwner SIgn Up",
 			"request": {
 				"method": "POST",

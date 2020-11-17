@@ -1,6 +1,7 @@
 var express = require("express");
 var router = express.Router();
 var Agent = require("../models/AgentModel");
+var Case = require("../models/CaseModel");
 var HashMap = require("hashmap");
 //update when agent added
 global.topics_to_agents = new HashMap();
@@ -77,6 +78,68 @@ router.route("/agents").get(function (req, res) {
       res.status(200).json({
         responseMessage: "All agents",
         agents,
+      });
+    }
+  });
+});
+
+// on start of app: from DB, populate topics to agents and agents to case count maps
+router.route("/populateMaps").get(function (req, res) {
+  console.log("End Point to populate TopicsToAgentsMap");
+  Agent.find(function (err, agents) {
+    if (err) {
+      console.log(err);
+      res
+        .status(400)
+        .json({ responseMessage: "Couldn't retrive the agents", err });
+    } else {
+      for (j = 0; j < agents.length; j++) {
+        for (i = 0; i < agents[j].Categories.length; i++) {
+          if (global.topics_to_agents.has(agents[j].Categories[i])) {
+            global.topics_to_agents
+              .get(agents[j].Categories[i])
+              .push(agents[j]._id);
+          } else {
+            global.topics_to_agents.set(agents[j].Categories[i], [
+              agents[j]._id,
+            ]);
+          }
+        }
+      }
+      console.log("topics" + JSON.stringify(global.topics_to_agents));
+
+      console.log("End Point to populate AgentsToCount map");
+      Case.find(function (err, cases) {
+        if (err) {
+          console.log(err);
+          res
+            .status(400)
+            .json({ responseMessage: "Couldn't retrive the cases", err });
+        } else {
+          for (j = 0; j < cases.length; j++) {
+            console.log("case status" + cases[j].AgentID);
+            if (
+              cases[j].Status == "Assigned" ||
+              cases[j].Status == "InProgress"
+            ) {
+              if (global.agents_to_count.has(cases[j].AgentID)) {
+                global.agents_to_count.set(
+                  cases[j].AgentID,
+                  global.agents_to_count.get(cases[j].AgentID) + 1
+                );
+              } else {
+                global.agents_to_count.set(cases[j].AgentID, 1);
+              }
+            }
+          }
+          console.log(
+            "agents to counts" + JSON.stringify(global.agents_to_count)
+          );
+        }
+      });
+
+      res.status(200).json({
+        responseMessage: "topics_to_agents, agents_to_count maps are populated",
       });
     }
   });
