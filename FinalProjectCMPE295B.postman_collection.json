@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "aa97eb46-8003-4307-b466-c6aa8c395a8e",
-		"name": "Final Project CMPE 295B",
+		"name": "FinalProjectCMPE295B",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -312,6 +312,36 @@
 						"irs",
 						"org",
 						"category"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update agent [add category, alter first name, lastname email]",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"Categories\": [\"5fa21b63166e10e31afcee93Promotions\"],\n    \"FirstName\" :\"Greeshma\",\n    \"LastName\":\"Vyas\",\n    \"Email\":\"gvyas@abc.com\",\n    \"Username\": \"agent_greeshma\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:4000/irs/org/agent",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"irs",
+						"org",
+						"agent"
 					]
 				}
 			},
