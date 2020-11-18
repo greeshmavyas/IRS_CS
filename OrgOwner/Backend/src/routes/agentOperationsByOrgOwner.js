@@ -26,7 +26,7 @@ router.route("/addAgent").post(function (req, res) {
       } else {
         //Add Agent
         var agent = {
-          OrgId: req.body.OrgOwnerId,
+          OrgID: req.body.OrgId,
           Categories: req.body.Categories,
           FirstName: req.body.FirstName,
           LastName: req.body.LastName,
@@ -65,10 +65,10 @@ router.route("/addAgent").post(function (req, res) {
     }
   });
 });
-// Retreive all agents
-router.route("/agents").get(function (req, res) {
+// Retreive all agents by orgID
+router.route("/agents/:OrgID").get(function (req, res) {
   console.log("End Point to fetch all the cases");
-  Agent.find(function (err, agents) {
+  Agent.find({ OrgID: req.params.OrgID }, function (err, agents) {
     if (err) {
       console.log(err);
       res
