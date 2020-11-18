@@ -7,6 +7,7 @@ import OrgOwnerReg from './components/OrgOwnerReg';
 import OrgOwnerLogin from './components/OrgOwnerLogin';
 import Organization from './components/Organization';
 import OrgRegistration from './components/OrgRegistration';
+import AgentsList from './components/AgentsList'
 
  class Main extends Component {
     render() {
@@ -19,6 +20,7 @@ import OrgRegistration from './components/OrgRegistration';
             <Route exact path="/Organization" component={Organization}/>
             <Route exact path="/updateProfile" component={updateProfile} />
             <Route exact path="/OrgRegistration" component = {OrgRegistration}/>
+            <Route exact path = "/Agents" component = {AgentsList}/>
           </div>
         );
     }

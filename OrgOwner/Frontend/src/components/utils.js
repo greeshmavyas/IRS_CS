@@ -15,3 +15,13 @@ export const getOrgOwnerId = function(){
     //TODO: change this code
     return orgOwnerId || "2"
 }
+
+export const getOrgOwnerToken = function(){
+    const orgOwnerToken = localStorage.getItem("token");
+    return orgOwnerToken || "";
+}
+
+export const getOrganizationID = function(){
+    const orgId = localStorage.getItem("orgId");
+    return orgId || "";
+}

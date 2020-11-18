@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import Form from 'react-bootstrap/Form'
-import {Button, Card} from 'react-bootstrap'
+import {Button, Card, Row, Col} from 'react-bootstrap'
 import axios from 'axios';
 import config from '../config/settings'
 import NavbarDash from "./NavbarDash";
 import Sidebar from './Sidebar'
-import {getOrgOwnerId} from './utils';
+import {getOrgOwnerToken} from './utils';
 import { Redirect } from 'react-router';
 
 class OrgRegistration extends Component{
@@ -16,7 +16,9 @@ class OrgRegistration extends Component{
           orgName: "",
           domain: "",
           caseCategories:"",
-          registered:false
+          registered:false,
+          currCategoryVal:"",
+          newCategories: []
         }
     }
 
@@ -34,9 +36,9 @@ class OrgRegistration extends Component{
 
         const data = {
           //TODO: put orgownerId
-          OrgOwnerId : getOrgOwnerId(),
+          token : getOrgOwnerToken(),
           OrgName: this.state.orgName,
-          Categories: categoryStr.split(","),
+          Categories: this.state.newCategories,
           Domain: this.state.domain
         }
         console.log("data is..")
@@ -58,7 +60,8 @@ class OrgRegistration extends Component{
               this.setState({
                 registered: true
               })
-              alert(response.responseMessage)
+              localStorage.setItem("orgId", response.data.org._id)
+              alert(response.data.responseMessage)
             } else {
              alert("Cannot register the organization")
             }
@@ -69,6 +72,49 @@ class OrgRegistration extends Component{
             })
           })
       }
+
+    removeCategory = (catName) =>{
+        console.log("cat to be removed.."+catName)
+        let newCategories = this.state.newCategories;
+        let idx = newCategories.indexOf(catName);
+        if(idx !== -1){
+            newCategories.splice(idx, 1);
+            this.setState({
+                currCategoryVal: "",
+                newCategories: newCategories
+            })
+        }
+    }
+
+    categoryChangeHandler = (evt)=>{
+        this.setState({
+            currCategoryVal: evt.target.value
+        })
+    }
+
+    updateCategoryInState =()=>{
+        console.log(this.state.newCategories)
+        this.setState({
+            newCategories: [...this.state.newCategories, this.state.currCategoryVal],
+            currCategoryVal: ""
+        })
+    }
+    
+    renderCloseBtn =(name) =>{
+      return (
+          <button className="close" onClick={() => this.removeCategory(name)}>
+            &times;
+           </button>
+      )
+    }
+
+    renderNewCategories=()=>{
+      let newCategories = this.state.newCategories
+      newCategories = newCategories.map((cat,id)=>{
+      return <div key={id} className="categoryCard"><span>{cat}</span> &nbsp; {this.renderCloseBtn(cat)}</div>
+      })
+      return <div className="flex">{newCategories}</div>
+    }
 
     render(){
       if(this.state.registered){
@@ -84,7 +130,7 @@ class OrgRegistration extends Component{
                       </div>
           
           <center>
-          <Card style={{ width: '25rem' }}>
+          <div style={{ width: '25rem' }}>
             <div className="container">
               <div className="row">
                 <div className="col-md-10 m-auto">
@@ -93,31 +139,37 @@ class OrgRegistration extends Component{
                   <br></br>
                   <Form className="input">
                     <Form.Row>
-                      <Form.Label>Organization Name</Form.Label>
+                      
                       <Form.Control name="orgName" placeholder="Organization Name" onChange={this.onChangeHandler} />
                       </Form.Row>
-
+                      <br/>
                       <Form.Row>
-                      <Form.Label>Domain</Form.Label>
+                      
                       <Form.Control name="domain" placeholder="Domain" onChange={this.onChangeHandler} />
                       </Form.Row>
-                      
+                      <br/>
+
                       <Form.Row>
-                      <Form.Label>Case Categories</Form.Label>
-                      <Form.Control name="caseCategories" placeholder="Categories" onChange={this.onChangeHandler} />
+                      <Col>
+                      <Form.Control placeholder="Add Category" name="categoryVal" onChange={this.categoryChangeHandler} value={this.state.currCategoryVal}/>
+                      </Col>
+                      <Col><Button className="btn btn-info" onClick={this.updateCategoryInState}>Add</Button></Col>    
                       </Form.Row>
-
-                      <br></br>
-                      <Button className="btn btn-info btn-block mt-4" onClick={this.submitRegistration} >Register</Button>
-                    
-                    <br></br>
-                    <br></br>
-
+                   
                   </Form>
+                  <br></br>
+                  <Form.Row>
+                    <Col>{this.renderNewCategories()}</Col>
+                  </Form.Row>
+                  <br/>
+                  <br></br>
+                  <Button className="btn btn-info btn-block mt-4" onClick={this.submitRegistration} >Register</Button>
+
+                  
                 </div>
               </div>
             </div>
-          </Card>
+          </div>
         </center>
         </div>
       )

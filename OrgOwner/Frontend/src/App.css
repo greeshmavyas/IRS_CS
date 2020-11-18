@@ -46,3 +46,15 @@
 #casescard {
   margin-bottom: 20px;
 }
+
+.flex{
+  display:flex
+}
+
+.categoryCard{
+  border: 1px solid rgba(0,0,0,.125);
+  background-color: #ced4dac2;
+  border-radius: 0.25rem;
+  padding:5px;
+  margin-right:20px;
+}
