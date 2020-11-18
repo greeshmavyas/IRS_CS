@@ -8,6 +8,9 @@ let Case = new Schema({
   UserId: {
     type: String,
   },
+  OrgId: {
+    type: String,
+  },
   Category: {
     type: String,
   },

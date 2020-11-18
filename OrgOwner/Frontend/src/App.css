@@ -6,6 +6,12 @@
   height: 40vmin;
   pointer-events: none;
 }
+.Dashboard {
+  text-align: center;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
 
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
@@ -37,6 +43,6 @@
   }
 }
 
-#casescard{
+#casescard {
   margin-bottom: 20px;
 }

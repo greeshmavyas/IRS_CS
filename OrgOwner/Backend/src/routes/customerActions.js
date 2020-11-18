@@ -158,7 +158,10 @@ router.route("/casesByCategory/:Category").get(function (req, res) {
 router.route("/casesByStatus/:Status").get(function (req, res) {
   console.log("In retrieve cases by status");
   let status = req.params.Status;
-  Case.find({ Status: status }, function (err, cases) {
+  let orgID = req.params.Case.find({ Status: status, OrgID: orgID }, function (
+    err,
+    cases
+  ) {
     if (err) {
       console.log(err);
       res.status(400).json({ responseMessage: "Unable to find case info" });
@@ -167,6 +170,25 @@ router.route("/casesByStatus/:Status").get(function (req, res) {
       res.status(200).json({
         responseMessage: "All cases by given status",
         status,
+        cases,
+      });
+    }
+  });
+});
+
+//Retrieve cases by orgID for dashboard
+router.route("/casesForDashboardByOrgID/:OrgID").get(function (req, res) {
+  console.log("In retrieve cases by orgID");
+
+  let orgID = req.params.OrgID;
+  Case.find({ organisationID: orgID }, function (err, cases) {
+    if (err) {
+      console.log(err);
+      res.status(400).json({ responseMessage: "Unable to find case info" });
+    } else {
+      console.log(cases);
+      res.status(200).json({
+        responseMessage: "All cases by given status",
         cases,
       });
     }
