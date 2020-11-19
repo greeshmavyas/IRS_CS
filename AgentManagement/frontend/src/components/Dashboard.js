@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import axios from "axios";
 import NavbarDash from "./NavbarDash";
-import { Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import Sidebar from './Sidebar'
 import config from '../config/settings'
 import Table from 'react-bootstrap/Table'
 import Pagination from 'react-bootstrap/Pagination'
-import PageItem from 'react-bootstrap/PageItem'
-import { stat } from 'fs';
+import {getAgentId, getOrganisationId} from './utils'
+import AgentCaseDisplay from './AgentCaseDisplay'
 
 class Dashboard extends Component {
   constructor() {
@@ -79,8 +78,11 @@ class Dashboard extends Component {
   async componentDidMount() {
     console.log("in get all cases frontend")
 
-    let agentID = localStorage.getItem("agentID");
-    let organisationID = localStorage.getItem("organisationID")
+   
+    axios.defaults.withCredentials = true;
+     let agentID = getAgentId();
+  
+    let organisationID = getOrganisationId()
     let count = 0
     axios.defaults.withCredentials = true;
     if (agentID) {
@@ -124,17 +126,17 @@ class Dashboard extends Component {
               console.log(this.state.selectOptions)
 
             } else {
-              this.setState({ allCases: {} });
+              this.setState({ allCases: [] });
             }
           }
           else {
-            this.setState({ allCases: {} });
+            this.setState({ allCases: [] });
           }
 
         })
         .catch(error => {
           console.log(error);
-          this.setState({ allCases: {} })
+          this.setState({ allCases: [] })
         })
 
 
@@ -148,12 +150,6 @@ class Dashboard extends Component {
   render() {
     console.log("status");
     console.log(this.state.status);
-    const closeBtn = (
-      <button className="close" onClick={() => this.showModal()}>
-        &times;
-       </button>
-    );
-
     var casedetails;
     let searchResults;
     let status = this.state.status; 
@@ -250,34 +246,10 @@ class Dashboard extends Component {
                 {casedetails}
                 {paginationBasic}
                 {this.state.viewcase != null ? (
-                  <Modal
-                    isOpen={this.state.modal}
-                    toggle={() => this.showModal()}
-                    className="modal-popup-lg"
-                    scrollable
-                  >
-                    <ModalHeader
-                      toggle={() => this.showModal()}
-                      close={closeBtn}
-                    >
-                      Case Details
-                   </ModalHeader>
-                    <ModalBody className="modal-body">
-                      <div className=" row form-group">
-                        <p className="font-weight col-7">
-                          Information : {this.state.viewcase.Information}
-                        </p>
-                      </div>
-                      <div className="form-group">
-                        <p className="font-weight-bold">
-                          Resolution Comments : {this.state.viewcase.ResolutionComments}
-                        </p>
-                      </div>
-                    </ModalBody>
-                    <ModalFooter>
-                    </ModalFooter>
-                  </Modal>
-                ) : null}
+                  <div>
+                  <AgentCaseDisplay caseId = {this.state.viewcase.CaseID}
+                  showModal = {this.showModal} modal = {this.state.modal} caseDetails={this.state.viewcase}/>
+                 </div> ) : null}
               </div>
             ) : (
                 <div>

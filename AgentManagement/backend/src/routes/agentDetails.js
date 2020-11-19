@@ -9,6 +9,9 @@ var cases = require('../models/cases');
 router = express.Router();
 var exports = module.exports = {};
 
+let CaseHistory = require("./../models/CaseHistory");
+
+
 //Agent login route
 router.post('/agentLogin', function (req, res) {
     console.log("Inside agent login post request");
@@ -32,7 +35,8 @@ router.post('/agentLogin', function (req, res) {
                     info: {
                         firstname: user.firstName,
                         organisationID: user.organisationID,
-                        agentID: user.agentID
+                        agentID: user.agentID,
+                        emailId: user.emailId
                     }
                 });
             } else {
@@ -111,6 +115,19 @@ router.post('/updateProfile', function (req, res) {
         })
 })
 
+router.route("/history/:userID/:caseID").get(function (req, res) {
+    console.log("End Point to retreive the history of a case");
+    let userID = req.params.userID;
+    let caseID = req.params.caseID;
 
+      CaseHistory.find({ UserID: userID, CaseID: caseID }, function (err, resCase) {
+        if (err ||!resCase) {
+          console.log(err);
+        } else {
+          res.json(resCase);
+        }
+      });
+      
+  });
 
 module.exports = router;

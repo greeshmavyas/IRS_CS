@@ -9,6 +9,8 @@ import config from '../config/settings'
 import { Row, Col } from 'react-foundation';
 import Table from 'react-bootstrap/Table'
 
+import {getAgentId, getOrganisationId} from './utils'
+
 
 
 
@@ -20,13 +22,26 @@ export default class Settings extends Component {
       phoneNumber: '',
       password: '',
       updateDone: false,
+      readOnly:''
     }
     this.updateProfile = this.updateProfile.bind(this);
-  }
 
+    this.passwordChangeHandler = this.passwordChangeHandler.bind(this)
+    this.phoneNumberChangeHandler = this.phoneNumberChangeHandler.bind(this)
+  }
+  passwordChangeHandler = (e) => {
+    this.setState({
+        password: e.target.value
+    })
+}
+phoneNumberChangeHandler = (e) => {
+    this.setState({
+        phoneNumber: e.target.value
+    })
+}
   componentWillMount() {
-    var agentID = localStorage.getItem("agentID");
-    var organisationID = localStorage.getItem("organisationID")
+    let agentID = getAgentId();
+    let organisationID = getOrganisationId()
     console.log("agentID  " + agentID)
     let data = {
       agentID: agentID,
@@ -59,8 +74,8 @@ export default class Settings extends Component {
 
   updateProfile = async (event) => {
     event.preventDefault();
-    var agentID = localStorage.getItem("agentID");
-    var organisationID = localStorage.getItem("organisationID")
+    var agentID = getAgentId();
+    var organisationID = getOrganisationId()
     console.log("agentID  " + agentID)
     let data = {
       agentID: agentID,
@@ -113,7 +128,7 @@ this.setState({
                 <Form.Label >  Phone Number</Form.Label>
                 </td>
                 <td>
-                <Form.Control type="text" name="phoneNumber" defaultValue={this.state.phoneNumber} required readOnly={this.state.readonly} />
+                <Form.Control type="text" name="phoneNumber" onChange={this.phoneNumberChangeHandler} defaultValue={this.state.phoneNumber} type="text" />
                 </td>
 
               </tr>
@@ -123,7 +138,7 @@ this.setState({
 
                 </td>
                 <td>
-                <Form.Control type="password" name="password" defaultValue={this.state.password} required readOnly={this.state.readonly} />
+                <Form.Control type="password" name="password" onChange={this.passwordChangeHandler} defaultValue={this.state.password} />
 
                 </td>
 
