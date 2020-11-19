@@ -190,25 +190,18 @@ class Dashboard extends Component {
     if (this.state.flag) {
       casedetails = searchResults.map((ticket) => {
           return (
-            <div>
-              <div onClick={() => this.showModal1(ticket)} >
-                <Table>
-                  <tbody >
-                    <tr >
-                      <td style={{ width: '10rem' }}>{ticket.CaseID}</td>
-                      <td style={{ width: '15rem' }}>{ticket.Status}</td>
-                      <td style={{ width: '50rem' }}>{ticket.Information} </td>
-                    </tr>
-                  </tbody>
-                </Table>
-              </div>
-            </div>
+            <tr onClick={() => this.showModal1(ticket)}>
+                  <td>{ticket.CaseID}</td>
+                  <td>{ticket.Date}</td>
+                  <td>{ticket.Status}</td>
+                  <td>{ticket.Information} </td>
+                </tr>
           );
       });
     }
 
     return (
-      <div>
+      <div style ={ {height: '100rem'}} >
         <NavbarDash />
         <div className="row">
           <div className="col-2">
@@ -232,32 +225,48 @@ class Dashboard extends Component {
                 <option value="Resolved">Resolved</option>
               </select>
             </div>
-
-            <Table>
+              <br></br>
+              
+            <Table striped bordered hover>
               <tr>
                 <th style={{ width: '10rem' }}>ID</th>
+                <th style={{ width: '10rem' }}>Date</th>
                 <th style={{ width: '15rem' }}>Status</th>
                 <th style={{ width: '50rem' }}>Details</th>
               </tr>
+              <tbody>
+              {casedetails}
+              </tbody>
             </Table>
 
             {this.state.allCases.length > 0 ? (
               <div className="col-10">
-                {casedetails}
-                {paginationBasic}
+              
                 {this.state.viewcase != null ? (
                   <div>
                   <AgentCaseDisplay caseId = {this.state.viewcase.CaseID}
                   showModal = {this.showModal} modal = {this.state.modal} caseDetails={this.state.viewcase}/>
                  </div> ) : null}
-              </div>
+                 
+               <div className = "fixed-bottom" style = { {  height: '15%',  display: "flex",justifyContent: "center",alignItems: "center"}}>
+                 {paginationBasic}
+                </div>
+                
+                 
+                
+                </div>
             ) : (
                 <div>
                   <h4 style={{ margin: "3em" }}>No new cases to display!</h4>
                 </div>
               )}
+              
+              
           </div>
+        
+              
         </div>
+           
       </div>
     );
   }

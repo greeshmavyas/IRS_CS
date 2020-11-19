@@ -10,7 +10,7 @@ let Case = require("../models/CaseModel");
 
 router.route('/addMessage').post(function(req, res) {
     console.log("End Point to add message");
-    let {message, caseId, userType, userId, userName} = req.body;
+    let {message, caseId, userType, userId, userName, caseStatus} = req.body;
     
     //console.log(caseId);
     //console.log(message);
@@ -19,7 +19,7 @@ router.route('/addMessage').post(function(req, res) {
         res.status(200).json({ status: false, message: "message cannot be added!" });
     } else {
         //add message
-        Case.updateOne({"CaseID": caseId}, {$push:{'Messages': { UserType: userType, Message: message, UserID: userId,TimeStamp:genericApis.getTodayDate(), UserName: userName } } }, (err, result)=>{
+        Case.updateOne({"CaseID": caseId}, {$push:{'Messages': { UserType: userType, Message: message, UserID: userId,TimeStamp:genericApis.getTodayDate(), UserName: userName, Status: caseStatus } } }, (err, result)=>{
             if (err) {
                 console.log("unable to insert into database", err);
                 res.status(500).send('Can not add message');

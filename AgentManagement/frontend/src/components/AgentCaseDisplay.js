@@ -25,17 +25,16 @@ class AgentCaseDisplay extends Component{
        
         this.state={
             caseDetails: props.caseDetails,
-            subscribed: false,
             history:"",
             caseId:"",
-            isLoaded: false
+            isLoaded: false,
+            status: '',
         }
     }
   
     handleClose = () => this.setState({show:false});
     handleShow = () => this.setState({show:true});
     componentDidMount(){
-        this.updateSubscribed(this.props.caseDetails)
         this.getHistory(this.props.caseDetails)
      
     }
@@ -46,24 +45,17 @@ class AgentCaseDisplay extends Component{
           caseId: this.props.caseId,
           isLoaded: false
         })
-        this.updateSubscribed(this.props.caseDetails)
         this.getHistory(this.props.caseDetails)
       }
     }
 
-    updateSubscribed = (caseDetails) =>{
-      const emailId = getEmailId();
-      if(caseDetails && caseDetails.Subscribers){
-        let subscribers = caseDetails.Subscribers;
-        if(subscribers.indexOf(emailId) !== -1){
-          this.setState({
-            subscribed: true
-          })
-        }
-      }
-    }
-    
+    handleChange = (e) => {
+      let status = e.target.value;
 
+      this.setState({
+        status: status
+      });
+    }
     getHistory = async (caseDetails)=>{
       if(caseDetails && caseDetails.CaseID && caseDetails.UserID){
         await axios(config.rooturl + "/history/" + caseDetails.UserID +"/"+caseDetails.CaseID  , {
@@ -78,55 +70,7 @@ class AgentCaseDisplay extends Component{
       }
     }
 
-    getSubscribeMessage = ()=>{
-      return this.state.subscribed ? "Unsubscribe": "Subscribe"
-    }
-    subscribeOrUnsubscribe = ()=>{
-      let url = config.rooturl+"/subscribe"
-      let subscribeStatus = this.state.subscribed
-      if(subscribeStatus){
-        url = config.rooturl+"/unsubscribe"
-      }
-      console.log("url is:"+url)
-
-      let data = {
-        emailId: getEmailId(),
-        caseId: this.state.caseDetails.CaseID
-      }
-      axios({
-        method: 'post',
-        url,
-        data,
-        config: { headers: { 'Content-Type': 'application/json' } },
-    })
-        .then((response) => {
-            if (response.status >= 500) {
-                throw new Error("Bad response from server");
-            }
-            return response.data;
-        })
-        .then((responseData) => {
-            if(responseData.status){
-                
-                this.setState({
-                  subscribed: !this.state.subscribed
-                })
-                swal(responseData.message)
-                console.log(responseData.message);
-            } else {
-                swal(responseData.message)
-                console.log("subscribe or unsubscribe cannot be done")
-            }
-            
-        }).catch(function (err) {
-            console.log(err)
-        });
-
-    }
-
     render(){
-      //console.log("in casedisplay render method..state is..")
-      //console.log(this.state)
        let {caseDetails, isLoaded} = this.state;
        const closeBtn = (
         <button className="close" onClick={() => this.props.showModal()}>
@@ -148,7 +92,6 @@ class AgentCaseDisplay extends Component{
                     >
                     <div className="flex">
                     <span>Case ID: {caseDetails.CaseID}</span>
-                    <span><Nav.Link  className="subscribeLink" onClick={this.subscribeOrUnsubscribe}>{this.getSubscribeMessage()}</Nav.Link></span>
                     </div>
                 </ModalHeader>
                 <ModalBody>
@@ -166,7 +109,13 @@ class AgentCaseDisplay extends Component{
                             <Col><b>Category:</b></Col> 
                         </Row>
                         <Row>
-                            <Col>{caseDetails.Status}</Col>
+                            <Col>
+                              <select id="Status" value={caseDetails.Status} onChange={this.handleChange}>
+                                <option value="Assigned">Assigned</option>
+                                <option value="InProgress">In Progress</option>
+                                <option value="Resolved">Resolved</option>
+                              </select>
+                            </Col>
                             <Col>{caseDetails.Category}</Col>
                         </Row>
                     </Container>

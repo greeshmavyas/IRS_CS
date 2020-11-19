@@ -12,6 +12,7 @@ import {
     Card
   } from "react-bootstrap";
   import "../css/agent.css"
+import { getAgentId } from "./utils";
   const {getUserType, getUserId, getUserName}  = require('./utils.js');
   const config = require("../config/settings.js");
 /*
@@ -38,6 +39,7 @@ Format:
           }
           this.state={
               messages:getVal(props.messages),
+              status:props.status,
               caseId: props.caseId
           }
       }
@@ -99,8 +101,9 @@ Format:
       submitHandler = () =>{
           let userType = getUserType();
           let {caseId} = this.state;
-          let userId = getUserId();
+          let userId = getAgentId();
           let userName = getUserName();
+          let caseStatus = this.state.status;
 
           //axios.defaults.withCredentials = true;
           let url = config.rooturl+'/addMessage/';
@@ -110,7 +113,8 @@ Format:
               userId,
               caseId,
               userType,
-              userName
+              userName,
+              caseStatus
           }
           axios({
             method: 'post',
