@@ -8,9 +8,8 @@ import axios from 'axios';
 import config from '../config/settings'
 import { Row, Col } from 'react-foundation';
 import Table from 'react-bootstrap/Table'
-
+import {Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import {getAgentId, getOrganisationId} from './utils'
-
 
 
 
@@ -22,72 +21,51 @@ export default class Settings extends Component {
       phoneNumber: '',
       password: '',
       updateDone: false,
-      readOnly:''
+      readOnly:'',
+      currentPassword:'',
+      newPassword:''
     }
     this.updateProfile = this.updateProfile.bind(this);
-
-    this.passwordChangeHandler = this.passwordChangeHandler.bind(this)
     this.phoneNumberChangeHandler = this.phoneNumberChangeHandler.bind(this)
+
+    this.newPasswordChangeHandler = this.newPasswordChangeHandler.bind(this)
+    this.currentPasswordChangeHandler = this.currentPasswordChangeHandler.bind(this)
+
   }
-  passwordChangeHandler = (e) => {
+  newPasswordChangeHandler = (e) => {
     this.setState({
-        password: e.target.value
+        newPassword: e.target.value
     })
 }
+  currentPasswordChangeHandler= (e) => {
+    this.setState({
+        currentPassword: e.target.value
+    })
+}
+
 phoneNumberChangeHandler = (e) => {
     this.setState({
         phoneNumber: e.target.value
     })
 }
-  componentWillMount() {
-    let agentID = getAgentId();
-    let organisationID = getOrganisationId()
-    console.log("agentID  " + agentID)
-    let data = {
-      agentID: agentID,
-      organisationID: organisationID
-    };
-      axios({
-        method: 'get',
-        url: 'http://' + config.hostname + ':' + config.backendPort + '/getProfile',
-        params: data,
-      })
-        .then((response) => {
-          if (response.status === 200) {
-            let agentDetails = response.data.agent;
-            console.log("agentDetails")
-            console.log(agentDetails)
-              this.setState({
-                password: agentDetails.password,
-                phoneNumber: agentDetails.phoneNumber
-              });
+changePassword = () => {
+    let currentPassword = this.state.currentPassword
+    let password = this.state.password
 
-          } else {
-            console.log("unable to get agent details")
-          }
-        }).catch(function (err) {
-          console.log(err)
-        });
-  
-   
-  }
-
-  updateProfile = async (event) => {
-    event.preventDefault();
-    var agentID = getAgentId();
-    var organisationID = getOrganisationId()
-    console.log("agentID  " + agentID)
+    if(password == currentPassword){
+       var agentID = getAgentId();
+       var organisationID = getOrganisationId()
+    console.log("agentID in update password  " + agentID)
     let data = {
       agentID: agentID,
       organisationID: organisationID,
       phoneNumber: this.state.phoneNumber,
-      password: this.state.password
+      password: this.state.newPassword
     };
     console.log(data)
-    axios({
+    axios('http://' + config.hostname + ':' + config.backendPort + '/updateProfile',{
       method: 'post',
-      url: 'http://' + config.hostname + ':' + config.backendPort + '/updateProfile',
-      params: data
+      data: data
   }).then((response) => {
     if (response.status == 500) {
         throw new Error("Bad response from server");
@@ -105,12 +83,95 @@ phoneNumberChangeHandler = (e) => {
 this.setState({
     updateDone: true,
 })
-
     
+        
+    }else{
+        this.setState({
+            message: "Incorrect password"
+        })
+        alert("Incorrect password")
+    }
+
+    this.showModal()
+}
+showModal = () => {
+    this.setState({
+      modal: !this.state.modal,
+    });
+  }; 
+
+  componentDidMount() {
+    let agentID = getAgentId();
+    let organisationID = getOrganisationId()
+    console.log("agentID  " + agentID)
+    let data = {
+      agentID: agentID,
+      organisationID: organisationID
+    };
+      axios({
+        method: 'put',
+        url: 'http://' + config.hostname + ':' + config.backendPort + '/getProfile',
+        data: data,
+      })
+        .then((response) => {
+          if (response.status === 200) {
+            let agentDetails = response.data.agent;
+            console.log("agentDetails")
+            console.log(agentDetails)
+              this.setState({
+                password: agentDetails.password,
+                phoneNumber: agentDetails.phoneNumber
+              });
+
+          } else {
+            console.log("unable to get agent details")
+          }
+        }).catch(function (err) {
+          console.log(err)
+        });
+  }
+
+  updateProfile = async (event) => {
+    event.preventDefault();
+    var agentID = getAgentId();
+    var organisationID = getOrganisationId()
+    console.log("agentID  " + agentID)
+    let data = {
+      agentID: agentID,
+      organisationID: organisationID,
+      phoneNumber: this.state.phoneNumber,
+      password: this.state.password
+    };
+    console.log(data)
+    axios({
+      method: 'post',
+      url: 'http://' + config.hostname + ':' + config.backendPort + '/updateProfile',
+      data: data
+  }).then((response) => {
+    if (response.status == 500) {
+        throw new Error("Bad response from server");
+    }else{
+      console.log(response);
+      this.setState({
+        message: "Profile Updated"
+      })
+    }
+})
+.catch(function (err) {
+    console.log(err)
+});
+this.setState({
+    updateDone: true,
+})
   }
   render() {
       console.log("after");
       console.log(this.state);
+      const closeBtn = (
+        <button className="close" onClick={() => this.showModal()}>
+          &times;
+        </button>
+      );
     return (
       <div>
         <Sidebar />
@@ -128,7 +189,7 @@ this.setState({
                 <Form.Label >  Phone Number</Form.Label>
                 </td>
                 <td>
-                <Form.Control type="text" name="phoneNumber" onChange={this.phoneNumberChangeHandler} defaultValue={this.state.phoneNumber} type="text" />
+                <Form.Control type="text" name="phoneNumber" onChange={this.phoneNumberChangeHandler} defaultValue={this.state.phoneNumber} />
                 </td>
 
               </tr>
@@ -138,17 +199,11 @@ this.setState({
 
                 </td>
                 <td>
-                <Form.Control type="password" name="password" onChange={this.passwordChangeHandler} defaultValue={this.state.password} />
-
+                <Form.Control type="password" name="password" onClick={() => this.showModal()} defaultValue={this.state.password} />
                 </td>
-
               </tr>
             </tbody>
           </Table>
-                   
-
-                   
-                 
                     <Button className="btn btn-info btn-block mt-4" type="submit">
                         Update Profile
                      </Button>
@@ -158,6 +213,49 @@ this.setState({
                 <p>{this.state.message}</p>
                 </div>
                 </center>
+
+                <Modal
+          isOpen={this.state.modal}
+          toggle={() => this.showModal()}
+          className="modal-popup"
+          scrollable
+        >
+          <ModalHeader toggle={() => this.showModal()} close={closeBtn}>
+            Change Password
+          </ModalHeader>
+          <ModalBody className="modal-body">
+          <Form onSubmit={() => this.changePassword()}>
+          <Table>
+            <tbody>
+              <tr>
+                <td>
+                <Form.Label >Current Password</Form.Label>
+                </td>
+                <td>
+                <Form.Control type="password" onChange={this.currentPasswordChangeHandler}/>
+                </td>
+
+              </tr>
+              <tr>
+                <td>
+                <Form.Label>New Password</Form.Label>
+                </td>
+                <td>
+                <Form.Control type="password" onChange={this.newPasswordChangeHandler} />
+                </td>
+              </tr>
+            </tbody>
+          </Table>
+          <center>
+                    <Button className = 'btn btn-info'  type="submit">
+                        Update Password
+                     </Button>
+                     </center>
+                </Form>
+
+          </ModalBody>
+       
+        </Modal>
       </div>
     )
   }

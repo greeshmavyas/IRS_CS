@@ -68,12 +68,12 @@ router.get("/getCases", async function (req, res) {
     })
 })
 //get agent details
-router.get("/getProfile", async function (req, res) {
+router.put("/getProfile", async function (req, res) {
     console.log("In get profile");
     console.log("Request query:");
-    console.log(req.query);
+    console.log(req.body);
 
-    let { agentID, organisationID } = req.query;
+    let { agentID, organisationID } = req.body;
 
     agentDetails.find({ $and: [{ "agentID": agentID }, { "organisationID": organisationID }] }).then(agent => {
         console.log(agent)
@@ -93,9 +93,9 @@ router.get("/getProfile", async function (req, res) {
 router.post('/updateProfile', function (req, res) {
     console.log("Inside agent updateProfile post request");
     console.log("Request query:");
-    console.log(req.query);
+    console.log(req.body);
 
-    let { phoneNumber, password, agentID, organisationID } = req.query;
+    let { phoneNumber, password, agentID, organisationID } = req.body;
    
     console.log(phoneNumber)
     console.log(password)
