@@ -27,7 +27,7 @@ class NavbarDash extends Component {
             <ul className="navbar-nav ml-auto">
               <li className="nav-item">
                 <p className="nav-link" >
-                  Hi, {localStorage.getItem("firstname")}
+                  Hi, {localStorage.getItem("userName")}
                 </p>
               </li>
               <li className="nav-item">

@@ -11,7 +11,8 @@ const StyledSideNav = styled.div`
     background-color: #343a40; /* Black */
     overflow-x: hidden;     /* Disable horizontal scroll */
     padding-top: 40px;
-    font-style: oblique;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    
 `;
 
 class SideNav extends React.Component {

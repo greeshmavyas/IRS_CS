@@ -5,7 +5,7 @@ const cors = require("cors");
 const port = process.env.PORT || 3001;
 
 const agentDetails = require('./src/routes/agentDetails')
-
+const caseDetails = require('./src/routes/notificationsAndMessages')
 const mongoose = require("mongoose");
 var config = require('./config/settings');
 var connStr = config.mongoDB_connection_string;
@@ -53,7 +53,7 @@ mongoose.connect(connStr, options, (err, res) => {
 });
 
 app.use('/', agentDetails);
-
+app.use('/', caseDetails);
 
 
 app.listen(port, () => console.log(`Prototype running on port ${port}`));

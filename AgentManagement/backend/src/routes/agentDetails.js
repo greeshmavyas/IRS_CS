@@ -9,6 +9,9 @@ var cases = require('../models/cases');
 router = express.Router();
 var exports = module.exports = {};
 
+let CaseHistory = require("./../models/CaseHistory");
+
+
 //Agent login route
 router.post('/agentLogin', function (req, res) {
     console.log("Inside agent login post request");
@@ -32,7 +35,8 @@ router.post('/agentLogin', function (req, res) {
                     info: {
                         firstname: user.firstName,
                         organisationID: user.organisationID,
-                        agentID: user.agentID
+                        agentID: user.agentID,
+                        emailId: user.emailId
                     }
                 });
             } else {
@@ -64,12 +68,12 @@ router.get("/getCases", async function (req, res) {
     })
 })
 //get agent details
-router.get("/getProfile", async function (req, res) {
+router.put("/getProfile", async function (req, res) {
     console.log("In get profile");
     console.log("Request query:");
-    console.log(req.query);
+    console.log(req.body);
 
-    let { agentID, organisationID } = req.query;
+    let { agentID, organisationID } = req.body;
 
     agentDetails.find({ $and: [{ "agentID": agentID }, { "organisationID": organisationID }] }).then(agent => {
         console.log(agent)
@@ -89,9 +93,9 @@ router.get("/getProfile", async function (req, res) {
 router.post('/updateProfile', function (req, res) {
     console.log("Inside agent updateProfile post request");
     console.log("Request query:");
-    console.log(req.query);
+    console.log(req.body);
 
-    let { phoneNumber, password, agentID, organisationID } = req.query;
+    let { phoneNumber, password, agentID, organisationID } = req.body;
    
     console.log(phoneNumber)
     console.log(password)
@@ -111,6 +115,19 @@ router.post('/updateProfile', function (req, res) {
         })
 })
 
+router.route("/history/:userID/:caseID").get(function (req, res) {
+    console.log("End Point to retreive the history of a case");
+    let userID = req.params.userID;
+    let caseID = req.params.caseID;
 
+      CaseHistory.find({ UserID: userID, CaseID: caseID }, function (err, resCase) {
+        if (err ||!resCase) {
+          console.log(err);
+        } else {
+          res.json(resCase);
+        }
+      });
+      
+  });
 
 module.exports = router;

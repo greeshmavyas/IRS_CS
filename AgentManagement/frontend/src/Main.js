@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Route } from 'react-router-dom';
 import login from './components/login';
 import Dashboard from './components/Dashboard';
-import updateProfile from './components/updateProfile';
+import updateProfile from './components/profile';
 
  class Main extends Component {
     render() {

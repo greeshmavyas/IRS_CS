@@ -56,17 +56,20 @@ class login extends Component {
     })
       .then(response => {
         console.log("Status Code : ", response.status);
-        console.log("Response from Sign Up ")
-        console.log(response);
+        console.log("Response from Sign In ")
+        console.log(response.data.info);
 
         if (response.data.responseMessage === 'Login Successfully') {
           this.setState({
             SignedUpFlag: true
           })
           //localStorage.setItem("token", response.data.token);
-          localStorage.setItem("firstname", response.data.info.firstname);
-          localStorage.setItem("organisationID", response.data.info.organisationID);
-          localStorage.setItem("agentID", response.data.info.agentID);
+          localStorage.setItem("userName", response.data.info.firstname);
+          localStorage.setItem("organisationId", response.data.info.organisationID);
+          localStorage.setItem("agentId", response.data.info.agentID);
+          localStorage.setItem("getEmailId", response.data.info.emailId);
+
+          localStorage.setItem("userType", "Agent");
 
         } else {
           this.setState({

@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import axios from "axios";
 import NavbarDash from "./NavbarDash";
-import { Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import Sidebar from './Sidebar'
 import config from '../config/settings'
 import Table from 'react-bootstrap/Table'
 import Pagination from 'react-bootstrap/Pagination'
-import PageItem from 'react-bootstrap/PageItem'
-import { stat } from 'fs';
+import {getAgentId, getOrganisationId} from './utils'
+import AgentCaseDisplay from './AgentCaseDisplay'
 
 class Dashboard extends Component {
   constructor() {
@@ -79,8 +78,11 @@ class Dashboard extends Component {
   async componentDidMount() {
     console.log("in get all cases frontend")
 
-    let agentID = localStorage.getItem("agentID");
-    let organisationID = localStorage.getItem("organisationID")
+   
+    axios.defaults.withCredentials = true;
+     let agentID = getAgentId();
+  
+    let organisationID = getOrganisationId()
     let count = 0
     axios.defaults.withCredentials = true;
     if (agentID) {
@@ -124,17 +126,17 @@ class Dashboard extends Component {
               console.log(this.state.selectOptions)
 
             } else {
-              this.setState({ allCases: {} });
+              this.setState({ allCases: [] });
             }
           }
           else {
-            this.setState({ allCases: {} });
+            this.setState({ allCases: [] });
           }
 
         })
         .catch(error => {
           console.log(error);
-          this.setState({ allCases: {} })
+          this.setState({ allCases: [] })
         })
 
 
@@ -148,12 +150,6 @@ class Dashboard extends Component {
   render() {
     console.log("status");
     console.log(this.state.status);
-    const closeBtn = (
-      <button className="close" onClick={() => this.showModal()}>
-        &times;
-       </button>
-    );
-
     var casedetails;
     let searchResults;
     let status = this.state.status; 
@@ -194,25 +190,18 @@ class Dashboard extends Component {
     if (this.state.flag) {
       casedetails = searchResults.map((ticket) => {
           return (
-            <div>
-              <div onClick={() => this.showModal1(ticket)} >
-                <Table>
-                  <tbody >
-                    <tr >
-                      <td style={{ width: '10rem' }}>{ticket.CaseID}</td>
-                      <td style={{ width: '15rem' }}>{ticket.Status}</td>
-                      <td style={{ width: '50rem' }}>{ticket.Information} </td>
-                    </tr>
-                  </tbody>
-                </Table>
-              </div>
-            </div>
+            <tr onClick={() => this.showModal1(ticket)}>
+                  <td>{ticket.CaseID}</td>
+                  <td>{ticket.Date}</td>
+                  <td>{ticket.Status}</td>
+                  <td>{ticket.Information} </td>
+                </tr>
           );
       });
     }
 
     return (
-      <div>
+      <div style ={ {height: '100rem'}} >
         <NavbarDash />
         <div className="row">
           <div className="col-2">
@@ -230,62 +219,54 @@ class Dashboard extends Component {
             <div>
               Filter by Status: < nbsp />
               <select id="Status" value={this.state.status} onChange={this.handleChange}>
-                <option value="">All Cases</option>
+                <option value="">All</option>
                 <option value="Assigned">Assigned</option>
                 <option value="InProgress">In Progress</option>
                 <option value="Resolved">Resolved</option>
               </select>
             </div>
-
-            <Table>
+              <br></br>
+              
+            <Table striped bordered hover>
               <tr>
                 <th style={{ width: '10rem' }}>ID</th>
+                <th style={{ width: '10rem' }}>Date</th>
                 <th style={{ width: '15rem' }}>Status</th>
                 <th style={{ width: '50rem' }}>Details</th>
               </tr>
+              <tbody>
+              {casedetails}
+              </tbody>
             </Table>
 
             {this.state.allCases.length > 0 ? (
               <div className="col-10">
-                {casedetails}
-                {paginationBasic}
+              
                 {this.state.viewcase != null ? (
-                  <Modal
-                    isOpen={this.state.modal}
-                    toggle={() => this.showModal()}
-                    className="modal-popup-lg"
-                    scrollable
-                  >
-                    <ModalHeader
-                      toggle={() => this.showModal()}
-                      close={closeBtn}
-                    >
-                      Case Details
-                   </ModalHeader>
-                    <ModalBody className="modal-body">
-                      <div className=" row form-group">
-                        <p className="font-weight col-7">
-                          Information : {this.state.viewcase.Information}
-                        </p>
-                      </div>
-                      <div className="form-group">
-                        <p className="font-weight-bold">
-                          Resolution Comments : {this.state.viewcase.ResolutionComments}
-                        </p>
-                      </div>
-                    </ModalBody>
-                    <ModalFooter>
-                    </ModalFooter>
-                  </Modal>
-                ) : null}
-              </div>
+                  <div>
+                  <AgentCaseDisplay caseId = {this.state.viewcase.CaseID}
+                  showModal = {this.showModal} modal = {this.state.modal} caseDetails={this.state.viewcase}/>
+                 </div> ) : null}
+                 
+               <div className = "fixed-bottom" style = { {  height: '15%',  display: "flex",justifyContent: "center",alignItems: "center"}}>
+                 {paginationBasic}
+                </div>
+                
+                 
+                
+                </div>
             ) : (
                 <div>
                   <h4 style={{ margin: "3em" }}>No new cases to display!</h4>
                 </div>
               )}
+              
+              
           </div>
+        
+              
         </div>
+           
       </div>
     );
   }
