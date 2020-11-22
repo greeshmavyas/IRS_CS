@@ -1,34 +1,32 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-var agentSchema = new Schema({
-  organisationID: {
+
+let Agent = new Schema({
+  OrgID: {
     type: String,
   },
-  agentID: {
+  FirstName: {
     type: String,
   },
-  category: {
+  LastName: {
     type: String,
   },
-  emailId: {
+  Email: {
     type: String,
   },
-  password: {
+  Username: {
     type: String,
   },
-  firstName: {
+  Password: {
     type: String,
   },
-  lastName: {
-    type: String,
+  Categories: {
+    type: Array,
   },
-  skills: {
-    type: [],
-  },
-  phoneNumber:{
+  PhoneNumber:{
     type: String,
   }
 });
 
-module.exports = agentDetails = mongoose.model('agentDetails', agentSchema);
+module.exports = agentDetails = mongoose.model('agent', Agent);

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import logo from './../css/IRS.png'
 
 class NavbarDash extends Component {
     
@@ -9,7 +10,12 @@ class NavbarDash extends Component {
   render() {
     return (
       <nav className="navbar navbar-expand-sm navbar-dark bg-dark mb-4">
-        <div className="container">
+        
+          <img  src={logo}
+           width="33"
+           height="30"
+           className="d-inline-block align-top"/>
+           
           <a className="navbar-brand" href="/AgentDashboard">
             IRS Dashboard
           </a>
@@ -37,7 +43,7 @@ class NavbarDash extends Component {
               </li>
             </ul>
           </div>
-        </div>
+        
       </nav>
     );
   }

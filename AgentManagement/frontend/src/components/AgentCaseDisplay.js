@@ -15,7 +15,7 @@ import AgentCaseHistory from './AgentCaseHistory';
 import Messages from './Messages';
 import {} from "./utils.js";
 import swal from 'sweetalert'
-import {getEmailId} from './utils';
+import {getEmailId, getAgentId, getOrganisationId} from './utils';
 
 const config = require("../config/settings.js");
 
@@ -28,7 +28,7 @@ class AgentCaseDisplay extends Component{
             history:"",
             caseId:"",
             isLoaded: false,
-            status: '',
+            newStatus: '',
         }
     }
   
@@ -53,9 +53,39 @@ class AgentCaseDisplay extends Component{
       let status = e.target.value;
 
       this.setState({
-        status: status
+        newStatus: status
       });
     }
+
+    updateStatus = async() =>{
+      console.log("In updateStatus in case display")
+      console.log(this.state.newStatus);
+      let {caseDetails} = this.state
+      if(this.state.newStatus !== "" && caseDetails.Status !== this.state.newStatus){
+        console.log("in if block")
+        console.log("In status")
+        console.log(this.state.newStatus)
+        console.log("in old status")
+        console.log(caseDetails.Status);
+        let data = {
+          caseID: caseDetails.CaseID,
+          status: this.state.newStatus
+        }
+        await axios('http://' + config.hostname + ':' + config.backendPort + '/updateStatus',{
+          method: 'post',
+          data: data
+        }).then((response) => {
+        if (response.status == 500) {
+          throw new Error("Bad response from server");
+        }else{
+          console.log(response);
+        }
+      }).catch(function (err) {
+          console.log(err)
+        });
+        caseDetails.Status = this.state.newStatus; 
+    }
+  }
     getHistory = async (caseDetails)=>{
       if(caseDetails && caseDetails.CaseID && caseDetails.UserID){
         await axios(config.rooturl + "/history/" + caseDetails.UserID +"/"+caseDetails.CaseID  , {
@@ -125,7 +155,7 @@ class AgentCaseDisplay extends Component{
 
                     <Tabs defaultActiveKey="messages" id="casetab">
                         <Tab eventKey="messages" title="Comments" tabClassName = "halfWidth">
-                            <Messages messages={caseDetails.Messages} caseId={caseDetails.CaseID}/>
+                            <Messages messages={caseDetails.Messages} caseId={caseDetails.CaseID} updateStatus = {this.updateStatus}/>
                         </Tab>
                         <Tab eventKey="history" title="Case History" tabClassName = "halfWidth">
                             {/*<CaseHistory caseId={caseDetails.CaseID} userId={caseDetails.UserID}/>*/}

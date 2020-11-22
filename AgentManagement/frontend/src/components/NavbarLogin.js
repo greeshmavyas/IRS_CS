@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import Navbar from 'react-bootstrap/Navbar'
+import logo from './../css/IRS.png'
 
 class NavbarLogin extends Component {
     
@@ -8,32 +10,21 @@ class NavbarLogin extends Component {
 
   render() {
     return (
-      <nav className="navbar navbar-expand-sm navbar-dark bg-dark mb-4">
-        <div className="container">
-          <a className="navbar-brand" href="/companyDashboard">
-            IRS 
-          </a>
-          <button
-            className="navbar-toggler"
-            type="button"
-            data-toggle="collapse"
-            data-target="#mobile-nav"
-          >
-            <span className="navbar-toggler-icon"></span>
-          </button>
-
-          <div className="collapse navbar-collapse" id="mobile-nav">
-            
-            <ul className="navbar-nav ml-auto">
-              <li className="nav-item">
-                <a className="nav-link" href="/">
-                  Organisation login
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </nav>
+      <>
+  
+  <Navbar bg="dark" variant="dark">
+    <Navbar.Brand href="#home">
+      <img
+        alt=""
+        src={logo}
+        width="33"
+        height="30"
+        className="d-inline-block align-top"
+      />{' '}
+      IRS
+    </Navbar.Brand>
+  </Navbar>
+</>
     );
   }
 }
