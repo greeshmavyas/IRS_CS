@@ -3,6 +3,7 @@ var router = express.Router();
 var Agent = require("../models/AgentModel");
 var Case = require("../models/CaseModel");
 var HashMap = require("hashmap");
+var crypt = require("../models/bcrypt.js");
 //update when agent added
 global.topics_to_agents = new HashMap();
 //update when case created and case status updated
@@ -25,42 +26,46 @@ router.route("/addAgent").post(function (req, res) {
           .json({ responseMessage: "Agent/Username already exists" });
       } else {
         //Add Agent
-        var agent = {
-          OrgID: req.body.OrgId,
-          Categories: req.body.Categories,
-          FirstName: req.body.FirstName,
-          LastName: req.body.LastName,
-          Email: req.body.Email,
-          Username: req.body.Username,
-          PhoneNumber: req.body.PhoneNumber,
-        };
-        Agent.create(agent, function (err, agent) {
-          if (err) {
-            console.log(err);
-            console.log("Unable to create agent");
-            res.status(400).json({
-              responseMessage: "Unable to create agent",
-            });
-          } else {
-            for (i = 0; i < req.body.Categories.length; i++) {
-              if (global.topics_to_agents.has(req.body.Categories[i])) {
-                global.topics_to_agents
-                  .get(req.body.Categories[i])
-                  .push(agent._id);
-              } else {
-                global.topics_to_agents.set(req.body.Categories[i], [
-                  agent._id,
-                ]);
+        crypt.createHash(req.body.TempPassword, function (response) {
+          encryptedPassword = response;
+          var agent = {
+            OrgID: req.body.OrgId,
+            Categories: req.body.Categories,
+            FirstName: req.body.FirstName,
+            LastName: req.body.LastName,
+            Email: req.body.Email,
+            Username: req.body.Username,
+            PhoneNumber: req.body.PhoneNumber,
+            Password: encryptedPassword,
+          };
+          Agent.create(agent, function (err, agent) {
+            if (err) {
+              console.log(err);
+              console.log("Unable to create agent");
+              res.status(400).json({
+                responseMessage: "Unable to create agent",
+              });
+            } else {
+              for (i = 0; i < req.body.Categories.length; i++) {
+                if (global.topics_to_agents.has(req.body.Categories[i])) {
+                  global.topics_to_agents
+                    .get(req.body.Categories[i])
+                    .push(agent._id);
+                } else {
+                  global.topics_to_agents.set(req.body.Categories[i], [
+                    agent._id,
+                  ]);
+                }
               }
+              global.agents_to_count.set(agent._id, 0);
+              console.log("Your agent is created successfully");
+              console.log("topics" + JSON.stringify(global.topics_to_agents));
+              res.status(200).json({
+                responseMessage: "Your agent is created successfully",
+                agent,
+              });
             }
-            global.agents_to_count.set(agent._id, 0);
-            console.log("Your agent is created successfully");
-            console.log("topics" + JSON.stringify(global.topics_to_agents));
-            res.status(200).json({
-              responseMessage: "Your agent is created successfully",
-              agent,
-            });
-          }
+          });
         });
       }
     }

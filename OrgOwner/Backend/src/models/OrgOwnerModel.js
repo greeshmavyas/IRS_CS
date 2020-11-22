@@ -2,9 +2,6 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 let OrgOwner = new Schema({
-  OrgOwnerID: {
-    type: String,
-  },
   FirstName: {
     type: String,
   },

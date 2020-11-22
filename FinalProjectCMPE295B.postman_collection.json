@@ -92,7 +92,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"Username\":\"greeshmavyas2\",\n\t\"FirstName\":\"greeshmaaa\",\n\t\"LastName\":\"vyasss\",\n\t\"ZipCode\":\"95135\",\n\t\"Email\":\"gree@sjsu.edu\"\n}",
+					"raw": "{\n\t\"Username\":\"greeshmavyas2\",\n\t\"FirstName\":\"greeshmaaaa\",\n\t\"LastName\":\"vyasss\",\n\t\"ZipCode\":\"95135\",\n\t\"Email\":\"gree@sjsu.edu\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -144,7 +144,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\"token\":\"JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmYTIxYjYzMTY2ZTEwZTMxYWZjZWU5MyIsInVzZXJuYW1lIjoiZ3JlZXNobWF2eWFzMiIsImlhdCI6MTYwNDk4NjMzMCwiZXhwIjoxNjA0OTkzNTMwfQ.jOEWdJ25KpgFh3WtofAIG90NDoF3G8r1dZAIYawUokc\",\n\"OrgName\" : \"amazon\",\n\"Categories\": [\"5fa21b63166e10e31afcee93billing\",\"5fa21b63166e10e31afcee93taxes\",\"5fa21b63166e10e31afcee93salary\",\"5fa21b63166e10e31afcee93others\"],\n\"Domain\":\"ecommerce\"\n}",
+					"raw": "{\n\"token\":\"JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmYTIxYjYzMTY2ZTEwZTMxYWZjZWU5MyIsInVzZXJuYW1lIjoiZ3JlZXNobWF2eWFzMiIsImlhdCI6MTYwNTU4MjgwMiwiZXhwIjoxNjA1NTkwMDAyfQ.tc8-iUONLkMusb6tJSbE2WODymPhTlmTYbe0wYvrRLo\",\n\"OrgName\" : \"flipkart\",\n\"Categories\": [\"5fa21b63166e10e31afcee93billing\",\"5fa21b63166e10e31afcee93taxes\",\"5fa21b63166e10e31afcee93salary\",\"5fa21b63166e10e31afcee93others\"],\n\"Domain\":\"ecommerce\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -194,7 +194,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\"OrgId\":\"5fb39cdde99e383d5bcccc65\",\n\"Categories\":[\"5fa21b63166e10e31afcee93billing\",\"5fa21b63166e10e31afcee93shipping\"],\n\"FirstName\":\"Greeshmaaa\",\n\"LastName\":\"Vyasss\",\n\"Email\":\"agent123@abc.com\",\n\"Username\":\"ag4\"\n}",
+					"raw": "{\n\"OrgId\":\"5fb39cdde99e383d5bcccc65\",\n\"Categories\":[\"5fa21b63166e10e31afcee93billing\",\"5fa21b63166e10e31afcee93shipping\"],\n\"FirstName\":\"Greeshmaaa\",\n\"LastName\":\"Vyasss\",\n\"Email\":\"agent123@abc.com\",\n\"Username\":\"ag5\",\n\"TempPassword\":\"password\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -315,7 +315,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"OrgID\": \"5faa2ce925c3b017fa0854d2\",\n\t\"Category\": \"5faa2ce925c3b017fa0854d2shipping\"\n}",
+					"raw": "{\n\t\"OrgID\": \"5faa2ce925c3b017fa0854d2\",\n\t\"Category\": \"5faa2ce925c3b017fa0854d2promotion\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -363,6 +363,47 @@
 						"irs",
 						"org",
 						"agent"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "NLP Model category",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"case\":\"issue in return\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://ec2-18-237-100-229.us-west-2.compute.amazonaws.com:5000/",
+					"protocol": "http",
+					"host": [
+						"ec2-18-237-100-229",
+						"us-west-2",
+						"compute",
+						"amazonaws",
+						"com"
+					],
+					"port": "5000",
+					"path": [
+						""
 					]
 				}
 			},

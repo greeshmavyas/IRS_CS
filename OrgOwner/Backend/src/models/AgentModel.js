@@ -2,9 +2,6 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 let Agent = new Schema({
-  AgentID: {
-    type: String,
-  },
   OrgID: {
     type: String,
   },
