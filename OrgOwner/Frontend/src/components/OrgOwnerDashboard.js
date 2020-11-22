@@ -5,7 +5,7 @@ import axios from "axios";
 import { Container } from "react-bootstrap";
 import config from "../config/settings";
 import { Redirect } from "react-router";
-
+import { getOrganizationID } from "./utils";
 import {
   PieChart,
   Pie,
@@ -64,8 +64,7 @@ class OrgOwnerDashboard extends Component {
   }
   getCasesByOrgID() {
     axios.defaults.withCredentials = true;
-    localStorage.setItem("orgID", 1);
-    let orgID = localStorage.getItem("orgID");
+    let orgID = getOrganizationID();
     axios({
       method: "get",
       url: config.rooturl + "/casesForDashboardByOrgID/" + orgID,
@@ -128,7 +127,7 @@ class OrgOwnerDashboard extends Component {
 
   render() {
     let redirectVar = null;
-    if (localStorage.getItem("orgID") == null) {
+    if (getOrganizationID() == "") {
       redirectVar = <Redirect to="/OrgRegistration" />;
     }
     return (

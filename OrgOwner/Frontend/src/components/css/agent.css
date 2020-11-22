@@ -1,0 +1,32 @@
+.halfWidth {
+  width: 50%;
+}
+.panel {
+  border: 1px solid #dee2e6;
+}
+.messageTextArea {
+  min-height: 100px;
+}
+.messageComponent,
+.addMessage {
+  padding: 10px;
+}
+.addMessage {
+  margin-top: 10px;
+  /*padding-right:20px;*/
+}
+.allMessages {
+  margin-top: 10px;
+}
+.black {
+  color: black;
+}
+.flex {
+  display: flex;
+  margin-left: 15px;
+}
+.subscribeLink {
+  font-size: 15px;
+  color: #0000005c;
+  text-decoration: underline;
+}

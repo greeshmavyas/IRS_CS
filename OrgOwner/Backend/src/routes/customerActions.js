@@ -181,7 +181,7 @@ router.route("/casesForDashboardByOrgID/:OrgID").get(function (req, res) {
   console.log("In retrieve cases by orgID");
 
   let orgID = req.params.OrgID;
-  Case.find({ organisationID: orgID }, function (err, cases) {
+  Case.find({ OrgID: orgID }, function (err, cases) {
     if (err) {
       console.log(err);
       res.status(400).json({ responseMessage: "Unable to find case info" });
