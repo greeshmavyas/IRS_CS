@@ -30,4 +30,3 @@ var casesSchema = new Schema({
 
 const cases = mongoose.model("case", casesSchema);
 module.exports = cases;
-

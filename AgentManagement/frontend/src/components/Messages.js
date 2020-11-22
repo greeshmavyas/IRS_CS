@@ -39,7 +39,6 @@ Format:
           }
           this.state={
               messages:getVal(props.messages),
-              status:props.status,
               caseId: props.caseId
           }
       }
@@ -59,7 +58,7 @@ Format:
                   arr.push(<MessageComponent key={i} index={i} message={currMessage}/>)
               }
             return (<div className="panel"> 
-                <AddMessage updateMessage={this.updateMessage} caseId = {this.state.caseId}/>
+                <AddMessage updateMessage={this.updateMessage} caseId = {this.state.caseId} updateStatus = {this.props.updateStatus}/>
                 <div className="allMessages">{arr}</div>
                 </div>)
           } else {
@@ -90,7 +89,7 @@ Format:
           super(props);
           this.state={
               messageText: "",
-              caseId: props.caseId
+              caseId: props.caseId,
           }
       }
       changeHandler = (evt) =>{
@@ -103,18 +102,19 @@ Format:
           let {caseId} = this.state;
           let userId = getAgentId();
           let userName = getUserName();
-          let caseStatus = this.state.status;
-
-          //axios.defaults.withCredentials = true;
-          let url = config.rooturl+'/addMessage/';
+          this.props.updateStatus();
           let {messageText} = this.state;
+            if(messageText){
+                 //axios.defaults.withCredentials = true;
+          let url = config.rooturl+'/addMessage/';
+         
           let data = {
               "message" : messageText,
               userId,
               caseId,
               userType,
               userName,
-              caseStatus
+              
           }
           axios({
             method: 'post',
@@ -148,6 +148,8 @@ Format:
             }).catch(function (err) {
                 console.log(err)
             });
+            }
+         
 
       }
       render(){
