@@ -26,6 +26,9 @@ let Agent = new Schema({
   Categories: {
     type: Array,
   },
+  PhoneNumber: {
+    type: String,
+  },
 });
 
 module.exports = mongoose.model("Agent", Agent);

@@ -32,6 +32,7 @@ router.route("/addAgent").post(function (req, res) {
           LastName: req.body.LastName,
           Email: req.body.Email,
           Username: req.body.Username,
+          PhoneNumber: req.body.PhoneNumber,
         };
         Agent.create(agent, function (err, agent) {
           if (err) {
