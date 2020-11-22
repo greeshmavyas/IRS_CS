@@ -6,6 +6,7 @@ import  config from '../config/settings'
 import NavbarDash from "./NavbarDash";
 import Sidebar from './Sidebar'
 import OrgDetails from './OrgDetails';
+import NoOrgFound from './NoOrgFound.js';
 
 class Organization extends Component{
     constructor(){
@@ -55,7 +56,12 @@ class Organization extends Component{
             return <OrgDetails orgDetails = {this.state.orgDetails}/>
         }else {
             return (
-                <div>
+                
+            <NoOrgFound/>
+                )
+        }
+    }
+    /*<div>
                      <NavbarDash />
                          <div className="row">
                             <div className="col-2">
@@ -72,9 +78,6 @@ class Organization extends Component{
                                 </Col>
                             </Row>
                         </Container>
-                </div>
-                )
-        }
-    }
+            </div>*/
 }
 export default Organization

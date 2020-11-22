@@ -7,6 +7,7 @@ import NavbarDash from "./NavbarDash";
 import Sidebar from './Sidebar'
 import {getOrgOwnerToken} from './utils';
 import { Redirect } from 'react-router';
+import swal from "sweetalert";
 
 class OrgRegistration extends Component{
 
@@ -15,7 +16,7 @@ class OrgRegistration extends Component{
         this.state = {
           orgName: "",
           domain: "",
-          caseCategories:"",
+         // caseCategories:"",
           registered:false,
           currCategoryVal:"",
           newCategories: []
@@ -32,7 +33,7 @@ class OrgRegistration extends Component{
 
     submitRegistration = (e) => {
         console.log("in submit org registration")
-        let categoryStr = this.state.caseCategories+",others";
+        //let categoryStr = this.state.caseCategories+",others";
 
         const data = {
           //TODO: put orgownerId
@@ -93,11 +94,20 @@ class OrgRegistration extends Component{
     }
 
     updateCategoryInState =()=>{
-        console.log(this.state.newCategories)
-        this.setState({
-            newCategories: [...this.state.newCategories, this.state.currCategoryVal],
+        let {currCategoryVal, newCategories} = this.state
+        if(newCategories.indexOf(currCategoryVal) !== -1){
+          swal("Category already exists")
+          this.setState({
             currCategoryVal: ""
-        })
+          })
+        } else {
+          //console.log(newCategories)
+          this.setState({
+              newCategories: [...newCategories, currCategoryVal],
+              currCategoryVal: ""
+          })
+        }
+        
     }
     
     renderCloseBtn =(name) =>{
@@ -151,7 +161,7 @@ class OrgRegistration extends Component{
 
                       <Form.Row>
                       <Col>
-                      <Form.Control placeholder="Add Category" name="categoryVal" onChange={this.categoryChangeHandler} value={this.state.currCategoryVal}/>
+                      <Form.Control placeholder="Category" name="categoryVal" onChange={this.categoryChangeHandler} value={this.state.currCategoryVal}/>
                       </Col>
                       <Col><Button className="btn btn-info" onClick={this.updateCategoryInState}>Add</Button></Col>    
                       </Form.Row>

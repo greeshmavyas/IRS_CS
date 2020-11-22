@@ -25,3 +25,12 @@ export const getOrganizationID = function(){
     const orgId = localStorage.getItem("orgId");
     return orgId || "";
 }
+
+export const getOrgCategories = function(){
+    let orgCategories = localStorage.getItem("orgCategories");
+    if(!orgCategories)
+        orgCategories = []
+    else 
+        orgCategories = orgCategories.split(",")
+    return orgCategories;
+}

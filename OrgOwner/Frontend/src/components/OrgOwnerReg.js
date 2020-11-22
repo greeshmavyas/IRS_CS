@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Card from 'react-bootstrap/Card'
-import NavbarLogin from './NavbarLogin'
+import OrgOwnerNavbarLogin from './OrgOwnerNavbarLogin'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import axios from 'axios';
@@ -102,7 +102,7 @@ class OrgOwnerReg extends Component {
     }
     return (
         <div>
-          <NavbarLogin />
+          <OrgOwnerNavbarLogin />
           <br></br>
           <br></br>
           <br></br>
@@ -112,36 +112,32 @@ class OrgOwnerReg extends Component {
                 <div className="row">
                   <div className="col-md-10 m-auto">
                     <br></br>
-                    <h4>Organization Owner Signup to IRS</h4>
+                    <h4>Org Owner Signup</h4>
                     <br></br>
                     <Form className="input">
                       <Form.Row>
-                        <Form.Label>First Name</Form.Label>
+                       
                         <Form.Control name="firstName" placeholder="First Name" onChange={this.onChangeHandler} />
                         </Form.Row>
-
+                        <br/>
                         <Form.Row>
-                        <Form.Label>Last Name</Form.Label>
                         <Form.Control name="lastName" placeholder="Last Name" onChange={this.onChangeHandler} />
                         </Form.Row>
-                        
+                        <br/>
                         <Form.Row>
-                        <Form.Label>User Name</Form.Label>
                         <Form.Control name="userName" placeholder="User Name" onChange={this.onChangeHandler} />
                         </Form.Row>
-                        
+                        <br/>
                         <Form.Row>
-                        <Form.Label>Email </Form.Label>
                         <Form.Control name="email" placeholder="Email" onChange={this.onChangeHandler} />
                         </Form.Row>
-                        
+                        <br/>
                         <Form.Row>
-                        <Form.Label>Password</Form.Label>
                         <Form.Control name="password" type="password" placeholder="Password" onChange={this.onChangeHandler} />
                         </Form.Row>
-                        
+                        <br/>
                         <Form.Row>
-                        <Form.Label>ZipCode</Form.Label>
+                        
                         <Form.Control name="zipCode" placeholder="Zip Code" onChange={this.onChangeHandler} />
                         </Form.Row>
                         <br></br>

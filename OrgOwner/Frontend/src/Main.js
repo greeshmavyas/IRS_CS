@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Route } from 'react-router-dom';
-import login from './components/login';
 import OrgOwnerDashboard from './components/OrgOwnerDashboard';
 import updateProfile from './components/updateProfile';
 import OrgOwnerReg from './components/OrgOwnerReg';

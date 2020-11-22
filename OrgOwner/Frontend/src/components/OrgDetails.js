@@ -28,11 +28,20 @@ class OrgDetails extends Component{
         })
     }
     updateCategoryInState =()=>{
-        console.log(this.state.newCategories)
-        this.setState({
-            newCategories: [...this.state.newCategories, this.state.currCategoryVal],
-            currCategoryVal: ""
-        })
+        let {newCategories, currCategoryVal, orgCategories} = this.state 
+
+        if(newCategories.indexOf(currCategoryVal) !== -1 || orgCategories.indexOf(currCategoryVal) !== -1){
+            swal("Category already exists")
+            this.setState({
+              currCategoryVal: ""
+            })
+        } else {
+            //console.log(this.state.newCategories)
+            this.setState({
+                newCategories: [...newCategories, currCategoryVal],
+                currCategoryVal: ""
+            })
+        }
     }
 
     renderCloseBtn =(name) =>{

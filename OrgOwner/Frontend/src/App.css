@@ -58,3 +58,7 @@
   padding:5px;
   margin-right:20px;
 }
+
+.halfWidth{
+  width:50% !important;
+}

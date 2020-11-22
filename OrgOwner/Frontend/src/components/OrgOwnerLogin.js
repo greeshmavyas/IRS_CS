@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 import Card from 'react-bootstrap/Card'
-import NavbarLogin from './NavbarLogin'
+import OrgOwnerNavbarLogin from './OrgOwnerNavbarLogin'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import axios from 'axios';
 import config from '../config/settings'
 import { Redirect } from 'react-router'
+import {getUserName} from './utils'
 
 class OrgOwnerLogin extends Component {
   constructor() {
@@ -62,6 +63,24 @@ class OrgOwnerLogin extends Component {
           localStorage.setItem("lastName", response.data.cookie4);
           localStorage.setItem("token", response.data.token);
           localStorage.setItem("orgOwnerId", response.data.orgOwnerId);
+          axios({
+            method: 'get',
+            url: config.rooturl + '/org/' + getUserName(),
+          })
+            .then(response => {
+              console.log(response)
+              console.log("Status Code : ", response.status);
+              console.log("Response from Org lookup")
+              console.log(response.data);
+      
+              if (response.data && response.data.OrgOwnerId) {
+                  //set orgId in local storage
+                  localStorage.setItem("orgId", response.data._id);
+                  localStorage.setItem("orgCategories", response.data.Categories);
+              } 
+            }).catch(error => {
+              console.log(error);
+            })
         } else {
           this.setState({
             SignedUpFlag: false,
@@ -86,7 +105,7 @@ class OrgOwnerLogin extends Component {
     }
     return (
         <div>
-          <NavbarLogin />
+          <OrgOwnerNavbarLogin />
           <br></br>
           <br></br>
           <br></br>
@@ -100,14 +119,15 @@ class OrgOwnerLogin extends Component {
                     <br></br>
                     <Form className="input">
                       <Form.Row>
-                        <Form.Label>UserName</Form.Label>
                         <Form.Control name="userName" placeholder="User Name" onChange={this.onChangeHandler} />
-                        
-                        <Form.Label>Password</Form.Label>
+                      </Form.Row>
+                      <br/>
+                      <Form.Row>
                         <Form.Control name="password" placeholder="Password" type="password" onChange={this.onChangeHandler} />
+                        </Form.Row>
                         <br></br>
                         <Button className="btn btn-info btn-block mt-4" onClick={this.submitLogin} >Login</Button>
-                      </Form.Row>
+                      
                       <p className="text-danger">{this.state.message}</p>
                       <br></br>
                       <br></br>
