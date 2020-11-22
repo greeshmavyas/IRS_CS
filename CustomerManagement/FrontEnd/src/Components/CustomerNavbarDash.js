@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {getUserName} from "./utils";
 
-class NavbarDash extends Component {
+class CustomerNavbarDash extends Component {
     
   handleLogout = () => {
     window.localStorage.clear();
@@ -10,10 +10,11 @@ class NavbarDash extends Component {
   render() {
     return (
       <nav className="navbar navbar-expand-sm navbar-dark bg-dark mb-4">
+       
         <div className="container">
-          <a className="navbar-brand" href="/customerDashboard">
-            IRS Dashboard
-          </a>
+        <span className="navbar-brand" href="#">
+          Customer Service Dashboard 
+        </span>
           <button
             className="navbar-toggler"
             type="button"
@@ -26,11 +27,16 @@ class NavbarDash extends Component {
           <div className="collapse navbar-collapse" id="mobile-nav">
             
             <ul className="navbar-nav ml-auto">
-              <li className="nav-item">
-                <p className="nav-link" >
-                  Hi, {getUserName()}
-                </p>
+            <li className="nav-item">
+                <a className="nav-link" href="/home">
+                  Home
+                </a>
               </li>
+              {/*<li className="nav-item">
+                <span className="nav-link">
+                 {getUserName()}
+                </span>
+    </li>*/}
               <li className="nav-item">
                 <a className="nav-link" href="/" onClick={this.handleLogout}>
                   Logout
@@ -44,4 +50,4 @@ class NavbarDash extends Component {
   }
 }
 
-export default NavbarDash;
+export default CustomerNavbarDash;

@@ -22,7 +22,8 @@ router.route("/customerDashboard").get(function (req, res) {
   console.log("End Point to fetch all the cases created by that user");
   let customerId = req.query.customerId;
   let organisationId = req.query.organisationId
-  Case.find({ UserID: customerId, organisationID: organisationId }, function (err, result) {
+  //console.log(customerId, " ", organisationId);
+  Case.find({ UserID: customerId, OrganisationID: organisationId }, function (err, result) {
     if (err || !result) {
       console.log(err);
       res.json({"status":false,"cases":"","message":"cannot retrieve cases"})

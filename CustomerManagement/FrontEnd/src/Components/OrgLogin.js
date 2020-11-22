@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Card from "react-bootstrap/Card";
-import NavbarLogin from "./NavbarLogin";
+import CustomerNavbarLogin from "./CustomerNavbarLogin";
 import { Redirect } from "react-router";
 
 class OrgLogin extends Component {
@@ -22,10 +22,10 @@ class OrgLogin extends Component {
   };
 
   loginHandler = () => {
-    let {userId, organisationId, userName, emailId} = this.state;
-    window.localStorage.setItem("userId", userId);
+    let {customerId, organisationId, customerName, emailId} = this.state;
+    window.localStorage.setItem("customerId", customerId);
     window.localStorage.setItem("organisationId", organisationId);
-    window.localStorage.setItem("userName", userName);
+    window.localStorage.setItem("customerName", customerName);
     window.localStorage.setItem("emailId", emailId);
     window.localStorage.setItem("userType", "customer");
   };
@@ -34,7 +34,7 @@ class OrgLogin extends Component {
 
     return (
       <div>
-        <NavbarLogin />
+        <CustomerNavbarLogin />
         <br></br>
         <br></br>
         <br></br>
@@ -46,20 +46,20 @@ class OrgLogin extends Component {
                   <br></br>
                   <h5>Login</h5>
                   <br></br>
-                  <form onSubmit={this.onSubmit}>
+                  <form>
                     <div className="form-group">
-                      <strong>Customer ID</strong>
+                     
                       <input
                         type="text"
                         className="form-control form-control-lg"
                         placeholder="Customer ID"
-                        name="userId"
-                        value={this.state.userId}
+                        name="customerId"
+                        value={this.state.customerId}
                         onChange={this.onChange}
                       />
                     </div>
                     <div className="form-group">
-                      <strong>Organisation ID</strong>
+                     
                       <input
                         type="text"
                         className="form-control form-control-lg"
@@ -70,18 +70,18 @@ class OrgLogin extends Component {
                       />
                     </div>
                     <div className="form-group">
-                      <strong>Customer User Name</strong>
+                      
                       <input
                         type="text"
                         className="form-control form-control-lg"
                         placeholder="Customer User Name"
-                        name="userName"
-                        value={this.state.userName}
+                        name="customerName"
+                        value={this.state.customerName}
                         onChange={this.onChange}
                       />
                     </div>
                     <div className="form-group">
-                      <strong>Customer Email</strong>
+                      
                       <input
                         type="text"
                         className="form-control form-control-lg"

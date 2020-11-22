@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-class NavbarLogin extends Component {
+class CustomerNavbarLogin extends Component {
     
   handleLogout = () => {
     window.localStorage.clear();
@@ -26,7 +26,7 @@ class NavbarLogin extends Component {
             
             <ul className="navbar-nav ml-auto">
             <li className="nav-item">
-                <a className="nav-link" href="/cases">
+                <a className="nav-link" href="/customerDashboard">
                   Customer Service
                 </a>
               </li>
@@ -48,4 +48,4 @@ class NavbarLogin extends Component {
   }
 }
 
-export default NavbarLogin;
+export default CustomerNavbarLogin;

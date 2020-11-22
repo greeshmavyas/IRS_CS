@@ -1,35 +1,49 @@
 import React, { Component } from "react";
 import axios from "axios";
-import Header from "./Header";
-import Card from "react-bootstrap/Card";
-import {getUserId, getOrganisationId} from './utils';
-const config = require("../settings.js");
+import {Button, Modal} from "react-bootstrap";
+import {getCustomerId, getOrganisationId} from './utils';
+const config = require("../config/settings");
 
-class Case extends Component {
+class CreateCaseModal extends Component {
   state = {
     Category: "Others",
     Information: "",
     Response: "",
+    show: false
   };
 
-  change = (e) => {
+  handleClose = () =>{
+    this.setState({
+        show: false
+    })
+    window.location.reload(false)
+  }
+
+  handleShow = () =>{
+    this.setState({
+        show: true
+    })
+  }
+
+  changeHandler = (e) => {
     this.setState({
       [e.target.id]: e.target.value,
-    });
-  };
+    })
+  }
 
-  sub = (e) => {
+  submitHandler = (e) => {
     e.preventDefault();
     var cid = Math.floor(Math.random() * 10000);
     const data = {
-      UserID: getUserId(),
-      organisationID: getOrganisationId(),
+      UserID: getCustomerId(),
+      OrganisationID: getOrganisationId(),
       CaseID: cid.toString(),
       Category: this.state.Category,
       Information: this.state.Information,
       Status: "New",
       ResolutionComments: ""
-    };
+    }
+
     axios
       .post(config.rooturl + "/add", data)
       .then((response) => {
@@ -64,21 +78,16 @@ class Case extends Component {
 
   render() {
     return (
-      <div style={{ height: "100%" }} className="bg-dark">
-        <Header style={{ height: "10%" }}></Header>
-
-        <br></br>
-        <br></br>
-        <br></br>
-        <div style={{ height: "90%" }}>
-          <center>
-            <Card style={{ width: "35rem" }}>
-              <div className="container">
-                <div className="row">
-                  <div className="col-md-10 m-auto">
-                    <br></br>
-                    <br></br>
-                    <form onSubmit={this.sub}>
+        <>
+        <Button variant="info" onClick={this.handleShow}>
+        Create case
+        </Button>
+        <Modal show={this.state.show} onHide={this.handleClose}>
+                <Modal.Header closeButton>
+                <Modal.Title>Case Details</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                <form onSubmit={this.submitHandler}>
                       <div className="form-group">
                         <strong>Information:</strong>
                         <textarea
@@ -88,7 +97,7 @@ class Case extends Component {
                           placeholder="Information"
                           name="Information"
                           value={this.state.Information}
-                          onChange={this.change}
+                          onChange={this.changeHandler}
                         />
                       </div>
 
@@ -101,16 +110,10 @@ class Case extends Component {
                     </form>
 
                     <h6>{this.state.Response}</h6>
-                    <br></br>
-                    <br></br>
-                  </div>
-                </div>
-              </div>
-            </Card>
-          </center>
-        </div>
-      </div>
+                </Modal.Body>
+            </Modal>
+        </>
     );
   }
 }
-export default Case;
+export default CreateCaseModal;

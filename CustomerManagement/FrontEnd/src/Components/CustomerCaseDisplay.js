@@ -11,15 +11,15 @@ import {
   } from "react-bootstrap";
 import { Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import '../css/customer.css';
-import CaseHistory from './CaseHistory';
-import Messages from './Messages';
+import CustomerCaseHistory from './CustomerCaseHistory';
+import CustomerMessages from './CustomerMessages';
 import {} from "./utils.js";
 import swal from 'sweetalert'
 import {getEmailId} from './utils';
 
-const config = require("../settings.js");
+const config = require("../config/settings");
 
-class CaseDisplay extends Component{
+class CustomerCaseDisplay extends Component{
     constructor(props){
         super(props);
        
@@ -28,15 +28,17 @@ class CaseDisplay extends Component{
             subscribed: false,
             history:"",
             caseId:"",
-            isLoaded: false
+            isLoaded: false,
+            activeKey: "messages"
         }
     }
   
-    handleClose = () => this.setState({show:false});
-    handleShow = () => this.setState({show:true});
+    handleClose = () => {this.setState({show:false}); };
+    handleShow = () => {this.setState({show:true}); };
+
     componentDidMount(){
         this.updateSubscribed(this.props.caseDetails)
-        this.getHistory(this.props.caseDetails)
+        this.getHistory()
      
     }
     componentDidUpdate(prevProps){
@@ -44,10 +46,12 @@ class CaseDisplay extends Component{
         this.setState({
           caseDetails: this.props.caseDetails,
           caseId: this.props.caseId,
-          isLoaded: false
+          isLoaded: false,
+          activeKey: "messages"
         })
+        console.log("isLoaded is::",this.state.isLoaded)
         this.updateSubscribed(this.props.caseDetails)
-        this.getHistory(this.props.caseDetails)
+        this.getHistory()
       }
     }
 
@@ -64,7 +68,10 @@ class CaseDisplay extends Component{
     }
     
 
-    getHistory = async (caseDetails)=>{
+    getHistory = async ()=>{
+      let {caseDetails} = this.props;
+      console.log("get history called..");
+      console.log(caseDetails.CaseID, " ", caseDetails.UserID);
       if(caseDetails && caseDetails.CaseID && caseDetails.UserID){
         await axios(config.rooturl + "/history/" + caseDetails.UserID +"/"+caseDetails.CaseID  , {
             method: "get",
@@ -121,19 +128,25 @@ class CaseDisplay extends Component{
         }).catch(function (err) {
             console.log(err)
         });
+    }
 
+    changeActiveKey = (key) =>{
+      console.log("active key:", key)
+      this.setState({
+        activeKey: key
+      })
     }
 
     render(){
       //console.log("in casedisplay render method..state is..")
       //console.log(this.state)
-       let {caseDetails, isLoaded} = this.state;
+       let {caseDetails} = this.state;
        const closeBtn = (
         <button className="close" onClick={() => this.props.showModal()}>
           &times;
          </button>
       );
-      if(caseDetails && isLoaded){
+      if(caseDetails ){
         return (
             
               <Modal  
@@ -174,13 +187,12 @@ class CaseDisplay extends Component{
                     <br></br>
                     <br></br>
 
-                    <Tabs defaultActiveKey="messages" id="casetab">
-                        <Tab eventKey="messages" title="Comments" tabClassName = "halfWidth">
-                            <Messages messages={caseDetails.Messages} caseId={caseDetails.CaseID}/>
+                    <Tabs activeKey={this.state.activeKey} id="casetab" onSelect={(k) => this.changeActiveKey(k)}>
+                        <Tab eventKey="messages" title="Comments" tabClassName = "halfWidth" >
+                            <CustomerMessages messages={caseDetails.Messages} caseId={caseDetails.CaseID} changeActiveKey = {this.changeActiveKey} getHistory = {this.getHistory}/>
                         </Tab>
-                        <Tab eventKey="history" title="Case History" tabClassName = "halfWidth">
-                            {/*<CaseHistory caseId={caseDetails.CaseID} userId={caseDetails.UserID}/>*/}
-                            <CaseHistory caseId = {this.state.caseId} history={this.state.history}/>
+                        <Tab eventKey="history" title="Case History" tabClassName = "halfWidth" >
+                            {this.state.isLoaded && <CustomerCaseHistory caseId = {this.state.caseId} history={this.state.history}/>}
                         </Tab>
                     </Tabs>
                   
@@ -196,4 +208,4 @@ class CaseDisplay extends Component{
     
   }
   
-export default CaseDisplay;
+export default CustomerCaseDisplay;

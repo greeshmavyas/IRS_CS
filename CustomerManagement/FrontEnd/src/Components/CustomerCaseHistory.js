@@ -1,19 +1,12 @@
 import React, { Component,useState } from "react";
 import axios from "axios";
 import {
-    Button,
-    Modal,
     Row,
-    Col,
-    Container,
-    Tabs,
-    Tab,
-    Form,
-    Card
+    Col
   } from "react-bootstrap";
-const config = require("../settings.js");
+const config = require("../config/settings");
 
-class CaseHistory extends Component{
+class CustomerCaseHistory extends Component{
     constructor(props){
         super(props);
         this.state={
@@ -89,4 +82,4 @@ class CaseHistory extends Component{
         }
     }
 }
-export default CaseHistory;
+export default CustomerCaseHistory;

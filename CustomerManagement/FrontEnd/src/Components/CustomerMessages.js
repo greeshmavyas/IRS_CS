@@ -2,18 +2,15 @@ import React, { Component,useState } from "react";
 import axios from "axios";
 import {
     Button,
-    Modal,
     Row,
     Col,
-    Container,
-    Tabs,
-    Tab,
     Form,
     Card
   } from "react-bootstrap";
   import "../css/customer.css"
-  const {getUserType, getUserId, getUserName}  = require('./utils.js');
-  const config = require("../settings.js");
+import swal from "sweetalert";
+  const {getUserType, getCustomerId, getCustomerName}  = require('./utils.js');
+  const config = require("../config/settings");
 /*
 Format:
 [
@@ -25,7 +22,7 @@ Format:
     }
 ]
 */
-  class Messages extends Component{
+  class CustomerMessages extends Component{
       //use message index as key while displaying
       constructor(props){
           super(props);
@@ -50,7 +47,9 @@ Format:
           })
       }
       render(){
-          if(this.state.messages && this.state.messages.length > 0){
+        return  <AddMessage updateMessage={this.updateMessage} caseId = {this.state.caseId} changeActiveKey = {this.props.changeActiveKey} getHistory = {this.props.getHistory}/>
+
+        /*  if(this.state.messages && this.state.messages.length > 0){
               let arr = [];
               let {messages} = this.state;
               for(let i=messages.length-1; i>=0; i--){
@@ -63,7 +62,7 @@ Format:
                 </div>)
           } else {
               return  <AddMessage updateMessage={this.updateMessage} caseId = {this.state.caseId}/>
-          }
+          }*/
       }
   }
  
@@ -100,8 +99,8 @@ Format:
       submitHandler = () =>{
           let userType = getUserType();
           let {caseId} = this.state;
-          let userId = getUserId();
-          let userName = getUserName();
+          let userId = getCustomerId();
+          let userName = getCustomerName();
 
           //axios.defaults.withCredentials = true;
           let url = config.rooturl+'/addMessage/';
@@ -127,7 +126,8 @@ Format:
             })
             .then((responseData) => {
                 if(responseData.status){
-                    console.log("message added");
+                    this.props.getHistory()
+                    swal("Message is added").then((val) => this.props.changeActiveKey("history"));
                     this.props.updateMessage({
                         Message: messageText,
                         UserType: userType,
@@ -139,10 +139,12 @@ Format:
                         messageText:""
                     })
                 } else {
+                    swal("Message cannot be added");
                     console.log("message cannot be added")
                 }
                 
             }).catch(function (err) {
+                swal("Message cannot be added");
                 console.log(err)
             });
 
@@ -151,7 +153,7 @@ Format:
         return (
             <Form className = "addMessage">
             <Form.Group controlId="addmessage">
-                <Form.Control type="text" as="textarea" className = "messageTextArea" placeholder="Add Comment" onChange={this.changeHandler}/>
+                <Form.Control type="text" as="textarea" className = "messageTextArea" value={this.state.messageText} placeholder="Add Comment" onChange={this.changeHandler}/>
             </Form.Group>
             <Button variant="info" className="float-right"  onClick = {this.submitHandler}>
                 Submit
@@ -162,4 +164,4 @@ Format:
       }
   }
 
-  export default Messages;
+  export default CustomerMessages;

@@ -1,15 +1,12 @@
 import React, { Component } from 'react';
 import axios from "axios";
-import NavbarDash from "./NavbarDash";
-import { Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
-import Sidebar from './Sidebar'
-import config from '../settings'
+import CustomerNavbarDash from "./CustomerNavbarDash";
+import config from '../config/settings'
 import Table from 'react-bootstrap/Table'
 import Pagination from 'react-bootstrap/Pagination'
-import PageItem from 'react-bootstrap/PageItem'
-import { stat } from 'fs';
-import {getOrganisationId, getUserId} from "./utils";
-import CaseDisplay from './CaseDisplay';
+import {getOrganisationId, getCustomerId} from './utils'
+import CustomerCaseDisplay from './CustomerCaseDisplay'
+import CreateCaseModal from './CreateCaseModal'
 
 class CustomerDashboard extends Component {
   constructor() {
@@ -24,7 +21,7 @@ class CustomerDashboard extends Component {
       selectOptions: [],
       status: "",
       paginationActive: 1,
-
+      isLoading: true
     };
 
   }
@@ -81,15 +78,18 @@ class CustomerDashboard extends Component {
   async componentDidMount() {
     console.log("in get all cases frontend")
 
-    let customerId = getUserId();
-    let organisationId = getOrganisationId()
-   // let count = 0
-   //axios.defaults.withCredentials = true;
+   
+    axios.defaults.withCredentials = true;
+    let customerId = getCustomerId();
+  
+    let organisationID = getOrganisationId()
+    //let count = 0
+    axios.defaults.withCredentials = true;
     if (customerId) {
-     // count = count + 1
+      //count = count + 1
       let data = {
         customerId,
-        organisationId
+        organisationId : organisationID
       };
       console.log("data is..")
       console.log(data);
@@ -132,11 +132,16 @@ class CustomerDashboard extends Component {
           else {
             this.setState({ allCases: [] });
           }
-
+          this.setState({
+            isLoading: false
+          })
         })
         .catch(error => {
           console.log(error);
-          this.setState({ allCases: [] })
+          this.setState({ 
+            allCases: [] ,
+            isLoading: false
+          })
         })
 
 
@@ -190,30 +195,21 @@ class CustomerDashboard extends Component {
     if (this.state.flag) {
       casedetails = searchResults.map((ticket) => {
           return (
-            <div>
-              <div onClick={() => this.showModal1(ticket)} >
-                <Table>
-                  <tbody >
-                    <tr >
-                      <td style={{ width: '10rem' }}>{ticket.CaseID}</td>
-                      <td style={{ width: '15rem' }}>{ticket.Status}</td>
-                      <td style={{ width: '50rem' }}>{ticket.Information} </td>
-                    </tr>
-                  </tbody>
-                </Table>
-              </div>
-            </div>
+            <tr onClick={() => this.showModal1(ticket)}>
+                  <td>{ticket.CaseID}</td>
+                  <td>{ticket.CreatedOn}</td>
+                  <td>{ticket.Status}</td>
+                  <td>{ticket.Information} </td>
+                </tr>
           );
       });
     }
 
     return (
-      <div>
-        <NavbarDash />
-        <div className="row">
-          <div className="col-2">
-            <Sidebar />
-          </div>
+      <div style ={ {height: '100%'}} >
+        <CustomerNavbarDash />
+        
+          
           <div className="container col-9">
 
             <div className="filter-item">
@@ -223,41 +219,61 @@ class CustomerDashboard extends Component {
                 );
               })}
             </div>
-            <div>
-              Filter by Status: < nbsp />
+            <div className="offset-md-3">
+              Status: &nbsp; &nbsp;
               <select id="Status" value={this.state.status} onChange={this.handleChange}>
-                <option value="">All Cases</option>
+                <option value="">All</option>
                 <option value="Assigned">Assigned</option>
                 <option value="InProgress">In Progress</option>
                 <option value="Resolved">Resolved</option>
               </select>
+              &nbsp; &nbsp; &nbsp; &nbsp;
+              <CreateCaseModal/>
             </div>
-
-            <Table>
-              <tr>
-                <th style={{ width: '10rem' }}>ID</th>
-                <th style={{ width: '15rem' }}>Status</th>
-                <th style={{ width: '50rem' }}>Details</th>
-              </tr>
-            </Table>
-
+              <br></br>
+            <div style={{ minHeight: '400px' }}>
+              <Table striped bordered hover>
+                <tr>
+                  <th style={{ width: '10rem' }}>ID</th>
+                  <th style={{ width: '10rem' }}>Date</th>
+                  <th style={{ width: '15rem' }}>Status</th>
+                  <th style={{ width: '50rem' }}>Details</th>
+                </tr>
+                <tbody>
+                {casedetails}
+                </tbody>
+              </Table>
+            </div>
             {this.state.allCases.length > 0 ? (
               <div className="col-10">
-                {casedetails}
-                {paginationBasic}
+              
                 {this.state.viewcase != null ? (
                   <div>
-                  <CaseDisplay caseId = {this.state.viewcase.CaseID}
+                  <CustomerCaseDisplay caseId = {this.state.viewcase.CaseID}
                   showModal = {this.showModal} modal = {this.state.modal} caseDetails={this.state.viewcase}/>
                  </div> ) : null}
-              </div>
+                 
+               <div className = "" style = { {  height: '15%',  display: "flex",justifyContent: "center",alignItems: "center"}}>
+                 {paginationBasic}
+                </div>
+                
+                 
+                
+                </div>
             ) : (
                 <div>
-                  <h4 style={{ margin: "3em" }}>No new cases to display!</h4>
+                  <h4 style={{ margin: "3em" }}>
+                    {this.state.isLoading ? "" : "No new cases to display!"}
+                  </h4>
                 </div>
               )}
+              
+              
           </div>
-        </div>
+        
+              
+        
+           
       </div>
     );
   }

@@ -27,12 +27,12 @@ router.route('/addMessage').post(function(req, res) {
             } else {
                 if(result){
                    //TODO: send true status to client after adding value in history
-                    genericApis.addHistory(userId, caseId, message +" (added by " + userType +")")
-
-                    let subject = "Case "+caseId+" has been updated";
-                    let body = "The " + userType + ":" + userId + " posted the following message: \n'" + message + "'";
-                    genericApis.sendNotification(caseId, subject, body)
-
+                    genericApis.addHistory(userId, caseId, message +" (added by " + userName +")")
+                    if(userType !== "customer"){
+                        let subject = "Case "+caseId+" has been updated";
+                        let body = userName + " posted the following message: \n'" + message + "'";
+                        genericApis.sendNotification(caseId, subject, body)
+                    }
                     res.status(200).json({ status: true, message: "message is added successfully!" });
                 } else {
                     console.log("case not found");

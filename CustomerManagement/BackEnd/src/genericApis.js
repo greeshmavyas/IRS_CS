@@ -9,9 +9,13 @@ const getTodayDate = () =>{
     var date =
     today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate();
     var time =
-    today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    round(today.getHours()) + ":" + round(today.getMinutes()) + ":" + round(today.getSeconds());
     var dateTime = date + " " + time;
     return dateTime
+}
+
+const round = (value) =>{
+  return (value && value.length < 2 ? "0"+value : value)
 }
 
 const sendNotification = (caseId, subject, body) =>{
@@ -71,7 +75,7 @@ const addHistory = (userID, caseID, comment)=>{
           history.UserID = userID;
           history.CaseID = caseID;
           history.Comment = comment;
-          var today = new Date();
+         /* var today = new Date();
           var date =
             today.getFullYear() +
             "-" +
@@ -80,8 +84,8 @@ const addHistory = (userID, caseID, comment)=>{
             today.getDate();
           var time =
             today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-          var dateTime = date + " " + time;
-          history.UpdatedOn = dateTime;
+          var dateTime = getTodayDate();*/
+          history.UpdatedOn =  getTodayDate();
           history
             .save()
             .then((history) => {

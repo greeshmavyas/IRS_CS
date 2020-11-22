@@ -28,7 +28,7 @@ let Case = new Schema({
   },
   Messages:[],
   Subscribers:[],
-  organisationID:""
+  OrganisationID:""
 });
 
 module.exports = mongoose.model("Case", Case);
