@@ -3,31 +3,31 @@ var router = express.Router();
 var Agent = require("../models/AgentModel");
 var Case = require("../models/CaseModel");
 var HashMap = require("hashmap");
-var crypt = require("../models/bcrypt.js");
+
 //update when agent added
 global.topics_to_agents = new HashMap();
 //update when case created and case status updated
 global.agents_to_count = new HashMap();
 
-//Add agent and update maps
+//Add agent for the particular org and update maps
 router.route("/addAgent").post(function (req, res) {
-  Agent.findOne({ Username: req.body.Username }, function (err, agent) {
-    if (err) {
-      console.log(err);
-      console.log("unable to read the database");
-      res.status(400).json({
-        responseMessage: "unable to read the organization owner database",
-      });
-    } else {
-      if (agent) {
-        console.log("OrgOwner already exists");
-        res
-          .status(401)
-          .json({ responseMessage: "Agent/Username already exists" });
+  Agent.findOne(
+    { Username: req.body.Username, OrgID: req.body.OrgId },
+    function (err, agent) {
+      if (err) {
+        console.log(err);
+        console.log("unable to read the database");
+        res.status(400).json({
+          responseMessage: "unable to read the organization owner database",
+        });
       } else {
-        //Add Agent
-        crypt.createHash(req.body.TempPassword, function (response) {
-          encryptedPassword = response;
+        if (agent) {
+          console.log("OrgOwner already exists");
+          res
+            .status(401)
+            .json({ responseMessage: "Agent/Username already exists" });
+        } else {
+          //Add Agent
           var agent = {
             OrgID: req.body.OrgId,
             Categories: req.body.Categories,
@@ -36,7 +36,7 @@ router.route("/addAgent").post(function (req, res) {
             Email: req.body.Email,
             Username: req.body.Username,
             PhoneNumber: req.body.PhoneNumber,
-            Password: encryptedPassword,
+            Password: req.body.TempPassword,
           };
           Agent.create(agent, function (err, agent) {
             if (err) {
@@ -66,10 +66,10 @@ router.route("/addAgent").post(function (req, res) {
               });
             }
           });
-        });
+        }
       }
     }
-  });
+  );
 });
 // Retreive all agents by orgID
 router.route("/agents/:OrgID").get(function (req, res) {
