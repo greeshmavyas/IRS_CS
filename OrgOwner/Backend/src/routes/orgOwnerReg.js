@@ -125,36 +125,44 @@ router.route("/orgOwner/signUp").post(function (req, res) {
 });
 
 // save customer profile details
-router.route("/orgOwner/profileSave").post(function (req, res) {
+router.route("/orgOwner/profileSave").put(function (req, res) {
   console.log("In customer profile save Post");
   username = req.body.Username.toLowerCase();
   trimusername = username.trim();
-
-  var orgOwnerData = {
-    FirstName: req.body.FirstName,
-    LastName: req.body.LastName,
-    ZipCode: req.body.ZipCode,
-    Email: req.body.Email,
-  };
-  console.log(orgOwnerData);
-  OrgOwner.findOneAndUpdate(
-    { Username: req.body.Username },
-    orgOwnerData,
-    { returnNewDocument: true },
-    function (err, orgOwner) {
-      if (err) {
-        console.log(err);
-        console.log("unable to update database");
-        res.status(400).json({ responseMessage: "unable to update database" });
-      } else {
-        console.log("result:", orgOwner);
-        console.log("OrgOwner Profile save Successful");
-        res
-          .status(200)
-          .json({ responseMessage: "OrgOwner Profile save Successful" });
+  crypt.createHash(req.body.Password, function (response) {
+    encryptedPassword = response;
+    var orgOwnerData = {
+      FirstName: req.body.FirstName,
+      LastName: req.body.LastName,
+      ZipCode: req.body.ZipCode,
+      Email: req.body.Email,
+      Password: encryptedPassword,
+    };
+    console.log(orgOwnerData);
+    OrgOwner.findOneAndUpdate(
+      { Username: req.body.Username },
+      orgOwnerData,
+      { new: true },
+      function (err, orgOwner) {
+        if (err) {
+          console.log(err);
+          console.log("unable to update database");
+          res
+            .status(400)
+            .json({ responseMessage: "unable to update database" });
+        } else {
+          console.log("result:", orgOwner);
+          console.log("OrgOwner Profile save Successful");
+          res
+            .status(200)
+            .json({
+              responseMessage: "OrgOwner Profile save Successful",
+              orgOwner,
+            });
+        }
       }
-    }
-  );
+    );
+  });
 });
 
 //Fetch org owner details
