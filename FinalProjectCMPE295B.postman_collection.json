@@ -88,11 +88,11 @@
 		{
 			"name": "OrgOwner Profile Save",
 			"request": {
-				"method": "POST",
+				"method": "PUT",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"Username\":\"greeshmavyas2\",\n\t\"FirstName\":\"greeshmaaaa\",\n\t\"LastName\":\"vyasss\",\n\t\"ZipCode\":\"95135\",\n\t\"Email\":\"gree@sjsu.edu\"\n}",
+					"raw": "{\n\t\"Username\":\"greeshmavyas2\",\n\t\"FirstName\":\"greeshmaaaav\",\n\t\"LastName\":\"vyasss\",\n\t\"ZipCode\":\"95135\",\n\t\"Email\": \"xyz@abc.com\",\n    \"Password\": \"password1\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
