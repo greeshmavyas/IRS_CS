@@ -1,28 +1,28 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 let Case = new Schema({
-	UserID: {
-		type: String
-	},
-	CaseID: {
-        type: String 
-    },
-    Category: {
-        type: String
-    },
-    Information: {
-        type: String
-    },
-    Status:{
-    	type: String
-    },
-    ResolutionComments: {
-    	type: String
-    },
-    AgentID: {
-    	type: String
-    }
+  CaseID: {
+    type: String,
+  },
+  UserId: {
+    type: String,
+  },
+  Category: {
+    type: String,
+  },
+  Information: {
+    type: String,
+  },
+  Status: {
+    type: String,
+  },
+  ResolutionComments: {
+    type: String,
+  },
+  AgentId: {
+    type: String,
+  },
 });
 
-module.exports = mongoose.model('Case', Case);
+module.exports = mongoose.model("Case", Case);

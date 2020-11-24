@@ -21,15 +21,18 @@ router.route("/").get(function (req, res) {
 router.route("/customerDashboard").get(function (req, res) {
   console.log("End Point to fetch all the cases created by that user");
   let customerId = req.query.customerId;
-  let organisationId = req.query.organisationId
+  let organisationId = req.query.organisationId;
   //console.log(customerId, " ", organisationId);
-  Case.find({ UserID: customerId, OrganisationID: organisationId }, function (err, result) {
+  Case.find({ UserID: customerId, OrganisationID: organisationId }, function (
+    err,
+    result
+  ) {
     if (err || !result) {
       console.log(err);
-      res.json({"status":false,"cases":"","message":"cannot retrieve cases"})
+      res.json({ status: false, cases: "", message: "cannot retrieve cases" });
     } else {
-     // console.log(result);
-      res.json({"status":true, "cases":result});
+      // console.log(result);
+      res.json({ status: true, cases: result });
     }
   });
 });
@@ -182,53 +185,75 @@ router.route("/history/:userID/:caseID").get(function (req, res) {
         res.json(resCase);
       }
     });*/
-    CaseHistory.find({ UserID: userID, CaseID: caseID }, function (err, resCase) {
-      if (err ||!resCase) {
-        console.log(err);
-      } else {
-        res.json(resCase);
-      }
-    });
-    
+  CaseHistory.find({ UserID: userID, CaseID: caseID }, function (err, resCase) {
+    if (err || !resCase) {
+      console.log(err);
+    } else {
+      res.json(resCase);
+    }
+  });
 });
 
-// creating a case
+//creating a case - kafka API
 router.route("/add").post(function (req, res) {
-  console.log("End Point to create a Case");
-  console.log(req.body);
-  let newCase = new Case(req.body);
-  
-  var today = new Date();
-  var date =
-    today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate();
-  var time =
-    today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-  var dateTime = date + " " + time;
-  newCase.CreatedOn = dateTime;
-  let history = new CaseHistory(req.body);
-  history.CreatedOn = dateTime;
-  history.UpdatedOn = dateTime;
-  //historyUpdate(req.body);
-  console.log("HIIII");
+  var agents = global.topics_to_agents.get(req.body.Category);
+  console.log("agents" + agents);
+  var min_count = global.agents_to_count.get(agents[0]);
+  var agent = agents[0];
+  console.log("agent1" + agent);
+  if (agents.length > 1) {
+    for (i = 1; i < agents.length; i++) {
+      if (min_count > global.agents_to_count.get(agents[i])) {
+        agent = agents[i];
+      }
+    }
+  }
+  global.agents_to_count.set(agent, global.agents_to_count.get(agent) + 1);
 
-  newCase
-    .save()
-    .then((newCase) => {
-      history
-        .save()
-        .then((history) => {
-          res
-            .status(200)
-            .json({ Case: "Your case updated in history successfully" });
-        })
-        .catch((err) => {
-          res.status(400).send("Can not create Case");
+  console.log("agent" + agent);
+  console.log("map" + JSON.stringify(global.agents_to_count));
+  var newCase = {
+    UserID: req.body.UserID,
+    Category: req.body.Category,
+    Information: req.body.Information,
+    Status: "Assigned",
+    AgentID: agent,
+  };
+
+  kafka.make_request(
+    req.body.Category,
+    { path: "issuecreate", newCase: newCase },
+    function (err, result) {
+      if (err) {
+        console.log(err);
+        res.status(400).json({ responseMessage: "Unable to case info" });
+      } else {
+        res.writeHead(200, {
+          "content-type": "application/json",
         });
-      //res.status(200).json({ Case: "Your case created successfully" });
-    })
-    .catch((err) => {
-      res.status(400).send("Can not create Case");
-    });
+        res.end(JSON.stringify(result.newcase));
+      }
+    }
+  );
+});
+
+//Retrieve cases by orgID for dashboard
+router.route("/casesForDashboardByOrgID/:OrgID").get(function (req, res) {
+  console.log("In retrieve cases by orgID");
+
+  let orgID = req.params.OrgID;
+  Case.find({ OrgID: orgID }, function (err, cases) {
+    if (err) {
+      console.log(err);
+      res.status(400).json({ responseMessage: "Unable to find case info" });
+    } else {
+      console.log(cases);
+      res.status(200).json({
+        responseMessage: "All cases by given status",
+        cases,
+      });
+    }
+  });
 });
 
 module.exports = router;

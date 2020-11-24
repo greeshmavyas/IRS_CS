@@ -1,11 +1,11 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-let Case = new Schema({
-  UserId: {
+let CaseHistory = new Schema({
+  UserID: {
     type: String,
   },
-  OrgId: {
+  CaseID: {
     type: String,
   },
   Category: {
@@ -23,6 +23,15 @@ let Case = new Schema({
   AgentID: {
     type: String,
   },
+  CreatedOn: {
+    type: String,
+  },
+  UpdatedOn: {
+    type: String,
+  },
+  Comment:{
+    type:String,
+  }
 });
 
-module.exports = mongoose.model("Case", Case);
+module.exports = mongoose.model("CaseHistory", CaseHistory);

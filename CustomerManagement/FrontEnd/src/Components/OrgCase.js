@@ -2,7 +2,7 @@ import React, { Component, useState } from "react";
 import axios from "axios";
 import { Row, Col, Container } from "react-bootstrap";
 import { Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
-import "./css/agent.css";
+import "./css/orgowner.css";
 import {} from "./utils.js";
 //import swal from "sweetalert";
 //import { getEmailId, getAgentId, getOrganisationId } from "./utils";

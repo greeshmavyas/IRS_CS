@@ -1,4 +1,5 @@
 let Case = require("../models/CaseModel");
+let CaseHistory = require("../models/CaseHistory");
 
 exports.customerIssueCreationBillingService = function customerIssueCreationBillingService(
   msg,
@@ -12,16 +13,34 @@ exports.customerIssueCreationBillingService = function customerIssueCreationBill
   }
 };
 
-//Place order
+//Create the case
 function issuecreate(msg, callback) {
-  Case.create(msg.newCase, function (err, newcase) {
-    if (err) {
-      console.log(err);
-      console.log("unable to place order");
-      callback(err, "Database Error");
-    } else {
-      console.log("Your case created successfully");
-      callback(null, { status: 200, newcase });
-    }
-  });
+  console.log("End Point to create a Case");
+  console.log(req.body);
+  let newCase = new Case(msg.newCase);
+  var today = new Date();
+  var date =
+    today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate();
+  var time =
+    today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+  var dateTime = date + " " + time;
+  newCase.CreatedOn = dateTime;
+  let history = new CaseHistory(msg.newCase);
+  history.CreatedOn = dateTime;
+  history.UpdatedOn = dateTime;
+  newCase
+    .save()
+    .then((newCase) => {
+      history
+        .save()
+        .then((history) => {
+          callback(null, { status: 200, newcase });
+        })
+        .catch((err) => {
+          callback(err, "Unable to create the case");
+        });
+    })
+    .catch((err) => {
+      callback(err, "Unable to create the case");
+    });
 }
