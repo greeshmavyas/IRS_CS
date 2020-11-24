@@ -3,6 +3,7 @@ var router = express.Router();
 let Case = require("../models/CaseModel");
 let CaseHistory = require("../models/CaseHistory");
 var kafka = require("../routes/kafka/client");
+var config = require("./config/settings");
 //let case
 
 // Retreive all cases
@@ -255,5 +256,26 @@ router.route("/casesForDashboardByOrgID/:OrgID").get(function (req, res) {
     }
   });
 });
+
+router.route("/caseCat").get(function (req, res) {
+  console.log("End Point to hit NLP model to get case category");
+  console.log(req.body);
+
+  var clientServerOptions = {
+    uri: config.awsEndpoint,
+    body: JSON.stringify(req.body),
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+
+  request(clientServerOptions, function (error, response) {
+    if (error) {
+      res.json({ error: error });
+    } else {
+      res.json({ category: response.body });
+    }
+  });
 
 module.exports = router;

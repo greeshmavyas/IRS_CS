@@ -92,7 +92,6 @@ class CreateCaseModal extends Component {
                 <Modal.Body>
                 <form onSubmit={this.submitHandler}>
                       <div className="form-group">
-                        <strong>Information:</strong>
                         <textarea
                           type="text"
                           id="Information"

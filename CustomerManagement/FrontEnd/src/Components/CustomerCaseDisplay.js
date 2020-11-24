@@ -156,8 +156,14 @@ class CustomerCaseDisplay extends Component{
             if (response.status >= 500) {
                 throw new Error("Bad response from server");
             }
-            if(response.status == 200)
-              swal("Case is resolved")
+            if(response.status == 200){
+              swal("Case is resolved").then((resp)=>{
+                this.handleClose();
+                window.location.reload(false)
+              })
+             
+            }
+              
         }).catch(function (err) {
             console.log(err)
         });
@@ -185,14 +191,18 @@ class CustomerCaseDisplay extends Component{
                     >
                     <div className="flex">
                     <span>Case ID: {caseDetails.CaseID}</span>
-                    <span><Nav.Link  className="subscribeLink" onClick={this.subscribeOrUnsubscribe}>{this.getSubscribeMessage()}</Nav.Link></span>
+                    <span>
+                      {this.state.caseDetails.Status !== "Resolved" && <Nav.Link  className="subscribeLink" onClick={this.subscribeOrUnsubscribe}>{this.getSubscribeMessage()}</Nav.Link>}
+                    </span>
+                    {this.state.caseDetails.Status !== "Resolved" && (<Col><Button variant="info" onClick={this.closeCase} >Close Case</Button></Col>)}
                     </div>
+                    
                 </ModalHeader>
                 <ModalBody>
                     <Container>
                         <Row>
                             <Col><b>Description:</b></Col>
-                            {this.state.caseDetails.Status !== "Resolved" && (<Col><Button variant="info" onClick={this.closeCase} >Close Case</Button></Col>)}
+                            
                         </Row>
                         <Row>
                             <Col>{caseDetails.Information}</Col>
@@ -214,7 +224,7 @@ class CustomerCaseDisplay extends Component{
 
                     <Tabs activeKey={this.state.activeKey} id="casetab" onSelect={(k) => this.changeActiveKey(k)}>
                         <Tab eventKey="messages" title="Comments" tabClassName = "halfWidth" >
-                            <CustomerMessages messages={caseDetails.Messages} caseId={caseDetails.CaseID} changeActiveKey = {this.changeActiveKey} getHistory = {this.getHistory}/>
+                            <CustomerMessages messages={caseDetails.Messages} caseStatus = {caseDetails.Status} caseId={caseDetails.CaseID} changeActiveKey = {this.changeActiveKey} getHistory = {this.getHistory}/>
                         </Tab>
                         <Tab eventKey="history" title="Case History" tabClassName = "halfWidth" >
                             {this.state.isLoaded && <CustomerCaseHistory caseId = {this.state.caseId} history={this.state.history}/>}

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import "./App.css";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Home from "./Components/Home";
-import OrgLogin from "./Components/OrgLogin";
+import CustomerOrgLogin from "./Components/CustomerOrgLogin";
 import { withCookies } from "react-cookie";
 import CustomerDashboard from "./Components/CustomerDashboard";
 import OrgOwnerDashboard from "./Components/OrgOwnerDashboard";
@@ -19,8 +19,8 @@ function App() {
   return (
     <Router>
       <Switch>
-        <Route exact path="/" component={OrgLogin} />
-        <Route exact path="/login" render={() => <OrgLogin />}></Route>
+        <Route exact path="/" component={CustomerOrgLogin} />
+        <Route exact path="/login" render={() => <CustomerOrgLogin />}></Route>
         <Route exact path="/home" render={() => <Home />}></Route>
         <Route
           exact
