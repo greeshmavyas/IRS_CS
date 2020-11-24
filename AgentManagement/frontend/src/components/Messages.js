@@ -15,16 +15,7 @@ import {
 import { getAgentId } from "./utils";
   const {getUserType, getUserId, getUserName}  = require('./utils.js');
   const config = require("../config/settings.js");
-/*
-Format:
-[
-    {
-        UserType:"",
-        UserId:"",
-        Message:""
-    }
-]
-*/
+
   class Messages extends Component{
       //use message index as key while displaying
       constructor(props){
@@ -50,20 +41,24 @@ Format:
           })
       }
       render(){
-          if(this.state.messages && this.state.messages.length > 0){
-              let arr = [];
-              let {messages} = this.state;
-              for(let i=messages.length-1; i>=0; i--){
-                  let currMessage = messages[i];
-                  arr.push(<MessageComponent key={i} index={i} message={currMessage}/>)
-              }
-            return (<div className="panel"> 
-                <AddMessage updateMessage={this.updateMessage} caseId = {this.state.caseId} updateStatus = {this.props.updateStatus}/>
-                <div className="allMessages">{arr}</div>
-                </div>)
-          } else {
-              return  <AddMessage updateMessage={this.updateMessage} caseId = {this.state.caseId}/>
-          }
+          console.log("In messages render props")////////////////
+          console.log(this.props)
+        //   if(this.state.messages && this.state.messages.length > 0){
+        //       let arr = [];
+        //       let {messages} = this.state;
+        //       for(let i=messages.length-1; i>=0; i--){
+        //           let currMessage = messages[i];
+        //           arr.push(<MessageComponent key={i} index={i} message={currMessage}/>)
+        //       }
+
+        //     return (<div className="panel"> 
+        
+        //         <AddMessage updateMessage={this.updateMessage} caseId = {this.state.caseId} updateStatus = {this.props.updateStatus}/>
+        //         <div className="allMessages">{arr}</div>
+        //         </div>)
+        //   } else {
+              return  <AddMessage updateMessage={this.updateMessage} caseId = {this.state.caseId} updateStatus = {this.props.updateStatus}/>
+         // }
       }
   }
  
@@ -102,11 +97,13 @@ Format:
           let {caseId} = this.state;
           let userId = getAgentId();
           let userName = getUserName();
+          console.log(" befor props")
+          console.log(this.props)
           this.props.updateStatus();
           let {messageText} = this.state;
             if(messageText){
                  //axios.defaults.withCredentials = true;
-          let url = config.rooturl+'/addMessage/';
+          let url = config.rooturl+'/agentAddMessage/';
          
           let data = {
               "message" : messageText,

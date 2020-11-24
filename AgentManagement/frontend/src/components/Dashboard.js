@@ -160,7 +160,7 @@ class Dashboard extends Component {
     }
 
     let index = 0;
-    let maxResultsPerPage = 2;
+    let maxResultsPerPage = 6;
     let active = this.state.paginationActive;     // Initially active key
     let startIndex = 0 + (active - 1) * maxResultsPerPage;
     let endIndex = startIndex + maxResultsPerPage;
@@ -192,7 +192,7 @@ class Dashboard extends Component {
           return (
             <tr onClick={() => this.showModal1(ticket)}>
                   <td>{ticket.CaseID}</td>
-                  <td>{ticket.Date}</td>
+                  <td>{ticket.CreatedOn}</td>
                   <td>{ticket.Status}</td>
                   <td>{ticket.Information} </td>
                 </tr>
@@ -226,7 +226,7 @@ class Dashboard extends Component {
               </select>
             </div>
               <br></br>
-              
+              <div style={{ minHeight: '600px' }}>  
             <Table striped bordered hover>
               <tr>
                 <th style={{ width: '10rem' }}>ID</th>
@@ -238,7 +238,7 @@ class Dashboard extends Component {
               {casedetails}
               </tbody>
             </Table>
-
+            </div>
             {this.state.allCases.length > 0 ? (
               <div className="col-10">
               
@@ -248,7 +248,7 @@ class Dashboard extends Component {
                   showModal = {this.showModal} modal = {this.state.modal} caseDetails={this.state.viewcase}/>
                  </div> ) : null}
                  
-               <div className = "fixed-bottom" style = { {  height: '15%',  display: "flex",justifyContent: "center",alignItems: "center"}}>
+               <div  style = { {  height: '15%',  display: "flex",justifyContent: "center",alignItems: "center"}}>
                  {paginationBasic}
                 </div>
                 

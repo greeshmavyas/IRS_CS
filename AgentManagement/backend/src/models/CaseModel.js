@@ -1,4 +1,5 @@
-const mongoose = require("mongoose");
+
+ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 let Case = new Schema({
@@ -26,9 +27,8 @@ let Case = new Schema({
   CreatedOn: {
     type: String,
   },
-  Messages:[],
   Subscribers:[],
-  organisationID:""
+  OrganisationID:""
 });
 
 module.exports = mongoose.model("Case", Case);

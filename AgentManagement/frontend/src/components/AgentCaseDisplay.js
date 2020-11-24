@@ -57,7 +57,7 @@ class AgentCaseDisplay extends Component{
       });
     }
 
-    updateStatus = async() =>{
+    updateStatus = () =>{
       console.log("In updateStatus in case display")
       console.log(this.state.newStatus);
       let {caseDetails} = this.state
@@ -71,7 +71,7 @@ class AgentCaseDisplay extends Component{
           caseID: caseDetails.CaseID,
           status: this.state.newStatus
         }
-        await axios('http://' + config.hostname + ':' + config.backendPort + '/updateStatus',{
+        axios('http://' + config.hostname + ':' + config.backendPort + '/updateStatus',{
           method: 'post',
           data: data
         }).then((response) => {
@@ -140,7 +140,7 @@ class AgentCaseDisplay extends Component{
                         </Row>
                         <Row>
                             <Col>
-                              <select id="Status" value={caseDetails.Status} onChange={this.handleChange}>
+                              <select id="Status" defaultValue={caseDetails.Status} onChange={this.handleChange}>
                                 <option value="Assigned">Assigned</option>
                                 <option value="InProgress">In Progress</option>
                                 <option value="Resolved">Resolved</option>

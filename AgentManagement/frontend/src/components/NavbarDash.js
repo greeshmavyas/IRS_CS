@@ -17,7 +17,7 @@ class NavbarDash extends Component {
            className="d-inline-block align-top"/>
            
           <a className="navbar-brand" href="/AgentDashboard">
-            IRS Dashboard
+            Dashboard
           </a>
           <button
             className="navbar-toggler"
