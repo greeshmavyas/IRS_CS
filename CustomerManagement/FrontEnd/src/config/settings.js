@@ -5,5 +5,5 @@ module.exports = {
   frontendPort: 3000,
   //remember to put slash at the end of URL
   rooturl: "http://localhost:4000/irs",
-  awsLambda: "https://ge1wnn69rk.execute-api.us-east-2.amazonaws.com/testFunc",
+  awsLambda: "http://ec2-52-13-119-241.us-west-2.compute.amazonaws.com:5000/",
 };
