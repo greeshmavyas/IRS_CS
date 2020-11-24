@@ -33,7 +33,7 @@ class CreateCaseModal extends Component {
 
   submitHandler = (e) => {
     e.preventDefault();
-    var cid = Math.floor(Math.random() * 10000);
+    /*var cid = Math.floor(Math.random() * 10000);
     const data = {
       UserID: getCustomerId(),
       OrganisationID: getOrganisationId(),
@@ -61,18 +61,21 @@ class CreateCaseModal extends Component {
           message: "Can not create case",
         });
         console.log("Error is:", error);
-      });
+      });*/
 
       //calling Lambda func to get category
-      axios.get(config.awsLambda).then((response) => {
+      let nlpData = {
+        "case": this.state.Information
+      }
+      axios.defaults.withCredentials = true;
+      axios({
+        method: 'get',
+        url: config.awsLambda,
+        params: nlpData
+      }).then((response)=>{
         console.log(response);
-        if(response){
-          const category = response;
-          //TODO: call Kafka API
-
-        }
-      }).catch((error)=>{
-        console.log(error);
+      }).catch((err)=>{
+        console.log(err);
       })
   };
 
