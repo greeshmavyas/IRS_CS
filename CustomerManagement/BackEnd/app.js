@@ -24,14 +24,16 @@ var connStr =
   "/" +
   config.database_name;
 console.log(connStr);
-mongoose.connect(connStr, { useNewUrlParser: true, poolSize: 10 }, function (
-  err
-) {
-  if (err) throw err;
-  else {
-    console.log("Successfully connected to MongoDB");
+mongoose.connect(
+  connStr,
+  { useNewUrlParser: true, poolSize: 10 },
+  function (err) {
+    if (err) throw err;
+    else {
+      console.log("Successfully connected to MongoDB");
+    }
   }
-});
+);
 
 //server configuration
 var basePath = "/irs";
@@ -70,6 +72,7 @@ app.use(morgan("dev"));
 // Routes and Backend Funcioncalities
 var caseCreationRoute = require("./src/routes/customerIssueCreation");
 var notificationAndMessages = require("./src/routes/notificationAndMessages");
+var customerDetailsRoute = require("./src/routes/customerDetailRoute");
 
 app.use(express.static("public"));
 app.use(express.static("uploads"));
@@ -90,6 +93,7 @@ app.use(bodyParser.json());
 
 app.use(basePath, caseCreationRoute);
 app.use(basePath, notificationAndMessages);
+app.use(basePath, customerDetailsRoute);
 
 // Execute App
 app.listen(config.backend_port, () => {
