@@ -123,7 +123,7 @@ router.route("/history/:userID/:caseID").get(function (req, res) {
         if (err ||!resCase) {
           console.log(err);
         } else {
-          res.json(resCase);
+          res.status(200).json(resCase);
         }
       });
       

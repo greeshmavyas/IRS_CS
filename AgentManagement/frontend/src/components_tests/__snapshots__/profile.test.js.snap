@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`test case in update profile should render NavbarDash component correctly 1`] = `ShallowWrapper {}`;
+
+exports[`test case in update profile should render Sidebar component correctly 1`] = `ShallowWrapper {}`;
+
+exports[`test cases in update profile should render NavbarDash component correctly 1`] = `ShallowWrapper {}`;
+
+exports[`test cases in update profile should render Sidebar component correctly 1`] = `ShallowWrapper {}`;

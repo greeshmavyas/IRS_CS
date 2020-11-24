@@ -10,7 +10,7 @@ configure({ adapter: new Adapter() });
 import NavbarDash from "../components/NavbarDash";
 import Sidebar from '../components/Sidebar'
 
-describe('Calling AgentCaseDisplay component correctly', () => {
+describe('Calling Dashboard components correctly', () => {
     it('should render AgentCaseDisplay component correctly', () => {
       const component = shallow(<AgentCaseDisplay />);
       expect(component).toMatchSnapshot();
