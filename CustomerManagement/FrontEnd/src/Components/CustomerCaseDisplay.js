@@ -15,7 +15,7 @@ import CustomerCaseHistory from './CustomerCaseHistory';
 import CustomerMessages from './CustomerMessages';
 import {} from "./utils.js";
 import swal from 'sweetalert'
-import {getEmailId} from './utils';
+import {getEmailId, getCustomerId} from './utils';
 
 const config = require("../config/settings");
 
@@ -137,9 +137,33 @@ class CustomerCaseDisplay extends Component{
       })
     }
 
+    closeCase = () =>{
+      let caseId = this.state.caseDetails.CaseID;
+      debugger;
+      let customerId = getCustomerId();
+      let data = {
+        "CaseID": caseId,
+        "Status":"Resolved"
+      }
+      let url = config.rooturl+"/status/"+customerId
+      axios({
+        method: 'post',
+        url,
+        data,
+        config: { headers: { 'Content-Type': 'application/json' } },
+    })
+        .then((response) => {
+            if (response.status >= 500) {
+                throw new Error("Bad response from server");
+            }
+            if(response.status == 200)
+              swal("Case is resolved")
+        }).catch(function (err) {
+            console.log(err)
+        });
+    }
+
     render(){
-      //console.log("in casedisplay render method..state is..")
-      //console.log(this.state)
        let {caseDetails} = this.state;
        const closeBtn = (
         <button className="close" onClick={() => this.props.showModal()}>
@@ -168,6 +192,7 @@ class CustomerCaseDisplay extends Component{
                     <Container>
                         <Row>
                             <Col><b>Description:</b></Col>
+                            {this.state.caseDetails.Status !== "Resolved" && (<Col><Button variant="info" onClick={this.closeCase} >Close Case</Button></Col>)}
                         </Row>
                         <Row>
                             <Col>{caseDetails.Information}</Col>
