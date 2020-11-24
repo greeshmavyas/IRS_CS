@@ -4,7 +4,7 @@ var app = express();
 app.set('view engine', 'ejs');
 
 var agentDetails = require('./../models/agentDetails');
-var cases = require('../models/cases');
+var cases = require('../models/CaseModel');
 
 router = express.Router();
 var exports = module.exports = {};

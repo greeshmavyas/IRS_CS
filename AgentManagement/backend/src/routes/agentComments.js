@@ -1,10 +1,17 @@
-router.route('/addMessage').post(function(req, res) {
+const express = require('express');
+const app = express();
+const cors = require('cors');
+const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+const nodemailer = require("nodemailer");
+const genericApis = require("../genericApis")
+var router = express.Router();
+let Case = require("../models/CaseModel");
+
+router.route('/agentAddMessage').post(function(req, res) {
     console.log("End Point to add message");
     let {message, caseId, userType, userId, userName, caseStatus} = req.body;
-    
-    //console.log(caseId);
-    //console.log(message);
-    //console.log(userId+".."+userType);
+
     if(!caseId || !message || !userType || !userId || !userName){
         res.status(200).json({ status: false, message: "message cannot be added!" });
     } else {
@@ -16,7 +23,7 @@ router.route('/addMessage').post(function(req, res) {
             } else {
                 if(result){
                    //TODO: send true status to client after adding value in history
-                    genericApis.addHistory(userId, caseId, message +" (added by " + userType +")")
+                    genericApis.addHistory(userId, caseId, message +" (added by " + userName +")")
 
                     let subject = "Case "+caseId+" has been updated";
                     let body = "The " + userType + ":" + userId + " posted the following message: \n'" + message + "'";
@@ -44,11 +51,9 @@ router.post('/updateStatus', function (req, res) {
     console.log(req.body);
 
     let { caseID, status } = req.body;
-
-   
     console.log(caseID)
 
-    Case.findOneAndUpdate({"_id": caseID } ,
+    Case.findOneAndUpdate({"CaseID": caseID } ,
         { $set: { "Status":status} },  (err, result) => {
             if (err) {
                 console.log(err);

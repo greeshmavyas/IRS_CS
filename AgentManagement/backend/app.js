@@ -5,7 +5,7 @@ const cors = require("cors");
 const port = process.env.PORT || 3001;
 
 const agentDetails = require('./src/routes/agentDetails')
-const caseDetails = require('./src/routes/notificationsAndMessages')
+const caseDetails = require('./src/routes/agentComments')
 const mongoose = require("mongoose");
 var config = require('./config/settings');
 var connStr = config.mongoDB_connection_string;
