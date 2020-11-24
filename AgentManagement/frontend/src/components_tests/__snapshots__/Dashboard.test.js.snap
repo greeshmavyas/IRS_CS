@@ -5,3 +5,9 @@ exports[`Calling AgentCaseDisplay component correctly should render AgentCaseDis
 exports[`Calling AgentCaseDisplay component correctly should render NavbarDash component correctly 1`] = `ShallowWrapper {}`;
 
 exports[`Calling AgentCaseDisplay component correctly should render Sidebar component correctly 1`] = `ShallowWrapper {}`;
+
+exports[`Calling Dashboard components correctly should render AgentCaseDisplay component correctly 1`] = `ShallowWrapper {}`;
+
+exports[`Calling Dashboard components correctly should render NavbarDash component correctly 1`] = `ShallowWrapper {}`;
+
+exports[`Calling Dashboard components correctly should render Sidebar component correctly 1`] = `ShallowWrapper {}`;

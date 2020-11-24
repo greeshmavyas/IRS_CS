@@ -9,7 +9,7 @@ import { shallow } from 'enzyme';
 configure({ adapter: new Adapter() });
 
 
-describe('test cases in update profile',() =>{
+describe('test case in update profile',() =>{
     test('renders list-items, to display button', () => {
         const wrapper = shallow(<Profile />);
         expect(wrapper.find('UpdateButton')).toBeDefined();
