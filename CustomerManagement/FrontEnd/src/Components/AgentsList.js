@@ -3,7 +3,8 @@ import axios from 'axios';
 import { getOrganizationID, getOrgCategories } from './utils.js'
 import {Button, Col, Row, Table, Form, Modal} from 'react-bootstrap'
 import  config from '../config/settings'
-import NavbarDash from "./NavbarDash";
+//import NavbarDash from "./NavbarDash";
+import AgentsListNavbarDash from "./AgentsListNavbarDash"
 import Sidebar from './Sidebar'
 import swal from 'sweetalert'
 import NoOrgFound from './NoOrgFound.js';
@@ -63,7 +64,7 @@ class AgentsList extends Component{
        
         let orgId = getOrganizationID()
         if(!orgId){
-            return <NoOrgFound/>
+            return <div style={{ marginTop: '6rem' }}><NoOrgFound/></div>
         }
         
         let getDisplayText = () =>{
@@ -107,14 +108,14 @@ class AgentsList extends Component{
             console.log(agentsList);
             return(
                 <div>
-                     <NavbarDash />
+                     <AgentsListNavbarDash />
                     <div className="row">
                         <div className="col-2">
                             <Sidebar />
                         </div>
                     </div>
                    
-                    <div className="container col-8">
+                    <div className="container col-8"  style={{ marginTop: '6rem' }}>
                         <Row>
                             <Col><h4> {getDisplayText()}</h4></Col>
                             <Col><AddAgent/></Col>
