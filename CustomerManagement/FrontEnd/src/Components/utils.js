@@ -61,3 +61,17 @@ export const getOrgCategories = function () {
   else orgCategories = orgCategories.split(",");
   return orgCategories;
 };
+
+export const removeOrgId = (category) =>{
+  console.log("in remove orgId")
+  console.log(category);
+  let arr = category.split("_");
+  if(arr.length > 0)
+      return arr[1];
+  else
+      return arr[0];
+}
+
+export const addOrgId= (category) =>{
+  return getOrganizationID()+"_"+category;
+}

@@ -1,6 +1,6 @@
 import React, {Component, useState} from 'react';
 import axios from 'axios';
-import { getOrganizationID, getOrgCategories } from './utils.js'
+import { getOrganizationID, getOrgCategories, addOrgId, removeOrgId } from './utils.js'
 import {Button, Col, Row, Table, Form, Modal} from 'react-bootstrap'
 import  config from '../config/settings'
 //import NavbarDash from "./NavbarDash";
@@ -48,6 +48,7 @@ class AgentsList extends Component{
     }
 
     processArray(arr){
+        debugger;
         let categoryStr = ""
         for(let i=0; i<arr.length; i++){
             let elem = arr[i]
@@ -141,7 +142,9 @@ class AddAgent extends Component{
 
     handleClose = () => {
         this.setState({
-            show: false
+            show: false,
+            categories:[],
+            currCategoryVal:""
         })
     }
 
@@ -194,9 +197,9 @@ class AddAgent extends Component{
         }
 
         let orgId = getOrganizationID();
-        categories = categories.map((cat) => {
-            return orgId+"_"+cat
-        })
+        /*categories = categories.map((cat) => {
+            return addOrgId(cat)
+        })*/
           await axios({
               method: 'post',
               url: config.rooturl+"/addAgent",       
@@ -244,7 +247,7 @@ class AddAgent extends Component{
     renderNewCategories=()=>{
         let categories = this.state.categories
         categories = categories.map((cat,id)=>{
-        return <div key={id} className="categoryCard"><span>{cat}</span> &nbsp; {this.renderCloseBtn(cat)}</div>
+        return <div key={id} className="categoryCard"><span>{removeOrgId(cat)}</span> &nbsp; {this.renderCloseBtn(cat)}</div>
         })
         let arr = []
         let len = categories.length;
@@ -264,7 +267,7 @@ class AddAgent extends Component{
         orgCategories = ["", ...orgCategories]
         orgCategories = orgCategories.map((cat, id)=>{
             return (
-                <option value={cat} key={id}> {cat}</option>
+                <option value={cat} key={id}> {removeOrgId(cat)}</option>
             )
         })
         return orgCategories
@@ -296,7 +299,7 @@ class AddAgent extends Component{
                         </Form.Row>
                         <br/>
                         <Form.Row>
-                        <Form.Control name="password" placeholder="Password"  />
+                        <Form.Control name="password" type="password" placeholder="Password"  />
                         </Form.Row>
                         <br/>
                         <Form.Row>

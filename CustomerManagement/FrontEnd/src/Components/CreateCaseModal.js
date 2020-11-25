@@ -108,7 +108,7 @@ class CreateCaseModal extends Component {
             UserID: getCustomerId(),
             OrganisationID: getOrganisationId(),
             CaseID: cid.toString(),
-            Category: category+"_"+getOrganisationId(),
+            Category: getOrganisationId()+"_"+category,
             Information,
             Status: "New",
             ResolutionComments: ""

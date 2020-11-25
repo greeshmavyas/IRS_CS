@@ -28,11 +28,11 @@ class NavbarDash extends Component {
             <ul className="navbar-nav ml-auto">
               <li className="nav-item">
                 <p className="nav-link" >
-                  Hi, {getName()}
+                   {getName()}
                 </p>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="/" onClick={this.handleLogout}>
+                <a className="nav-link" href="/OrgOwnerLogin" onClick={this.handleLogout}>
                   Logout
                 </a>
               </li>

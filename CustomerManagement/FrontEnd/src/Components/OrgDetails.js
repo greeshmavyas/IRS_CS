@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import axios from 'axios';
-import { getOrganizationID } from './utils.js'
+import { getOrganizationID, addOrgId, removeOrgId } from './utils.js'
 import {Button, Card, Form, Col, Row} from 'react-bootstrap'
 import  config from '../config/settings'
 import NavbarDash from "./NavbarDash";
@@ -29,7 +29,8 @@ class OrgDetails extends Component{
     }
     updateCategoryInState =()=>{
         let {newCategories, currCategoryVal, orgCategories} = this.state 
-
+        //currCategoryVal  = getOrganizationID()+"_"+currCategoryVal;
+        currCategoryVal = addOrgId(currCategoryVal);
         if(newCategories.indexOf(currCategoryVal) !== -1 || orgCategories.indexOf(currCategoryVal) !== -1){
             swal("Category already exists")
             this.setState({
@@ -68,7 +69,7 @@ class OrgDetails extends Component{
     renderNewCategories=()=>{
         let newCategories = this.state.newCategories
         newCategories = newCategories.map((cat,id)=>{
-        return <div key={id} className="categoryCard"><span>{cat}</span> &nbsp; {this.renderCloseBtn(cat)}</div>
+        return <div key={id} className="categoryCard"><span>{removeOrgId(cat)}</span> &nbsp; {this.renderCloseBtn(cat)}</div>
         })
         let arr = []
         let len = newCategories.length;
@@ -76,7 +77,6 @@ class OrgDetails extends Component{
         arr.push(<div className="categoryFlex" key={i}>{newCategories[i]}{i+1<len ? newCategories[i+1]:""}</div>)
         }
         return arr;
-        //return <div className="categoryFlex">{newCategories}</div>
     }
 
     submitCategories = () =>{
@@ -103,7 +103,7 @@ class OrgDetails extends Component{
               if (response.data && response.data.responseMessage) {
                   swal(response.data.responseMessage)
                   this.setState({
-                      orgCategories: [...this.state.orgCategories, newCategories],
+                      orgCategories: [...this.state.orgCategories, ...newCategories],
                       newCategories:[]
                   })
                   localStorage.setItem("orgCategories",this.state.orgCategories);
@@ -115,11 +115,12 @@ class OrgDetails extends Component{
     }
 
     render(){
+        debugger;
         if(this.state.orgDetails){
             let categories = this.state.orgCategories
             let catStr = "";
             for(let cat of categories){
-                catStr = catStr + cat +" ,"
+                catStr = catStr + removeOrgId(cat) +" ,"
             }
             if(catStr.charAt(catStr.length-1) == ',')
                 catStr = catStr.substr(0,catStr.length-1);
