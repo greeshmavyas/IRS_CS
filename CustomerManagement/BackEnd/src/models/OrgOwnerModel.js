@@ -9,7 +9,7 @@ let OrgOwner = new Schema({
     type: String,
   },
   Email: {
-    type: Array,
+    type: String,
   },
   Username: {
     type: String,
