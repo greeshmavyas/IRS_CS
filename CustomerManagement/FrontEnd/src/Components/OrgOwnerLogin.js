@@ -7,6 +7,7 @@ import axios from "axios";
 import config from "../config/settings";
 import { Redirect } from "react-router";
 import { getUserName } from "./utils";
+import swal from "sweetalert";
 
 class OrgOwnerLogin extends Component {
   constructor() {
@@ -33,9 +34,14 @@ class OrgOwnerLogin extends Component {
 
   submitLogin = (e) => {
     console.log("in submit Login");
+    let {userName, password} = this.state;
+    if(!userName || !password){
+      swal("Please enter all the details");
+      return;
+    }
     const data = {
-      Username: this.state.userName,
-      Password: this.state.password,
+      Username: userName,
+      Password: password,
     };
     console.log("data is..");
     console.log(data);

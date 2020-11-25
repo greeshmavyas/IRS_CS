@@ -81,6 +81,10 @@ class OrgDetails extends Component{
 
     submitCategories = () =>{
         let {newCategories} = this.state
+        if(!newCategories || newCategories.length == 0){
+            swal("Please enter new categories");
+            return;
+        }
         let data = {
             OrgID: getOrganizationID(),
             Category: newCategories

@@ -6,6 +6,7 @@ import Button from 'react-bootstrap/Button'
 import axios from 'axios';
 import config from '../config/settings'
 import { Redirect } from 'react-router'
+import swal from "sweetalert";
 
 class OrgOwnerReg extends Component {
   constructor() {
@@ -39,20 +40,24 @@ class OrgOwnerReg extends Component {
       })
   }
   passwordChangeHandler = (e) => {
-    debugger;
     this.setState({
       password: e.target.value
     })
   }
   submitSignUp = (e) => {
     console.log("in submit SignUp")
+    let {firstName, lastName, userName, email, password, zipCode} = this.state;
+    if(!firstName || !lastName || !userName || !email || !password || !zipCode){
+      swal("Please enter all the details")
+      return;
+    }
     const data = {
-      FirstName: this.state.firstName,
-      Lastname: this.state.lastName,
-      Username:this.state.userName,
-      Email:this.state.email,
-      Password:this.state.password,
-      ZipCode:this.state.zipCode
+      FirstName: firstName,
+      Lastname: lastName,
+      Username:userName,
+      Email:email,
+      Password:password,
+      ZipCode:zipCode
     }
     console.log("data is..")
     console.log(data);

@@ -33,14 +33,18 @@ class OrgRegistration extends Component{
 
     submitRegistration = (e) => {
         console.log("in submit org registration")
-        //let categoryStr = this.state.caseCategories+",others";
+        let {orgName, newCategories, domain} = this.state;
+        if(!orgName || !newCategories || !domain || newCategories.length == 0){
+          swal("Please enter all the details");
+          return;
+        }
 
         const data = {
           //TODO: put orgownerId
           token : getOrgOwnerToken(),
-          OrgName: this.state.orgName,
-          Categories: this.state.newCategories,
-          Domain: this.state.domain
+          OrgName: orgName,
+          Categories: newCategories,
+          Domain: domain
         }
         console.log("data is..")
         console.log(data);

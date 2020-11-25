@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import axios from "axios";
 import {Button, Modal} from "react-bootstrap";
 import {getCustomerId, getOrganisationId} from './utils';
+import swal from 'sweetalert'
 const config = require("../config/settings");
 
 class CreateCaseModal extends Component {
@@ -33,6 +34,12 @@ class CreateCaseModal extends Component {
 
   submitHandler = async (e) => {
     e.preventDefault();
+    let {Information} = this.state;
+    if(!Information){
+      swal("Please enter information");
+      return;
+    }
+
     /*var cid = Math.floor(Math.random() * 10000);
     const data = {
       UserID: getCustomerId(),
@@ -66,7 +73,7 @@ class CreateCaseModal extends Component {
       //calling Lambda func to get category
       var cid = Math.floor(Math.random() * 10000);
       let nlpData = {
-        "case": this.state.Information
+        "case": Information
       }
       /*axios.defaults.withCredentials = true;
       axios({
@@ -102,7 +109,7 @@ class CreateCaseModal extends Component {
             OrganisationID: getOrganisationId(),
             CaseID: cid.toString(),
             Category: category+"_"+getOrganisationId(),
-            Information: this.state.Information,
+            Information,
             Status: "New",
             ResolutionComments: ""
           }

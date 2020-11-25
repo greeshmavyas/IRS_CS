@@ -5,12 +5,14 @@ import { Redirect } from "react-router";
 import config from "../config/settings.js"
 import axios from "axios";
 import Home from "./Home.js"
+import swal from 'sweetalert'
 
 class CustomerOrgLogin extends Component {
   constructor() {
     super();
     this.state = {
       userId: "",
+      password:"",
       //organisationId: "",
       //userName:"",
       //emailId:"",
@@ -27,12 +29,15 @@ class CustomerOrgLogin extends Component {
 
   loginHandler = (evt) => {
     evt.preventDefault();
-    let {customerId} = this.state;
+    let {customerId, password} = this.state;
+    if(!customerId || !password ){
+      swal("Please enter all the fields")
+      return;
+    }
     axios({
       method: 'get',
       url: config.rooturl+"/details/"+customerId
     }).then((resp)=>{
-      debugger;
       console.log(resp);
       if(resp && resp.data && resp.data.length > 0){
         let details = resp.data[0];
@@ -49,7 +54,6 @@ class CustomerOrgLogin extends Component {
   };
 
   render() {
-    debugger;
     if(this.state.loggedIn){
       return <Home/>
     }
@@ -87,6 +91,7 @@ class CustomerOrgLogin extends Component {
                         className="form-control form-control-lg"
                         placeholder="Password"
                         name="password"
+                        onChange={this.onChange}
                       />
                     </div>
 

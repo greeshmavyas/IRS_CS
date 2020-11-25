@@ -132,12 +132,14 @@ class CustomerDashboard extends Component {
           else {
             this.setState({ allCases: [] });
           }
+          debugger;
           this.setState({
             isLoading: false
           })
         })
         .catch(error => {
           console.log(error);
+          debugger;
           this.setState({ 
             allCases: [] ,
             isLoading: false
@@ -153,6 +155,22 @@ class CustomerDashboard extends Component {
 
 
   render() {
+    console.log("customer dashboard");
+    console.log(this.state)
+    debugger;
+    if(this.state.isLoading){
+      return <div><CustomerNavbarDash/></div>
+    } else if(!this.state.allCases || this.state.allCases.length == 0){
+      return (
+        <div>
+          <CustomerNavbarDash/>
+          <div className="container col-9 flexBox offset-md-3" style={{ marginTop: "5em" }}>
+          <h4 > { "No new cases to display!"}</h4> &nbsp; &nbsp; &nbsp;
+          <CreateCaseModal/>
+          </div>
+        </div>
+      )
+    }
     console.log("status");
     console.log(this.state.status);
     var casedetails;
@@ -270,10 +288,6 @@ class CustomerDashboard extends Component {
               
               
           </div>
-        
-              
-        
-           
       </div>
     );
   }

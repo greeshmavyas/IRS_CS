@@ -178,8 +178,20 @@ class AddAgent extends Component{
         console.log(evt.target);
         var formData = new FormData(evt.target);
         //axios.defaults.withCredentials = true;
-        //let categories = formData.get('categories').split(",");
+
         let {categories} = this.state;
+        let email = formData.get('email');
+        let userName = formData.get('userName');
+        let firstName = formData.get('firstName');
+        let lastName = formData.get('lastName');
+        let password = formData.get('password');
+        let phoneNumber = formData.get('phoneNumber');
+
+        if(!email || !userName || !firstName || !lastName || !categories || categories.length == 0){
+            swal("Please enter all the details");
+            return;
+        }
+
         let orgId = getOrganizationID();
         categories = categories.map((cat) => {
             return orgId+"_"+cat
@@ -187,8 +199,8 @@ class AddAgent extends Component{
           await axios({
               method: 'post',
               url: config.rooturl+"/addAgent",       
-              data: { "OrgId": orgId, "Email": formData.get('email'), "Username": formData.get('userName'), "FirstName" : formData.get('firstName'), 
-              "LastName": formData.get('lastName'), "Categories": categories
+              data: { "OrgId": orgId, "Email": email, "Username": userName, "FirstName" : firstName, 
+              "LastName": lastName, "Categories": categories, "Password": password, "PhoneNumber": phoneNumber
              },
               config: { headers: { 'Content-Type': 'multipart/form-data' } }
           })
@@ -280,6 +292,14 @@ class AddAgent extends Component{
                         <br/>
                         <Form.Row>
                         <Form.Control name="userName" placeholder="User Name"  />
+                        </Form.Row>
+                        <br/>
+                        <Form.Row>
+                        <Form.Control name="password" placeholder="Password"  />
+                        </Form.Row>
+                        <br/>
+                        <Form.Row>
+                        <Form.Control name="phoneNumber" placeholder="Phone Number"  />
                         </Form.Row>
                         <br/>
                         <Form.Row>
