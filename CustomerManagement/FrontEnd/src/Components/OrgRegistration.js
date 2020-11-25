@@ -62,6 +62,7 @@ class OrgRegistration extends Component{
                 registered: true
               })
               localStorage.setItem("orgId", response.data.org._id)
+              localStorage.setItem("orgCategories", response.data.Categories);
               alert(response.data.responseMessage)
             } else {
              alert("Cannot register the organization")
@@ -123,7 +124,13 @@ class OrgRegistration extends Component{
       newCategories = newCategories.map((cat,id)=>{
       return <div key={id} className="categoryCard"><span>{cat}</span> &nbsp; {this.renderCloseBtn(cat)}</div>
       })
-      return <div className="flex">{newCategories}</div>
+      let arr = []
+        let len = newCategories.length;
+        for(let i=0; i<len; i = i+2){
+        arr.push(<div className="categoryFlex" key={i}>{newCategories[i]}{i+1<len ? newCategories[i+1]:""}</div>)
+        }
+      //return <div className="categoryFlex">{newCategories}</div>
+      return arr;
     }
 
     render(){
@@ -171,8 +178,6 @@ class OrgRegistration extends Component{
                   <Form.Row>
                     <Col>{this.renderNewCategories()}</Col>
                   </Form.Row>
-                  <br/>
-                  <br></br>
                   <Button className="btn btn-info btn-block mt-4" onClick={this.submitRegistration} >Register</Button>
 
                   

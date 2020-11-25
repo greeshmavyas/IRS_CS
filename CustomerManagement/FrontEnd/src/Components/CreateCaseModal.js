@@ -31,7 +31,7 @@ class CreateCaseModal extends Component {
     })
   }
 
-  submitHandler = (e) => {
+  submitHandler = async (e) => {
     e.preventDefault();
     /*var cid = Math.floor(Math.random() * 10000);
     const data = {
@@ -64,19 +64,64 @@ class CreateCaseModal extends Component {
       });*/
 
       //calling Lambda func to get category
+      var cid = Math.floor(Math.random() * 10000);
       let nlpData = {
         "case": this.state.Information
       }
-      axios.defaults.withCredentials = true;
+      /*axios.defaults.withCredentials = true;
       axios({
         method: 'get',
-        url: config.awsLambda,
-        params: nlpData
+        url: config.rooturl+"/getCaseCategory",
+        params: nlpData,
+        config: { headers: { 'Content-Type': 'application/json' } }
       }).then((response)=>{
         console.log(response);
+        if(response && response.data){
+          let category = response.data.category;
+
+        }
       }).catch((err)=>{
         console.log(err);
-      })
+      })*/
+
+      try{
+        let nlpResp = await axios({
+                    method: 'get',
+                    url: config.rooturl+"/caseCategory",
+                    params: nlpData,
+                    config: { headers: { 'Content-Type': 'application/json' } }
+                  });
+        console.log("NLP response");
+        console.log(nlpResp);
+        if(nlpResp && nlpResp.data){
+          let category = nlpResp.data.category;
+          if(!category)
+            category = "Others"
+          const data = {
+            UserID: getCustomerId(),
+            OrganisationID: getOrganisationId(),
+            CaseID: cid.toString(),
+            Category: category+"_"+getOrganisationId(),
+            Information: this.state.Information,
+            Status: "New",
+            ResolutionComments: ""
+          }
+          let addResp = axios.post(config.rooturl + "/add", data)
+          if (addResp.status === 200) {
+            this.setState({
+              Response: "Case Created Successfully CaseID: " + cid.toString(),
+              Information: "",
+            });
+          } else {
+            this.setState({
+              Response: "Case cannot be created"
+            });
+          }
+        }
+
+      }catch(err){
+        console.log(err);
+      }
   };
 
   render() {

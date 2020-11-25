@@ -38,11 +38,12 @@ class OrgOwnerReg extends Component {
           [name]: str
       })
   }
-  /*passwordChangeHandler = (e) => {
+  passwordChangeHandler = (e) => {
+    debugger;
     this.setState({
       password: e.target.value
     })
-  }*/
+  }
   submitSignUp = (e) => {
     console.log("in submit SignUp")
     const data = {
@@ -50,7 +51,7 @@ class OrgOwnerReg extends Component {
       Lastname: this.state.lastName,
       Username:this.state.userName,
       Email:this.state.email,
-      Password:this.state.Password,
+      Password:this.state.password,
       ZipCode:this.state.zipCode
     }
     console.log("data is..")
@@ -133,7 +134,7 @@ class OrgOwnerReg extends Component {
                         </Form.Row>
                         <br/>
                         <Form.Row>
-                        <Form.Control name="password" type="password" placeholder="Password" onChange={this.onChangeHandler} />
+                        <Form.Control name="password" type="password" placeholder="Password" onChange={this.passwordChangeHandler} />
                         </Form.Row>
                         <br/>
                         <Form.Row>

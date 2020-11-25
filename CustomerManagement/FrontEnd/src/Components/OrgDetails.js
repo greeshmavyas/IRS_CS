@@ -70,7 +70,13 @@ class OrgDetails extends Component{
         newCategories = newCategories.map((cat,id)=>{
         return <div key={id} className="categoryCard"><span>{cat}</span> &nbsp; {this.renderCloseBtn(cat)}</div>
         })
-        return <div className="flex">{newCategories}</div>
+        let arr = []
+        let len = newCategories.length;
+        for(let i=0; i<len; i = i+2){
+        arr.push(<div className="categoryFlex" key={i}>{newCategories[i]}{i+1<len ? newCategories[i+1]:""}</div>)
+        }
+        return arr;
+        //return <div className="categoryFlex">{newCategories}</div>
     }
 
     submitCategories = () =>{
@@ -93,9 +99,10 @@ class OrgDetails extends Component{
               if (response.data && response.data.responseMessage) {
                   swal(response.data.responseMessage)
                   this.setState({
-                      newCategories:[],
-                      orgCategories: [...this.state.orgCategories, newCategories]
+                      orgCategories: [...this.state.orgCategories, newCategories],
+                      newCategories:[]
                   })
+                  localStorage.setItem("orgCategories",this.state.orgCategories);
               }
 
             }).catch(error => {

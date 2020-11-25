@@ -233,8 +233,17 @@ class AddAgent extends Component{
         categories = categories.map((cat,id)=>{
         return <div key={id} className="categoryCard"><span>{cat}</span> &nbsp; {this.renderCloseBtn(cat)}</div>
         })
-        return <div className="flex">{categories}</div>
+        let arr = []
+        let len = categories.length;
+        for(let i=0; i<len; i = i+3){
+        arr.push(<div className="categoryFlex" key={i}>
+            {categories[i]}{i+1<len ? categories[i+1]:""}{i+2<len ? categories[i+2]:""}
+        </div>)
+        }
+      return arr;
+        //return (<div className="categoryFlex">{categories}</div>)
     }
+
     
     renderCategoryDropdown = () =>{
         let orgCategories = getOrgCategories();

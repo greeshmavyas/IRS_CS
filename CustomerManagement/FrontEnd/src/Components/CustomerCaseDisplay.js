@@ -29,7 +29,7 @@ class CustomerCaseDisplay extends Component{
             history:"",
             caseId:"",
             isLoaded: false,
-            activeKey: "messages"
+            activeKey: this.showMessages(props.caseDetails) ? "messages": "history"
         }
     }
   
@@ -47,7 +47,7 @@ class CustomerCaseDisplay extends Component{
           caseDetails: this.props.caseDetails,
           caseId: this.props.caseId,
           isLoaded: false,
-          activeKey: "messages"
+          activeKey: this.showMessages(this.props.caseDetails) ? "messages": "history"
         })
         console.log("isLoaded is::",this.state.isLoaded)
         this.updateSubscribed(this.props.caseDetails)
@@ -168,6 +168,11 @@ class CustomerCaseDisplay extends Component{
             console.log(err)
         });
     }
+    showMessages = (caseDetails) =>{
+     // let {caseDetails} = this.state;
+      console.log("showMessages:"+ !(caseDetails.Status && caseDetails.Status.toLowerCase() == 'resolved'))
+      return !(caseDetails.Status && caseDetails.Status.toLowerCase() == 'resolved')
+    }
 
     render(){
        let {caseDetails} = this.state;
@@ -223,9 +228,9 @@ class CustomerCaseDisplay extends Component{
                     <br></br>
 
                     <Tabs activeKey={this.state.activeKey} id="casetab" onSelect={(k) => this.changeActiveKey(k)}>
-                        <Tab eventKey="messages" title="Comments" tabClassName = "halfWidth" >
-                            <CustomerMessages messages={caseDetails.Messages} caseStatus = {caseDetails.Status} caseId={caseDetails.CaseID} changeActiveKey = {this.changeActiveKey} getHistory = {this.getHistory}/>
-                        </Tab>
+                       { this.showMessages(caseDetails) && <Tab eventKey="messages" title="Comments" tabClassName = "halfWidth" >
+                            <CustomerMessages messages={caseDetails.Messages} caseId={caseDetails.CaseID} changeActiveKey = {this.changeActiveKey} getHistory = {this.getHistory}/>
+                        </Tab>}
                         <Tab eventKey="history" title="Case History" tabClassName = "halfWidth" >
                             {this.state.isLoaded && <CustomerCaseHistory caseId = {this.state.caseId} history={this.state.history}/>}
                         </Tab>

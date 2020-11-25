@@ -36,8 +36,7 @@ Format:
           }
           this.state={
               messages:getVal(props.messages),
-              caseId: props.caseId,
-              caseStatus: props.caseStatus
+              caseId: props.caseId
           }
       }
       updateMessage = (newMessage) =>{
@@ -48,7 +47,7 @@ Format:
           })
       }
       render(){
-        return  <AddMessage updateMessage={this.updateMessage} caseId = {this.state.caseId} caseStatus = {this.state.caseStatus} changeActiveKey = {this.props.changeActiveKey} getHistory = {this.props.getHistory}/>
+        return  <AddMessage updateMessage={this.updateMessage} caseId = {this.state.caseId} changeActiveKey = {this.props.changeActiveKey} getHistory = {this.props.getHistory}/>
 
         /*  if(this.state.messages && this.state.messages.length > 0){
               let arr = [];
@@ -89,8 +88,7 @@ Format:
           super(props);
           this.state={
               messageText: "",
-              caseId: props.caseId,
-              caseStatus: props.caseStatus
+              caseId: props.caseId
           }
       }
       changeHandler = (evt) =>{
@@ -151,23 +149,14 @@ Format:
             });
 
       }
-      isDisabled = () =>{
-          return this.state.caseStatus && this.state.caseStatus.toLowerCase() == 'resolved'
-      }
-      getTooltip = () =>{
-          if(this.state.caseStatus && this.state.caseStatus.toLowerCase() == 'resolved'){
-              return "Cannot add message on a resolved case"
-          } else {
-              return "";
-          }
-      }
+      
       render(){
         return (
             <Form className = "addMessage">
             <Form.Group controlId="addmessage">
-                <Form.Control type="text" as="textarea" className = "messageTextArea" tooltip = {this.getTooltip()} disabled={this.isDisabled()} value={this.state.messageText} placeholder="Add Comment" onChange={this.changeHandler}/>
+                <Form.Control type="text" as="textarea" className = "messageTextArea"  value={this.state.messageText} placeholder="Add Comment" onChange={this.changeHandler}/>
             </Form.Group>
-            <Button variant="info" className="float-right" disabled={this.isDisabled()} onClick = {this.submitHandler}>
+            <Button variant="info" className="float-right"  onClick = {this.submitHandler}>
                 Submit
             </Button>
             <br/><br/>
