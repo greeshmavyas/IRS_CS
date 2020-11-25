@@ -14,6 +14,7 @@ import OrgRegistration from "./Components/OrgRegistration";
 import AgentsList from "./Components/AgentsList";
 import OrgCase from "./Components/OrgCase";
 import OrgCasesDisplay from "./Components/OrgCasesDisplay";
+import OrgOwnerProfile from "./Components/OrgOwnerProfile";
 
 function App() {
   return (
@@ -36,6 +37,8 @@ function App() {
         <Route exact path="/Agents" component={AgentsList} />
         <Route exact path="/OrgCases" component={OrgCasesDisplay} />
         <Route exact path="/OrgCase" component={OrgCase} />
+        <Route exact path="/OrgOwnerProfile" component={OrgOwnerProfile}/>
+
       </Switch>
     </Router>
   );

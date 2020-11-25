@@ -26,7 +26,6 @@ let Case = new Schema({
   CreatedOn: {
     type: String,
   },
-  Messages:[],
   Subscribers:[],
   OrganisationID:""
 });
