@@ -10,9 +10,9 @@ export const getFirstName = () => {
 export const getUserType = () => {
   return localStorage.getItem("userType");
 };
-export const getCustomerEmailId = () => {
+/*export const getCustomerEmailId = () => {
   return localStorage.getItem("customerEmailId");
-};
+};*/
 
 export const getCustomerName = () => {
   return localStorage.getItem("customerName") || "John Muir";

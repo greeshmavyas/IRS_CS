@@ -12,11 +12,10 @@ import {
 import { Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import '../css/customer.css';
 import CustomerCaseHistory from './CustomerCaseHistory';
-//import CustomerMessages from './CustomerMessages';
+import CustomerMessages from './CustomerMessages';
 import {} from "./utils.js";
 import swal from 'sweetalert'
 import {getEmailId, getCustomerId} from './utils';
-import AddCustomerMessage from "./AddCustomerMessage";
 
 const config = require("../config/settings");
 
@@ -30,12 +29,12 @@ class CustomerCaseDisplay extends Component{
             history:"",
             caseId:"",
             isLoaded: false,
-            activeKey: "caseDetails"
+            activeKey: this.showMessages(props.caseDetails) ? "messages": "history"
         }
     }
   
-    handleClose = () => {this.setState({show:false,  activeKey: "caseDetails"}); };
-    handleShow = () => {this.setState({show:true,  activeKey: "caseDetails"}); };
+    handleClose = () => {this.setState({show:false}); };
+    handleShow = () => {this.setState({show:true}); };
 
     componentDidMount(){
         this.updateSubscribed(this.props.caseDetails)
@@ -48,7 +47,7 @@ class CustomerCaseDisplay extends Component{
           caseDetails: this.props.caseDetails,
           caseId: this.props.caseId,
           isLoaded: false,
-          activeKey: "caseDetails"
+          activeKey: this.showMessages(this.props.caseDetails) ? "messages": "history"
         })
         console.log("isLoaded is::",this.state.isLoaded)
         this.updateSubscribed(this.props.caseDetails)
@@ -70,10 +69,6 @@ class CustomerCaseDisplay extends Component{
     
 
     getHistory = async ()=>{
-        debugger;
-        this.setState({
-            isLoaded: false
-        })
       let {caseDetails} = this.props;
       console.log("get history called..");
       console.log(caseDetails.CaseID, " ", caseDetails.UserID);
@@ -84,14 +79,9 @@ class CustomerCaseDisplay extends Component{
           })
             .then((res) => {
               this.setState({ history: res.data, isLoaded:true });
-              console.log("history after server response: ", this.state.history);
+              console.log("history: ", this.state.history);
             })
-            .catch((error) => {
-                console.log(error); 
-                this.setState({
-                    isLoaded: true
-                })
-            });
+            .catch((error) => console.log(error.response.data));
       }
     }
 
@@ -149,6 +139,7 @@ class CustomerCaseDisplay extends Component{
 
     closeCase = () =>{
       let caseId = this.state.caseDetails.CaseID;
+      debugger;
       let customerId = getCustomerId();
       let data = {
         "CaseID": caseId,
@@ -177,6 +168,11 @@ class CustomerCaseDisplay extends Component{
             console.log(err)
         });
     }
+    showMessages = (caseDetails) =>{
+     // let {caseDetails} = this.state;
+      console.log("showMessages:"+ !(caseDetails.Status && caseDetails.Status.toLowerCase() == 'resolved'))
+      return !(caseDetails.Status && caseDetails.Status.toLowerCase() == 'resolved')
+    }
 
     render(){
        let {caseDetails} = this.state;
@@ -185,14 +181,13 @@ class CustomerCaseDisplay extends Component{
           &times;
          </button>
       );
-      debugger;
       if(caseDetails ){
         return (
             
               <Modal  
               isOpen={this.props.modal}
               toggle={() => this.props.showModal()}
-              className="modal-lg"
+              className="modal-xl"
               scrollable>
                 <ModalHeader
                       size="lg"
@@ -209,14 +204,38 @@ class CustomerCaseDisplay extends Component{
                     
                 </ModalHeader>
                 <ModalBody>
+                    <Container>
+                        <Row>
+                            <Col><b>Description:</b></Col>
+                            
+                        </Row>
+                        <Row>
+                            <Col>{caseDetails.Information}</Col>
+                        </Row>
+                        <br></br>
+                        <br></br>
+                        <Row>
+                            <Col><b>Status:</b></Col>
+                            <Col><b>Category:</b></Col> 
+                        </Row>
+                        <Row>
+                            <Col>{caseDetails.Status}</Col>
+                            <Col>{caseDetails.Category}</Col>
+                        </Row>
+                    </Container>
+
+                    <br></br>
+                    <br></br>
+
                     <Tabs activeKey={this.state.activeKey} id="casetab" onSelect={(k) => this.changeActiveKey(k)}>
-                        <Tab eventKey="caseDetails" title="Case Details" >
-                            <CaseDetails caseDetails={this.state.caseDetails} changeActiveKey={this.changeActiveKey} getHistory={this.getHistory}/>
-                        </Tab>
-                        <Tab eventKey="history" title="Case History" >
+                       { this.showMessages(caseDetails) && <Tab eventKey="messages" title="Comments" tabClassName = "halfWidth" >
+                            <CustomerMessages messages={caseDetails.Messages} caseId={caseDetails.CaseID} changeActiveKey = {this.changeActiveKey} getHistory = {this.getHistory}/>
+                        </Tab>}
+                        <Tab eventKey="history" title="Case History" tabClassName = "halfWidth" >
                             {this.state.isLoaded && <CustomerCaseHistory caseId = {this.state.caseId} history={this.state.history}/>}
                         </Tab>
                     </Tabs>
+                  
                 </ModalBody>
                 <ModalFooter>
                 </ModalFooter>
@@ -230,46 +249,3 @@ class CustomerCaseDisplay extends Component{
   }
   
 export default CustomerCaseDisplay;
-
-class CaseDetails extends Component{
-    constructor(props){
-        super(props);
-        this.state = {
-            caseDetails:props.caseDetails
-        }
-    }
-
-    showAddMessage = () =>{
-         let {caseDetails} = this.state;
-         console.log("showAddMessage:"+ !(caseDetails.Status && caseDetails.Status.toLowerCase() == 'resolved'))
-         return !(caseDetails.Status && caseDetails.Status.toLowerCase() == 'resolved')
-    }
-
-    render(){
-        let {caseDetails} = this.state;
-        return(
-            <>
-            <Container className="caseDetailsTab">
-            <Row>
-                <Col><b>Description:</b></Col>
-            </Row>
-            <Row>
-                <Col>{caseDetails.Information}</Col>
-            </Row>
-            <br></br>
-            <br></br>
-            <Row>
-                <Col><b>Status:</b></Col>
-                <Col><b>Category:</b></Col> 
-            </Row>
-            <Row>
-                <Col>{caseDetails.Status}</Col>
-                <Col>{caseDetails.Category}</Col>
-            </Row>
-        </Container>
-        <br/>
-        {this.showAddMessage() && <AddCustomerMessage caseId = {caseDetails.CaseID} changeActiveKey = {this.props.changeActiveKey} getHistory = {this.props.getHistory}/>}
-         </>
-        )
-    }
-}

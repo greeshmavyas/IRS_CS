@@ -250,7 +250,7 @@ class CustomerDashboard extends Component {
             </div>
               <br></br>
             <div style={{ minHeight: '400px' }}>
-              <Table striped bordered hover>
+              <Table striped bordered hover className="cursorPointer">
                 <tr>
                   <th style={{ width: '10rem' }}>ID</th>
                   <th style={{ width: '10rem' }}>Date</th>

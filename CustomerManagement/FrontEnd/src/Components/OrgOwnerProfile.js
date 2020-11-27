@@ -78,6 +78,7 @@ export default class OrgOwnerProfile extends Component {
         throw new Error("Bad response from server");
     }else{
       console.log(response);
+      swal("Profile updated successfully")
       this.setState({
         message: "Profile Updated"
       })
@@ -85,12 +86,9 @@ export default class OrgOwnerProfile extends Component {
     
     })
     .catch(function (err) {
+      swal("Cannot update profile")
         console.log(err)
     });
-    this.setState({
-        updateDone: true,
-    })
-
   }
 
   render() {
