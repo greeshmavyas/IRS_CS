@@ -136,7 +136,7 @@ class AgentsList extends Component{
                         </div>
                     </div>
                    
-                    <div className="container col-8"  style={{ marginTop: '6rem' }}>
+                    <div className="container col-10"  style={{ marginTop: '6rem', marginLeft:'13rem' }}>
                         <Row>
                             <Col><h4> {getDisplayText()}</h4></Col>
                             <Col><AddAgent/></Col>
