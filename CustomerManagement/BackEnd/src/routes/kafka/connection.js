@@ -2,21 +2,17 @@ var kafka = require("kafka-node");
 
 function ConnectionProvider() {
   this.getConsumer = function (topic_name) {
-    if (!this.kafkaConsumerConnection) {
+   // if (!this.kafkaConsumerConnection) {
       this.client = new kafka.Client("localhost:2181");
-      this.kafkaConsumerConnection1 = new kafka.Consumer(this.client, [
+      this.kafkaConsumerConnection = new kafka.Consumer(this.client, [
         { topic: topic_name, partition: 0, offset: 0 },
       ]);
-      this.kafkaConsumerConnection2 = new kafka.Consumer(this.client, [
-        { topic: topic_name, partition: 0, offset: 0 },
-      ]);
+      
       this.client.on("ready", function () {
         console.log("Consumer is ready for topic:", topic_name);
       });
-    }
-    if (topic_name == "billing") return this.kafkaConsumerConnection1;
-
-    return this.kafkaConsumerConnection2;
+   // }
+    return this.kafkaConsumerConnection;
   };
 
   //Code will be executed when we start Producer

@@ -221,6 +221,7 @@ router.route("/add").post(function (req, res) {
     Information: req.body.Information,
     Status: "Assigned",
     AgentID: agent,
+    OrgID: req.body.OrgID
   };
 
   kafka.make_request(
@@ -234,7 +235,7 @@ router.route("/add").post(function (req, res) {
         res.writeHead(200, {
           "content-type": "application/json",
         });
-        res.end(JSON.stringify(result.newcase));
+        res.end(JSON.stringify(result.cusCase));
       }
     }
   );

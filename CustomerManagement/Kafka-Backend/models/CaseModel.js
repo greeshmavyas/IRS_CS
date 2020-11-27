@@ -2,10 +2,10 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 let Case = new Schema({
-  CaseID: {
+  UserID: {
     type: String,
   },
-  UserId: {
+  CaseID: {
     type: String,
   },
   Category: {
@@ -20,9 +20,14 @@ let Case = new Schema({
   ResolutionComments: {
     type: String,
   },
-  AgentId: {
+  AgentID: {
     type: String,
   },
+  CreatedOn: {
+    type: String,
+  },
+  Subscribers:[],
+  OrganisationID:""
 });
 
 module.exports = mongoose.model("Case", Case);
