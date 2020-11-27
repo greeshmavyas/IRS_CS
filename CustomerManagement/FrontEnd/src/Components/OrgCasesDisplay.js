@@ -5,8 +5,9 @@ import Sidebar from "./Sidebar";
 import config from "../config/settings";
 import Table from "react-bootstrap/Table";
 import Pagination from "react-bootstrap/Pagination";
-import { getOrganizationID } from "./utils";
+import { getOrganizationID, getUserName } from "./utils";
 import OrgCase from "./OrgCase";
+import { Redirect } from 'react-router'
 
 class OrgCasesDisplay extends Component {
   constructor() {
@@ -124,6 +125,10 @@ class OrgCasesDisplay extends Component {
   }
 
   render() {
+    if(!getUserName()){
+      return <Redirect to="/OrgOwnerLogin" />
+    }
+
     console.log("status");
     console.log(this.state.status);
     var casedetails;

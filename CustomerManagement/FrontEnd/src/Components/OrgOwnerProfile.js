@@ -6,6 +6,7 @@ import axios from 'axios';
 import config from '../config/settings'
 import {getUserName} from './utils'
 import swal from 'sweetalert'
+import { Redirect } from 'react-router'
 
 export default class OrgOwnerProfile extends Component {
   constructor(props) {
@@ -82,17 +83,20 @@ export default class OrgOwnerProfile extends Component {
       })
     }
     
-})
-.catch(function (err) {
-    console.log(err)
-});
-this.setState({
-    updateDone: true,
-})
+    })
+    .catch(function (err) {
+        console.log(err)
+    });
+    this.setState({
+        updateDone: true,
+    })
 
   }
 
   render() {
+    if(!getUserName()){
+      return <Redirect to="/OrgOwnerLogin" />
+    }
       console.log("after");
       console.log(this.state);
     return (
@@ -212,8 +216,8 @@ class PassWordChange extends Component{
 
       let userName = getUserName();
          axios({
-            method: 'post',
-            url: config.rooturl+"/updateOwnerPassword",       
+            method: 'put',
+            url: config.rooturl+"/orgOwner/passwordUpdate",       
             data: { "Username": userName, "CurrentPassword": currentPassword, "NewPassword": newPassword
            },
             config: { headers: { 'Content-Type': 'multipart/form-data' } }
