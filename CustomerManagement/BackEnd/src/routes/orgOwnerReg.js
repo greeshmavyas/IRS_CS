@@ -124,19 +124,16 @@ router.route("/orgOwner/signUp").post(function (req, res) {
   });
 });
 
-// save customer profile details
+// save orgOwner profile details
 router.route("/orgOwner/profileSave").put(function (req, res) {
   console.log("In customer profile save Post");
   username = req.body.Username.toLowerCase();
   trimusername = username.trim();
-  crypt.createHash(req.body.Password, function (response) {
-    encryptedPassword = response;
     var orgOwnerData = {
       FirstName: req.body.FirstName,
       LastName: req.body.LastName,
       ZipCode: req.body.ZipCode,
       Email: req.body.Email,
-      Password: encryptedPassword,
     };
     console.log(orgOwnerData);
     OrgOwner.findOneAndUpdate(
@@ -162,6 +159,72 @@ router.route("/orgOwner/profileSave").put(function (req, res) {
         }
       }
     );
+});
+
+
+// update orgOwner password
+router.route("/orgOwner/passwordUpdate").put(function (req, res) {
+  console.log("Inside orgOwner password update Post");
+  var username = req.body.Username;
+  var lowercaseUsername = username.toLowerCase();
+  var trimUsername = lowercaseUsername.trim();
+
+  OrgOwner.findOne({ Username: trimUsername }, function (err, orgOwner) {
+    if (err) {
+      console.log(err);
+      console.log("unable to read the database");
+      res.status(400).json({
+        responseMessage: "unable to read the organization owner database",
+      });
+    } else if (orgOwner) {
+      console.log("org owner:", orgOwner);
+      crypt.compareHash(req.body.CurrentPassword, orgOwner.Password, function (
+        err,
+        isMatch
+      ) {
+        if (isMatch && !err) {
+          console.log("Old password is validated");
+
+          crypt.createHash(req.body.NewPassword, function (response) {
+            encryptedPassword = response;
+
+              //update the new password
+              OrgOwner.findOneAndUpdate(
+                { Username: trimUsername },
+                { Password: encryptedPassword },
+                { new: true },
+                function (err, orgOwner) {
+                  if (err) {
+                    console.log(err);
+                    console.log("unable to update the new password in database");
+                    res
+                      .status(400)
+                      .json({ responseMessage: "unable to update new password in database" });
+                  } else {
+                    console.log("result:", orgOwner);
+                    console.log("OrgOwner Password update Successful");
+                    res
+                      .status(200)
+                      .json({
+                        responseMessage: "OrgOwner Password save Successful",
+                        orgOwner,
+                      });
+                  }
+                }
+              );  
+          })  
+        } else {
+          res.status(401).json({
+            responseMessage: "Invalid current password",
+          });
+        }
+      });
+    } else {
+      res.status(402).json({
+        responseMessage: "OrgOwner does not exist to change the password",
+      });
+      console.log("OrgOwner does not exist to change the password");
+    }
   });
 });
 

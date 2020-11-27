@@ -120,9 +120,7 @@ class OrgCasesDisplay extends Component {
           console.log(error);
           this.setState({ allCases: [] });
         });
-    } else if (count < 1) {
-      window.location.render("/OrgRegistration");
-    }
+    } 
   }
 
   render() {
