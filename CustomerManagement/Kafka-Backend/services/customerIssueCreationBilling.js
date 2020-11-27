@@ -16,7 +16,7 @@ exports.customerIssueCreationBillingService = function customerIssueCreationBill
 //Create the case
 function issuecreate(msg, callback) {
   console.log("End Point to create a Case");
-  console.log(req.body);
+  
   let newCase = new Case(msg.newCase);
   var today = new Date();
   var date =
@@ -28,19 +28,37 @@ function issuecreate(msg, callback) {
   let history = new CaseHistory(msg.newCase);
   history.CreatedOn = dateTime;
   history.UpdatedOn = dateTime;
-  newCase
-    .save()
-    .then((newCase) => {
-      history
-        .save()
-        .then((history) => {
-          callback(null, { status: 200, newcase });
-        })
-        .catch((err) => {
-          callback(err, "Unable to create the case");
-        });
-    })
-    .catch((err) => {
+
+  Case.create(newCase, function (err, cusCase) {
+    if (err) {
+      console.log(err);
+      console.log("Unable to create case");
       callback(err, "Unable to create the case");
-    });
+    } else {
+      CaseHistory.create(history, function (err, history) {
+        if (err) {
+          console.log(err);
+          console.log("Unable to create case history");
+          callback(err, "Unable to create the case history");
+        } else {
+          callback(null, { status: 200, cusCase });
+        }
+      });
+    }
+  });
+  // newCase
+  //   .save()
+  //   .then((newCase) => {
+  //     history
+  //       .save()
+  //       .then((history) => {
+  //         callback(null, { status: 200, newcase });
+  //       })
+  //       .catch((err) => {
+  //         callback(err, "Unable to create the case");
+  //       });
+  //   })
+  //   .catch((err) => {
+  //     callback(err, "Unable to create the case");
+  //   });
 }
