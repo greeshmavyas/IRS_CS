@@ -4,8 +4,8 @@ import Sidebar from "./Sidebar";
 import axios from "axios";
 import { Container } from "react-bootstrap";
 import config from "../config/settings";
-import { Redirect } from "react-router";
 import { getOrganizationID } from "./utils";
+import NoOrgFound from './NoOrgFound.js';
 import {
   PieChart,
   Pie,
@@ -127,8 +127,9 @@ class OrgOwnerDashboard extends Component {
 
   render() {
     let redirectVar = null;
-    if (getOrganizationID() == "") {
-      redirectVar = <Redirect to="/OrgRegistration" />;
+    let orgId = getOrganizationID()
+    if(!orgId){
+        return <div style={{ marginTop: '6rem' }}><NoOrgFound/></div>
     }
     return (
       <div>
