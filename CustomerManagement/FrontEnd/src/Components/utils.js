@@ -23,9 +23,10 @@ export const getCustomerUserName = () => {
 export const getCustomerId = () => {
   return localStorage.getItem("customerId") || "";
 };
-export const getOrganisationId = () => {
-  return localStorage.getItem("organisationId") || "1";
+export const getCustomerOrgId = () => {
+  return localStorage.getItem("customerOrgId") || "";
 };
+
 
 export const getName = function () {
   let firstName = localStorage.getItem("firstName");
@@ -39,11 +40,11 @@ export const getUserName = function () {
   return userName || "";
 };
 
-export const getOrgOwnerId = function () {
+/*export const getOrgOwnerId = function () {
   const orgOwnerId = localStorage.getItem("orgOwnerId");
   //TODO: change this code
   return orgOwnerId || "2";
-};
+};*/
 
 export const getOrgOwnerToken = function () {
   const orgOwnerToken = localStorage.getItem("token");
@@ -65,13 +66,18 @@ export const getOrgCategories = function () {
 export const removeOrgId = (category) =>{
   console.log("in remove orgId")
   console.log(category);
-  let arr = category.split("_");
-  if(arr.length > 0)
-      return arr[1];
-  else
-      return arr[0];
+  if(category){
+    let arr = category.split("_");
+    return (arr.length > 0 ? arr[1] : arr[0]);
+  } else {
+    return "";
+  }
 }
 
 export const addOrgId= (category) =>{
-  return getOrganizationID()+"_"+category;
+  if(category){
+    category = category.toLowerCase()
+    return getOrganizationID()+"_"+category;
+  } 
+  return "";
 }

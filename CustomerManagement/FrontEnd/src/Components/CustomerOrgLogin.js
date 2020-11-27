@@ -42,7 +42,7 @@ class CustomerOrgLogin extends Component {
       if(resp && resp.data && resp.data.length > 0){
         let details = resp.data[0];
         window.localStorage.setItem("customerId", details.CustomerID);
-        window.localStorage.setItem("organisationId", details.OrganisationID);
+        window.localStorage.setItem("customerOrgId", details.OrganisationID);
         window.localStorage.setItem("customerName", details.CustomerName);
         window.localStorage.setItem("emailId", details.Email);
         window.localStorage.setItem("userType", "customer");

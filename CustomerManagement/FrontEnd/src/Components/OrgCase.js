@@ -4,9 +4,6 @@ import { Row, Col, Container } from "react-bootstrap";
 import { Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import "./css/orgowner.css";
 import {} from "./utils.js";
-//import swal from "sweetalert";
-//import { getEmailId, getAgentId, getOrganisationId } from "./utils";
-
 const config = require("../config/settings.js");
 
 class OrgCase extends Component {

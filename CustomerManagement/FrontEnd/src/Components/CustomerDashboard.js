@@ -4,7 +4,7 @@ import CustomerNavbarDash from "./CustomerNavbarDash";
 import config from '../config/settings'
 import Table from 'react-bootstrap/Table'
 import Pagination from 'react-bootstrap/Pagination'
-import {getOrganisationId, getCustomerId} from './utils'
+import {getCustomerOrgId, getCustomerId} from './utils'
 import CustomerCaseDisplay from './CustomerCaseDisplay'
 import CreateCaseModal from './CreateCaseModal'
 
@@ -82,7 +82,7 @@ class CustomerDashboard extends Component {
     axios.defaults.withCredentials = true;
     let customerId = getCustomerId();
   
-    let organisationID = getOrganisationId()
+    let organisationID = getCustomerOrgId()
     //let count = 0
     axios.defaults.withCredentials = true;
     if (customerId) {

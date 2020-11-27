@@ -8,13 +8,16 @@ import AgentsListNavbarDash from "./AgentsListNavbarDash"
 import Sidebar from './Sidebar'
 import swal from 'sweetalert'
 import NoOrgFound from './NoOrgFound.js';
+import AgentDisplay from './AgentDisplay';
 
 class AgentsList extends Component{
     constructor(){
         super()
         this.state = {
            agentsList:[],
-           isLoading: true
+           isLoading: true,
+           modal: false,
+           viewAgent: null
         }
     }
 
@@ -57,6 +60,13 @@ class AgentsList extends Component{
         return categoryStr.substr(0, categoryStr.length-1)
     }
 
+    showModal = (viewAgent) =>{
+        this.setState({
+            modal: !this.state.modal,
+            viewAgent: viewAgent,
+          });
+    }
+
     render(){
 
         if(this.state.isLoading){
@@ -76,31 +86,41 @@ class AgentsList extends Component{
             if(agentsList && agentsList.length > 0){
                 agentsList = agentsList.map((agent) => {
                     return (
-                              <tr>
+                              <tr onClick={()=> this.showModal(agent)}>
                                 <td style={{ width: '50rem' }}>{agent.Username} </td>
                                 <td style={{ width: '10rem' }}>{agent.FirstName}</td>
                                 <td style={{ width: '15rem' }}>{agent.LastName}</td>
                                 <td style={{ width: '50rem' }}>{agent.Email} </td>
+                                <td style={{ width: '50rem' }}>{agent.PhoneNumber} </td>
                                 <td style={{ width: '50rem' }}>{this.processArray(agent.Categories)} </td>
                               </tr>
                     );
                 });
 
                 return (
-                    <Table striped bordered hover>
+                    <div>
+                    <Table striped bordered hover className="cursorPointer">
                             <thead>
                             <tr>
                                 <th style={{ width: '50rem' }}>User Name</th>
                                 <th style={{ width: '50rem' }}>First Name</th>
                                 <th style={{ width: '50rem' }}>Last Name</th>
                                 <th style={{ width: '50rem' }}>Email</th>
+                                <th style={{ width: '50rem' }}>Phone Number</th>
                                 <th style={{ width: '50rem' }}>Categories</th>
                             </tr>
                             </thead>
                             <tbody>
                                 {agentsList}
                             </tbody>
-                        </Table>
+                    </Table>
+                    {this.state.viewAgent != null ? (
+                        <div>
+                        <AgentDisplay agentId = {this.state.viewAgent._id}
+                        showModal = {this.showModal} modal = {this.state.modal} agentDetails={this.state.viewAgent}/>
+                       </div> ) : null}
+                    </div>
+                       
                 )
             }     
         }

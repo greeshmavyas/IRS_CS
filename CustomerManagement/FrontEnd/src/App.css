@@ -55,6 +55,9 @@
   padding:5px;
   margin-right:20px;
 }
+.cursorPointer{
+  cursor:pointer;
+}
 
 .halfWidth{
   width:50% !important;
