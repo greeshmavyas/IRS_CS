@@ -221,7 +221,7 @@ router.route("/add").post(function (req, res) {
     Information: req.body.Information,
     Status: "Assigned",
     AgentID: agent,
-    OrgID: req.body.OrgID
+    OrganisationID: req.body.OrganisationID
   };
 
   kafka.make_request(
@@ -246,7 +246,7 @@ router.route("/casesForDashboardByOrgID/:OrgID").get(function (req, res) {
   console.log("In retrieve cases by orgID");
 
   let orgID = req.params.OrgID;
-  Case.find({ OrgID: orgID }, function (err, cases) {
+  Case.find({ OrganisationID: orgID }, function (err, cases) {
     if (err) {
       console.log(err);
       res.status(400).json({ responseMessage: "Unable to find case info" });

@@ -141,7 +141,7 @@ class OrgCasesDisplay extends Component {
     }
 
     let index = 0;
-    let maxResultsPerPage = 2;
+    let maxResultsPerPage = 3;
     let active = this.state.paginationActive; // Initially active key
     let startIndex = 0 + (active - 1) * maxResultsPerPage;
     let endIndex = startIndex + maxResultsPerPage;
@@ -176,12 +176,15 @@ class OrgCasesDisplay extends Component {
     searchResults = searchResults.slice(startIndex, endIndex);
 
     if (this.state.flag) {
+      
       casedetails = searchResults.map((ticket) => {
+        let arr = ticket.Category.split("_");
+        let keyToDisplay = (arr.length > 0 ? arr[1] : arr[0]);
         return (
           <tr onClick={() => this.showModal1(ticket)}>
             <td>{ticket.CaseID}</td>
-            <td>{ticket.Date}</td>
-            <td>{ticket.Category}</td>
+            <td>{ticket.CreatedOn}</td>
+            <td>{keyToDisplay}</td>
             <td>{ticket.Status}</td>
             <td>{ticket.Information} </td>
           </tr>
@@ -220,8 +223,8 @@ class OrgCasesDisplay extends Component {
 
             <Table striped bordered hover>
               <tr>
-                <th style={{ width: "10rem" }}>ID</th>
-                <th style={{ width: "10rem" }}>Date</th>
+                <th style={{ width: "50rem" }}>ID</th>
+                <th style={{ width: "50rem" }}>Date</th>
                 <th style={{ width: "10rem" }}>Category</th>
                 <th style={{ width: "15rem" }}>Status</th>
                 <th style={{ width: "50rem" }}>Details</th>
@@ -239,8 +242,7 @@ class OrgCasesDisplay extends Component {
                       modal={this.state.modal}
                       caseDetails={this.state.viewcase}
                     />
-                  </div>
-                ) : null}
+                  </div>) : null}
 
                 <div
                   className="fixed-bottom"
@@ -254,7 +256,7 @@ class OrgCasesDisplay extends Component {
                   {paginationBasic}
                 </div>
               </div>
-            ) 
+            
           </div>):(
             <div>
             <h4 style={{ marginLeft: "1em" }}>There are no cases available!</h4>

@@ -130,7 +130,11 @@ class OrgOwnerDashboard extends Component {
       });
   }
   populateBarGraphData(value, key, map) {
-    casesByCategory.push({ name: key, cases: value });
+    
+      let arr = key.split("_");
+      let keyToDisplay = (arr.length > 0 ? arr[1] : arr[0]);
+   
+    casesByCategory.push({ name: keyToDisplay, cases: value });
   }
 
   render() {
@@ -157,8 +161,8 @@ class OrgOwnerDashboard extends Component {
         <Container>
           <div style={{ textAlign: "center" }}>
             <div className="Dashboard">
-              <div style={{ textAlign: "center", marginTop: "90px" }}>
-                <div style={{ marginLeft: "120px" }}>
+              <div style={{ textAlign: "center", marginTop: "90px", float: "left" }}>
+                <div style={{ marginLeft: "120px"}}>
                   <h4>Cases by Status</h4>
                   
                 </div>
@@ -187,8 +191,8 @@ class OrgOwnerDashboard extends Component {
                   <Tooltip />
                 </PieChart>
               </div>
-              <div style={{ textAlign: "center" }}>
-                <div style={{ marginLeft: "120px" }}>
+              <div style={{marginTop: "100px", textAlign: "center", float: "right" }}>
+                <div style={{ marginLeft: "80px"}}>
                   <h4>Cases by Category</h4>
                 </div>
                 <BarChart
@@ -201,12 +205,12 @@ class OrgOwnerDashboard extends Component {
                     left: 100,
                     bottom: 5,
                   }}
-                  barSize={10}
+                  barSize={20}
                 >
                   <XAxis
                     dataKey="name"
                     scale="point"
-                    padding={{ left: 10, right: 10 }}
+                    padding={{ left: 5, right: 5 }}
                   />
                   <YAxis />
                   <Tooltip />
