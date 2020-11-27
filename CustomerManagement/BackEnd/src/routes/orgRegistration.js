@@ -17,12 +17,8 @@ router.route("/registerOrg").post(function (req, res) {
   var org = {
     OrgOwnerId: jwt_decoded.id,
     OrgName: req.body.OrgName,
-    Categories: req.body.Categories,
     Domain: req.body.Domain,
   };
-
-  //Create kafka topics corresponding to org categories
-  kafka.setTopics(req.body.Categories);
 
   //Register the organization
   Organization.create(org, function (err, org) {
@@ -33,11 +29,33 @@ router.route("/registerOrg").post(function (req, res) {
         responseMessage: "Unable to register the organization",
       });
     } else {
-      console.log("Your organization is registered successfully");
-      res.status(200).json({
-        responseMessage: "Your organization is registered successfully",
-        org,
-      });
+      let categories = req.body.Categories;
+      for (i = 0; i < categories.length; i++) {
+        categories[i]= org._id+'_'+categories[i];        
+      }
+      //Create kafka topics corresponding to org categories
+      kafka.setTopics(categories);
+      Organization.findOneAndUpdate(
+        { _id: org._id },
+        {Categories : categories},
+        { new: true },
+        function (err, org) {
+          if (err) {
+            console.log(err);
+            console.log("unable to update categories in database");
+            res
+              .status(400)
+              .json({ responseMessage: "unable to update categories in database" });
+          } else {
+            console.log("Organization registered successfully");
+            console.log("Your organization is registered successfully");
+             res.status(200).json({
+               responseMessage: "Your organization is registered successfully",
+               org,
+            });
+          }
+        }
+      );
     }
   });
 });
