@@ -228,7 +228,7 @@ class AddAgent extends Component{
               method: 'post',
               url: config.rooturl+"/addAgent",       
               data: { "OrgId": orgId, "Email": email, "Username": userName, "FirstName" : firstName, 
-              "LastName": lastName, "Categories": categories, "Password": password, "PhoneNumber": phoneNumber
+              "LastName": lastName, "Categories": categories, "TempPassword": password, "PhoneNumber": phoneNumber
              },
               config: { headers: { 'Content-Type': 'multipart/form-data' } }
           })

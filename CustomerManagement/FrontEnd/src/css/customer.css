@@ -30,3 +30,9 @@
     color: #0000005c;
     text-decoration: underline;
 }
+.caseDetailsTab, .caseHistoryTab{
+    padding-top: 2rem;
+}
+.cursorPointer{
+    cursor: pointer;
+}
