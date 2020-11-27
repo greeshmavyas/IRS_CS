@@ -68,15 +68,24 @@ export const removeOrgId = (category) =>{
   console.log(category);
   if(category){
     let arr = category.split("_");
-    return (arr.length > 0 ? arr[1] : arr[0]);
-  } else {
+    if(arr.length == 1){
+      return arr[0];
+    } else{
+      var catStr = ""
+      for(let i=1; i<arr.length; i++){
+        catStr = catStr + arr[i] + " "
+      }
+    }
+    //return (arr.length > 0 ? arr[1] : arr[0]);
+    return catStr.trim()
+  } 
     return "";
-  }
 }
 
 export const addOrgId= (category) =>{
   if(category){
     category = category.toLowerCase()
+    category = category.replaceAll(" ","_")
     return getOrganizationID()+"_"+category;
   } 
   return "";

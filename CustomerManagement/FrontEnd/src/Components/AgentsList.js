@@ -180,6 +180,10 @@ class AddAgent extends Component{
 
     updateCategoryInState =()=>{
         let {categories, currCategoryVal} = this.state
+        if(!currCategoryVal){
+            swal("Please enter category value")
+            return;
+        }
         console.log(this.state.categories)
 
         if(categories.indexOf(currCategoryVal) !== -1){

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {getUserName} from "./utils";
+import logo from '../css/IRS.png'
 
 class CustomerNavbarDash extends Component {
     
@@ -10,8 +11,12 @@ class CustomerNavbarDash extends Component {
   render() {
     return (
       <nav className="navbar navbar-expand-sm navbar-dark bg-dark mb-4">
-       
+       <img  src={logo}
+           width="33"
+           height="30"
+           className="d-inline-block align-top"/>
         <div className="container">
+          
         <span className="navbar-brand" href="#">
           Customer Service Dashboard 
         </span>

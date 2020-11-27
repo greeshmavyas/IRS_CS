@@ -104,6 +104,7 @@ class OrgRegistration extends Component{
           swal("Please enter category value")
           return;
         }
+        
         if(newCategories.indexOf(currCategoryVal) !== -1){
           swal("Category already exists")
           this.setState({

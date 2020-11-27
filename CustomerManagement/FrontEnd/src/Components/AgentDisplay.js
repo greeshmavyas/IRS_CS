@@ -48,6 +48,11 @@ class AgentDisplay extends Component{
 
     updateCategoryInState =()=>{
         let {newCategories, currCategoryVal, agentCategories} = this.state 
+        if(!currCategoryVal){
+            swal("Please enter category value")
+            return;
+          }
+          
         currCategoryVal = addOrgId(currCategoryVal);
         if(newCategories.indexOf(currCategoryVal) !== -1 || agentCategories.indexOf(currCategoryVal) !== -1){
             swal("Category already exists")

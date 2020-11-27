@@ -132,14 +132,14 @@ class CustomerDashboard extends Component {
           else {
             this.setState({ allCases: [] });
           }
-          debugger;
+        
           this.setState({
             isLoading: false
           })
         })
         .catch(error => {
           console.log(error);
-          debugger;
+        
           this.setState({ 
             allCases: [] ,
             isLoading: false
@@ -157,7 +157,7 @@ class CustomerDashboard extends Component {
   render() {
     console.log("customer dashboard");
     console.log(this.state)
-    debugger;
+  
     if(this.state.isLoading){
       return <div><CustomerNavbarDash/></div>
     } else if(!this.state.allCases || this.state.allCases.length == 0){

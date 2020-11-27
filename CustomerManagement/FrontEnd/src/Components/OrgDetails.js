@@ -29,7 +29,10 @@ class OrgDetails extends Component{
     }
     updateCategoryInState =()=>{
         let {newCategories, currCategoryVal, orgCategories} = this.state 
-        //currCategoryVal  = getOrganizationID()+"_"+currCategoryVal;
+        if(!currCategoryVal){
+            swal("Please enter a category")
+            return;
+        }
         currCategoryVal = addOrgId(currCategoryVal);
         if(newCategories.indexOf(currCategoryVal) !== -1 || orgCategories.indexOf(currCategoryVal) !== -1){
             swal("Category already exists")

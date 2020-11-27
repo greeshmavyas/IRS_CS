@@ -5,6 +5,7 @@ let CaseHistory = require("../models/CaseHistory");
 var kafka = require("../routes/kafka/client");
 var config = require("../../config/settings");
 var request = require("request");
+const genericApis = require("../genericApis")
 //let case
 
 // Retreive all cases
@@ -221,7 +222,8 @@ router.route("/add").post(function (req, res) {
     Information: req.body.Information,
     Status: "Assigned",
     AgentID: agent,
-    OrganisationID: req.body.OrganisationID
+    OrganisationID: req.body.OrganisationID,
+    CreatedOn: genericApis.getTodayDate()
   };
 
   kafka.make_request(

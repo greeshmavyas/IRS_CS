@@ -15,6 +15,8 @@ const getTodayDate = () =>{
 }
 
 const round = (value) =>{
+  console.log(value);
+  value=value+"";
   return (value && value.length < 2 ? "0"+value : value)
 }
 

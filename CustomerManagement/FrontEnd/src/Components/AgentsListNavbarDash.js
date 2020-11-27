@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {getName} from './utils.js'
+import logo from '../css/IRS.png'
 
 class AgentsListNavbarDash extends Component {
     
@@ -10,6 +11,10 @@ class AgentsListNavbarDash extends Component {
   render() {
     return (
       <nav className="navbar navbar-expand-sm navbar-dark bg-dark mb-4 fixed-top">
+        <img  src={logo}
+           width="33"
+           height="30"
+           className="d-inline-block align-top"/>
         <div className="container">
           <a className="navbar-brand" href="/AgentDashboard">
             IRS Dashboard
@@ -28,7 +33,7 @@ class AgentsListNavbarDash extends Component {
             <ul className="navbar-nav ml-auto">
               <li className="nav-item">
                 <p className="nav-link" >
-                  Hi, {getName()}
+                 {getName()}
                 </p>
               </li>
               <li className="nav-item">
