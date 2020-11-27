@@ -70,7 +70,7 @@ export default class OrgOwnerProfile extends Component {
      ZipCode: zipCode
     };
     axios({
-      method: 'post',
+      method: 'put',
       url: config.rooturl + '/orgOwner/profileSave',
       data
   }).then((response) => {
