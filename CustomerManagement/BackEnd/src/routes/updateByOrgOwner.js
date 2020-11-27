@@ -35,14 +35,18 @@ router.route("/org/category").put(function (req, res) {
 //Update agent categories[only add new categories], email, first name, last name
 //categories to be sent as combination of orgid and category
 router.route("/org/agent").put(function (req, res) {
-  //Create kafka topic corresponding to org category
-  kafka.setTopics(req.body.Categories);
+  var updateCategories = { $addToSet:{},  $set:{}};
+  if(req.body.Categories !=null){
+    updateCategories.$addToSet.Categories = req.body.Categories;
+  }
+  updateCategories.$set.FirstName = req.body.FirstName;
+  updateCategories.$set.LastName = req.body.LastName;
+  updateCategories.$set.Email = req.body.Email;
+  
 
   Agent.findOneAndUpdate(
-    { Username: req.body.Username },
-    { $addToSet: { Categories: req.body.Categories },  $set:{ FirstName: req.body.FirstName,
-      LastName: req.body.LastName,
-      Email: req.body.Email}},
+    { Username: req.body.Username, OrgID: req.body.OrgId },
+     updateCategories,
     { new: true },
     function (err, agent) {
       if (err) {
@@ -50,17 +54,20 @@ router.route("/org/agent").put(function (req, res) {
         console.log("unable to update database");
         res.status(400).json({ responseMessage: "unable to update database" });
       } else {
-        for (i = 0; i < req.body.Categories.length; i++) {
-          if (global.topics_to_agents.has(req.body.Categories[i])) {
-            global.topics_to_agents
-              .get(req.body.Categories[i])
-              .push(agent._id);
-          } else {
-            global.topics_to_agents.set(req.body.Categories[i], [
-              agent._id,
-            ]);
+        if(req.body.Categories != null && req.body.Categories.length >0 ){
+          for (i = 0; i < req.body.Categories.length; i++) {
+            if (global.topics_to_agents.has(req.body.Categories[i])) {
+              global.topics_to_agents
+                .get(req.body.Categories[i])
+                .push(agent._id);
+            } else {
+              global.topics_to_agents.set(req.body.Categories[i], [
+                agent._id,
+              ]);
+            }
           }
         }
+        
         console.log("result:", agent);
         console.log("Agent update successful");
         console.log("topics" + JSON.stringify(global.topics_to_agents));
