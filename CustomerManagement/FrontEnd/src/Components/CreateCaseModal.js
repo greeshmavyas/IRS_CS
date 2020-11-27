@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 import {Button, Modal} from "react-bootstrap";
-import {getCustomerId, getOrganisationId} from './utils';
+import {getCustomerId, getCustomerOrgId} from './utils';
 import swal from 'sweetalert'
 const config = require("../config/settings");
 
@@ -39,37 +39,6 @@ class CreateCaseModal extends Component {
       swal("Please enter information");
       return;
     }
-
-    /*var cid = Math.floor(Math.random() * 10000);
-    const data = {
-      UserID: getCustomerId(),
-      OrganisationID: getOrganisationId(),
-      CaseID: cid.toString(),
-      Category: this.state.Category,
-      Information: this.state.Information,
-      Status: "New",
-      ResolutionComments: ""
-    }
-
-    axios
-      .post(config.rooturl + "/add", data)
-      .then((response) => {
-        console.log("Status Code : ", response.status);
-        if (response.status === 200) {
-          this.setState({
-            Response: "Case Created Successfully CaseID: " + cid.toString(),
-            Information: "",
-          });
-        }
-      })
-      .catch((error) => {
-        this.setState({
-          ...this.state,
-          message: "Can not create case",
-        });
-        console.log("Error is:", error);
-      });*/
-
       //calling Lambda func to get category
       var cid = Math.floor(Math.random() * 10000);
       let nlpData = {
@@ -106,9 +75,9 @@ class CreateCaseModal extends Component {
             category = "Others"
           const data = {
             UserID: getCustomerId(),
-            OrganisationID: getOrganisationId(),
+            OrganisationID: getCustomerOrgId(),
             CaseID: cid.toString(),
-            Category: getOrganisationId()+"_"+category,
+            Category: getCustomerOrgId()+"_"+category,
             Information,
             Status: "New",
             ResolutionComments: ""

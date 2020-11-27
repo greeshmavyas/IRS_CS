@@ -1,14 +1,11 @@
 import React, { Component } from 'react'
 import Sidebar from './Sidebar';
-import Button from 'react-bootstrap/Button'
-import Form from 'react-bootstrap/Form'
-import Card from 'react-bootstrap/Card'
+import {Button, Form, Table, Modal} from 'react-bootstrap'
 import NavbarDash from "./NavbarDash";
 import axios from 'axios';
 import config from '../config/settings'
-import { Row, Col } from 'react-foundation';
-import Table from 'react-bootstrap/Table'
 import {getUserName} from './utils'
+import swal from 'sweetalert'
 
 export default class OrgOwnerProfile extends Component {
   constructor(props) {
@@ -62,17 +59,19 @@ export default class OrgOwnerProfile extends Component {
 
   updateProfile = async (event) => {
     event.preventDefault();
-    
-   /* var agentID = localStorage.getItem("agentID");
-    var organisationID = localStorage.getItem("organisationID")
-    console.log("agentID  " + agentID)
+    var userName = getUserName();
+    let {firstName, lastName, email, zipCode} = this.state;
     let data = {
-     Username: 
+     Username: userName,
+     FirstName: firstName,
+     LastName: lastName,
+     Email: email,
+     ZipCode: zipCode
     };
     axios({
       method: 'post',
-      url: 'http://' + config.hostname + ':' + config.backendPort + '/updateProfile',
-      params: data
+      url: config.rooturl + '/orgOwner/profileSave',
+      data
   }).then((response) => {
     if (response.status == 500) {
         throw new Error("Bad response from server");
@@ -91,7 +90,6 @@ this.setState({
     updateDone: true,
 })
 
-   */
   }
 
   render() {
@@ -103,11 +101,12 @@ this.setState({
         <NavbarDash />
         <center>
         <div style={{ width: '25rem' }}>
-          <h2>Update Profile</h2>
-          <br></br>
+          <h4>Update Profile</h4>
           <br></br>
         <Form onSubmit={this.updateProfile}>
-          <Table>
+          <PassWordChange/>
+          <br/> <br/>
+          <Table borderless>
             <tbody>
             <tr>
                 <td>
@@ -175,3 +174,105 @@ this.setState({
     )
   }
 }
+
+class PassWordChange extends Component{
+  constructor(){
+      super()
+      this.state={
+          show:false,
+          currentPassword: "",
+          newPassword :""
+      }
+  }
+
+  handleClose = () => {
+      this.setState({
+          show: false,
+          categories:[],
+          currCategoryVal:""
+      })
+  }
+
+  handleShow = () => {
+      this.setState({
+          show: true
+      })
+  }
+
+  submitHandler =  (evt) => {
+      evt.preventDefault();
+      console.log(evt.target);
+      axios.defaults.withCredentials = true;
+
+      let {currentPassword, newPassword} = this.state;
+      if(!currentPassword || !newPassword){
+          swal("Please enter all the fields");
+          return;
+      }
+
+      let userName = getUserName();
+         axios({
+            method: 'post',
+            url: config.rooturl+"/updateOwnerPassword",       
+            data: { "Username": userName, "CurrentPassword": currentPassword, "NewPassword": newPassword
+           },
+            config: { headers: { 'Content-Type': 'multipart/form-data' } }
+        })
+            .then((response) => {
+                if (response.status >= 500) {
+                    throw new Error("Bad response from server");
+                }
+                return response.data;
+            })
+            .then((responseData) => {
+                swal(responseData.responseMessage).then((val)=> this.handleClose())
+            }).catch((err) => {
+                swal("Cannot update password").then((val)=> this.handleClose())
+                console.log(err)
+            });
+  }
+
+  renderCloseBtn =(name) =>{
+      return (
+          <button className="close" onClick={(evt) => {evt.preventDefault(); this.removeCategory(name)}}>
+            &times;
+           </button>
+      )
+  }
+
+  onChange = (evt) =>{
+    this.setState({
+      [evt.target.name] : evt.target.value
+    })
+  }
+
+  render(){
+      return(
+          <>
+          <Button variant="info" onClick={this.handleShow}>
+              Change password
+          </Button>
+  
+          <Modal show={this.state.show} onHide={this.handleClose}>
+              <Modal.Body>
+                  <Form className="input" onSubmit = {this.submitHandler}>
+                      <Form.Row>
+                      <Form.Control name="currentPassword" type="password" placeholder="Current Password" onChange={this.onChange} />
+                      </Form.Row>
+                      <br/>
+                      <Form.Row>
+                      <Form.Control name="newPassword" type="password" placeholder="New Password" onChange={this.onChange} />
+                      </Form.Row>
+                      <br/>
+                      <Button type="submit" className="btn btn-info btn-block mt-4" >Change password</Button>
+                      
+  
+                  </Form>
+              </Modal.Body>
+          </Modal>
+          </>
+      )
+  }
+
+}
+
