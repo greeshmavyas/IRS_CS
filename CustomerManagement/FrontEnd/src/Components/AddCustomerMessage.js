@@ -54,19 +54,19 @@ class AddCustomerMessage extends Component{
           .then((responseData) => {
               if(responseData.status){
                 this.props.getHistory();
-                  swal("Message is added").then((val) =>  {
+                  swal("Comment is added").then((val) =>  {
                       this.props.changeActiveKey("history")
                     });
                   this.setState({
                       messageText:""
                   })
               } else {
-                  swal("Message cannot be added");
-                  console.log("message cannot be added")
+                  swal("Comment cannot be added");
+                  console.log("Comment cannot be added")
               }
               
           }).catch(function (err) {
-              swal("Message cannot be added");
+              swal("Comment cannot be added");
               console.log(err)
           });
 

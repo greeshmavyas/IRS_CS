@@ -137,8 +137,8 @@ class OrgDetails extends Component{
                         </div>
                         
                         <div className="container col-8" style={{ width: '25rem' }}>
+                            <Col><h4> Organization Details</h4></Col>
                             
-                            <h4> Organization Details</h4>
                            
                             <br></br>
                             <div >

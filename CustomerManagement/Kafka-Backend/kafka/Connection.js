@@ -44,16 +44,21 @@ function ConnectionProvider() {
                     console.log("Kafka Error: Consumer - " + err);
                 });
                 consumer.on("message", function(message) {
-                    console.log(JSON.stringify(message.value));
-                    var data = JSON.parse(message.value);
-                    customerIssueCreationBilling.customerIssueCreationBillingService(
-                        data.data,
-                        function(err, res) {
-                            console.log("abcdef")
-                            response(data, res, producer);
-                            return;
-                        }
-                    );
+                    try{
+                        console.log(JSON.stringify(message.value));
+                        var data = JSON.parse(message.value);
+                        customerIssueCreationBilling.customerIssueCreationBillingService(
+                            data.data,
+                            function(err, res) {
+                                console.log("abcdef")
+                                response(data, res, producer);
+                                return;
+                            }
+                        );
+                    } catch(err){
+                        console.log(err)
+                    }
+                    
                 });
             });
         });

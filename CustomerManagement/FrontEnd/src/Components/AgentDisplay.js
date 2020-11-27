@@ -7,9 +7,9 @@ import {
   } from "react-bootstrap";
 import { Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 //import '../css/customer.css';
-import {} from "./utils.js";
+import { getOrganizationID } from "./utils.js";
 import swal from 'sweetalert'
-import { addOrgId, removeOrgId } from './utils.js'
+import { addOrgId, removeOrgId, getOrgCategories } from './utils.js'
 
 const config = require("../config/settings");
 
@@ -40,10 +40,28 @@ class AgentDisplay extends Component{
         })
     }
 
-    categoryChangeHandler = (evt)=>{
+    /*categoryChangeHandler = (evt)=>{
         this.setState({
             currCategoryVal: evt.target.value
         })
+    }*/
+
+    dropdownChangeHandler = (evt) =>{
+        this.setState({
+            currCategoryVal: evt.target.value
+        })
+    }
+
+    renderCategoryDropdown = () =>{
+        let orgCategories = getOrgCategories();
+        console.log("org categories are:", orgCategories)
+        orgCategories = ["", ...orgCategories]
+        orgCategories = orgCategories.map((cat, id)=>{
+            return (
+                <option value={cat} key={id}> {removeOrgId(cat)}</option>
+            )
+        })
+        return orgCategories
     }
 
     updateCategoryInState =()=>{
@@ -53,7 +71,6 @@ class AgentDisplay extends Component{
             return;
           }
           
-        currCategoryVal = addOrgId(currCategoryVal);
         if(newCategories.indexOf(currCategoryVal) !== -1 || agentCategories.indexOf(currCategoryVal) !== -1){
             swal("Category already exists")
             this.setState({
@@ -82,7 +99,8 @@ class AgentDisplay extends Component{
             method: 'put',
             url: config.rooturl+"/org/agent",       
             data: { "Username":userName, "Email": email, "FirstName" : firstName, 
-            "LastName": lastName, "PhoneNumber": phoneNumber, "Categories": newCategories
+            "LastName": lastName, "PhoneNumber": phoneNumber, "Categories": newCategories,
+            "OrgId": getOrganizationID()
            },
             config: { headers: { 'Content-Type': 'multipart/form-data' } }
         })
@@ -195,13 +213,17 @@ class AgentDisplay extends Component{
                                 <td>{catStr}</td>
                             </tr>
                             <tr>
-                                <td> <Form.Control placeholder="Add Category" name="categoryVal" onChange={this.categoryChangeHandler} value={this.state.currCategoryVal}/></td>
-                                <td><Button className="btn btn-info" onClick={this.updateCategoryInState}>Add</Button></td>
+                                
+                                {/*<td> <Form.Control placeholder="Add Category" name="categoryVal" onChange={this.categoryChangeHandler} value={this.state.currCategoryVal}/></td>*/}
+                                <td><select name ="category" value={this.state.currCategoryVal} onChange={this.dropdownChangeHandler} class="form-control">
+                                {this.renderCategoryDropdown()}
+                                </select></td>
+                                <td><Button className="btn btn-info" onClick={this.updateCategoryInState}>Add Category</Button></td>
                             </tr>
                         </tbody>
                     </Table>
                     <Row>
-                        <Col>{this.renderNewCategories()}</Col>
+                        <Col style={{ paddingLeft: '30px'}}>{this.renderNewCategories()}</Col>
                     </Row>
                     <Button type="submit" className="btn btn-info btn-block mt-4" >Update Agent</Button>
                     </Form>

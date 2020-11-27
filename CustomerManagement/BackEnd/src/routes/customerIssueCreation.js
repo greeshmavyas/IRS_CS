@@ -200,6 +200,7 @@ router.route("/history/:userID/:caseID").get(function (req, res) {
 //creating a case - kafka API
 router.route("/add").post(function (req, res) {
   console.log(req.body.Category);
+  console.log(global.topics_to_agents)
   var agents = global.topics_to_agents.get(req.body.Category);
   console.log("agents" + agents);
   var min_count = global.agents_to_count.get(agents[0]);
@@ -218,6 +219,7 @@ router.route("/add").post(function (req, res) {
   console.log("map" + JSON.stringify(global.agents_to_count));
   var newCase = {
     UserID: req.body.UserID,
+    CaseID: req.body.CaseID,
     Category: req.body.Category,
     Information: req.body.Information,
     Status: "Assigned",

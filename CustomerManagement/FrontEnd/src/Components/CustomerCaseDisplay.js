@@ -15,7 +15,7 @@ import CustomerCaseHistory from './CustomerCaseHistory';
 //import CustomerMessages from './CustomerMessages';
 import {} from "./utils.js";
 import swal from 'sweetalert'
-import {getEmailId, getCustomerId} from './utils';
+import {getEmailId, getCustomerId, removeOrgId} from './utils';
 import AddCustomerMessage from "./AddCustomerMessage";
 
 const config = require("../config/settings");
@@ -262,7 +262,7 @@ class CaseDetails extends Component{
             </Row>
             <Row>
                 <Col>{caseDetails.Status}</Col>
-                <Col>{caseDetails.Category}</Col>
+                <Col>{removeOrgId(caseDetails.Category)}</Col>
             </Row>
         </Container>
         <br/>

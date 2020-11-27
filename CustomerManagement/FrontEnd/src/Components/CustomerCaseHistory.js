@@ -78,7 +78,7 @@ class CustomerCaseHistory extends Component{
                 });
             return <div className="caseHistoryTab">{history}</div>
         } else {
-            return <div>No Case History</div>
+            return <div className="caseHistoryTab"><Col><h6>No Case History</h6></Col></div>
         }
     }
 }

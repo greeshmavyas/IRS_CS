@@ -78,7 +78,9 @@ export default class OrgOwnerProfile extends Component {
         throw new Error("Bad response from server");
     }else{
       console.log(response);
-      swal("Profile updated successfully")
+      localStorage.setItem("firstName", firstName);
+      localStorage.setItem("lastName", lastName);
+      swal("Profile updated successfully").then((val)=> window.location.reload(false))
       this.setState({
         message: "Profile Updated"
       })
