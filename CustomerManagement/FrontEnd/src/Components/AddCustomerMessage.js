@@ -55,7 +55,8 @@ class AddCustomerMessage extends Component{
               if(responseData.status){
                 this.props.getHistory();
                   swal("Message is added").then((val) =>  {
-                      this.props.changeActiveKey("history")
+                      //this.props.changeActiveKey("history")
+                      this.props.handleClose()
                     });
                   this.setState({
                       messageText:""

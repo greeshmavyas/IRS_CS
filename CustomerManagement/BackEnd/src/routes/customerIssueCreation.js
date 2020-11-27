@@ -187,7 +187,7 @@ router.route("/history/:userID/:caseID").get(function (req, res) {
         res.json(resCase);
       }
     });*/
-  CaseHistory.find({ UserID: userID, CaseID: caseID }, function (err, resCase) {
+  CaseHistory.find({ CaseID: caseID }, function (err, resCase) {
     if (err || !resCase) {
       console.log(err);
     } else {

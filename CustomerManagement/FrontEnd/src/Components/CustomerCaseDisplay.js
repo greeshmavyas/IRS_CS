@@ -70,7 +70,6 @@ class CustomerCaseDisplay extends Component{
     
 
     getHistory = async ()=>{
-        debugger;
         this.setState({
             isLoaded: false
         })
@@ -185,7 +184,6 @@ class CustomerCaseDisplay extends Component{
           &times;
          </button>
       );
-      debugger;
       if(caseDetails ){
         return (
             

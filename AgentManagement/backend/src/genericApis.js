@@ -21,7 +21,8 @@ const sendNotification = (caseId, subject, body) =>{
     } else if(resCase){ 
       console.log("in send notiifcation");
       let subscribers = resCase.Subscribers
-      notify(subscribers, subject, body)
+      if(subscribers && subscribers.length > 0)
+        notify(subscribers, subject, body)
     }
   })
 }
@@ -57,7 +58,23 @@ const notify = async (subscribers, subject, body) => {
 
 }
 
-const addHistory = (userID, caseID, comment)=>{
+const addHistory = async (userID, caseID, comment, type)=>{
+  console.log("userID:"+userID+"..caseID:"+caseID+"..comment:"+comment)
+    let history = new CaseHistory();
+    history.UserID = userID;
+    history.CaseID = caseID;
+    history[type] = comment;
+    history.UpdatedOn =  getTodayDate();
+    try{
+      let resp = await history.save()
+      return resp ? true: false
+    } catch(err){
+      console.log(err);
+      return false;
+    }
+  }
+
+/*const addHistory = (userID, caseID, comment)=>{
     console.log("userID:"+userID+"..caseID:"+caseID+"..comment:"+comment)
     Case.findOne({ UserID: userID, CaseID: caseID }, function (err, resCase) {
         if (err) {
@@ -87,7 +104,7 @@ const addHistory = (userID, caseID, comment)=>{
             .then((history) => {
               /*res
                 .status(200)
-                .json({ Case: "Your case updated in history successfully" });*/
+                .json({ Case: "Your case updated in history successfully" });
                 console.log("history updated")
                 return true;
             })
@@ -100,7 +117,7 @@ const addHistory = (userID, caseID, comment)=>{
           //res.json(resCase);
         }
       });
-}
+}*/
 module.exports = {
     getTodayDate: getTodayDate,
     addHistory: addHistory,

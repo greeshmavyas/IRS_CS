@@ -16,6 +16,7 @@ import Messages from './Messages';
 import {} from "./utils.js";
 import swal from 'sweetalert'
 import {getEmailId, getAgentId, getOrganisationId} from './utils';
+import AddAgentMessage from './AddAgentMessage'
 
 const config = require("../config/settings.js");
 
@@ -28,12 +29,12 @@ class AgentCaseDisplay extends Component{
             history:"",
             caseId:"",
             isLoaded: false,
-            newStatus: '',
+            activeKey:'caseDetails'
         }
     }
   
-    handleClose = () => this.setState({show:false});
-    handleShow = () => this.setState({show:true});
+    handleClose = () => this.setState({show:false, activeKey: "caseDetails"});
+    handleShow = () => this.setState({show:true, activeKey: "caseDetails"});
     componentDidMount(){
         this.getHistory(this.props.caseDetails)
      
@@ -43,50 +44,25 @@ class AgentCaseDisplay extends Component{
         this.setState({
           caseDetails: this.props.caseDetails,
           caseId: this.props.caseId,
-          isLoaded: false
+          isLoaded: false,
+          activeKey: "caseDetails"
         })
         this.getHistory(this.props.caseDetails)
       }
     }
+    changeActiveKey = (key) =>{
+        console.log("active key:", key)
+        this.setState({
+          activeKey: key
+        })
+      }
 
-    handleChange = (e) => {
-      let status = e.target.value;
-
-      this.setState({
-        newStatus: status
-      });
-    }
-
-    updateStatus = () =>{
-      console.log("In updateStatus in case display")
-      console.log(this.state.newStatus);
-      let {caseDetails} = this.state
-      if(this.state.newStatus !== "" && caseDetails.Status !== this.state.newStatus){
-        console.log("in if block")
-        console.log("In status")
-        console.log(this.state.newStatus)
-        console.log("in old status")
-        console.log(caseDetails.Status);
-        let data = {
-          caseID: caseDetails.CaseID,
-          status: this.state.newStatus
-        }
-        axios('http://' + config.hostname + ':' + config.backendPort + '/updateStatus',{
-          method: 'post',
-          data: data
-        }).then((response) => {
-        if (response.status == 500) {
-          throw new Error("Bad response from server");
-        }else{
-          console.log(response);
-        }
-      }).catch(function (err) {
-          console.log(err)
-        });
-        caseDetails.Status = this.state.newStatus; 
-    }
-  }
-    getHistory = async (caseDetails)=>{
+    
+    getHistory = async ()=>{
+      let {caseDetails} = this.props
+        this.setState({
+            isLoaded: false
+        })
       if(caseDetails && caseDetails.CaseID && caseDetails.UserID){
         await axios(config.rooturl + "/history/" + caseDetails.UserID +"/"+caseDetails.CaseID  , {
             method: "get",
@@ -96,7 +72,12 @@ class AgentCaseDisplay extends Component{
               this.setState({ history: res.data, isLoaded:true });
               console.log("history: ", this.state.history);
             })
-            .catch((error) => console.log(error.response.data));
+            .catch((error) => {
+                console.log(error.response.data)
+                this.setState({
+                    isLoaded: true
+                })
+            });
       }
     }
 
@@ -107,13 +88,12 @@ class AgentCaseDisplay extends Component{
           &times;
          </button>
       );
-      if(caseDetails && isLoaded){
+      if(caseDetails){
         return (
-            
               <Modal  
               isOpen={this.props.modal}
               toggle={() => this.props.showModal()}
-              className="modal-xl"
+              className="modal-lg"
               scrollable>
                 <ModalHeader
                       size="lg"
@@ -125,41 +105,13 @@ class AgentCaseDisplay extends Component{
                     </div>
                 </ModalHeader>
                 <ModalBody>
-                    <Container>
-                        <Row>
-                            <Col><b>Description:</b></Col>
-                        </Row>
-                        <Row>
-                            <Col>{caseDetails.Information}</Col>
-                        </Row>
-                        <br></br>
-                        <br></br>
-                        <Row>
-                            <Col><b>Status:</b></Col>
-                            <Col><b>Category:</b></Col> 
-                        </Row>
-                        <Row>
-                            <Col>
-                              <select id="Status" defaultValue={caseDetails.Status} onChange={this.handleChange}>
-                                <option value="Assigned">Assigned</option>
-                                <option value="InProgress">In Progress</option>
-                                <option value="Resolved">Resolved</option>
-                              </select>
-                            </Col>
-                            <Col>{caseDetails.Category}</Col>
-                        </Row>
-                    </Container>
-
-                    <br></br>
-                    <br></br>
-
-                    <Tabs defaultActiveKey="messages" id="casetab">
-                        <Tab eventKey="messages" title="Comments" tabClassName = "halfWidth">
-                            <Messages messages={caseDetails.Messages} caseId={caseDetails.CaseID} updateStatus = {this.updateStatus}/>
+                    <Tabs activeKey={this.state.activeKey} id="casetab" onSelect={(k) => this.changeActiveKey(k)}>
+                        <Tab eventKey="caseDetails" title="Case Details">
+                           <CaseDetails caseDetails = {caseDetails} changeActiveKey = {this.changeActiveKey} handleClose={this.handleClose} getHistory={this.getHistory}/>
                         </Tab>
-                        <Tab eventKey="history" title="Case History" tabClassName = "halfWidth">
+                        <Tab eventKey="history" title="Case History">
                             {/*<CaseHistory caseId={caseDetails.CaseID} userId={caseDetails.UserID}/>*/}
-                            <AgentCaseHistory caseId = {this.state.caseId} history={this.state.history}/>
+                            {isLoaded && <AgentCaseHistory caseId = {this.state.caseId} history={this.state.history}/>}
                         </Tab>
                     </Tabs>
                   
@@ -176,3 +128,94 @@ class AgentCaseDisplay extends Component{
   }
   
 export default AgentCaseDisplay;
+
+class CaseDetails extends Component{
+    constructor(props){
+        super(props);
+        this.state = {
+            caseDetails: props.caseDetails,
+            newStatus: ''
+        }
+    }
+
+    showAddMessage = () =>{
+         let {caseDetails} = this.state;
+         console.log("showAddMessage:"+ !(caseDetails.Status && caseDetails.Status.toLowerCase() == 'resolved'))
+         return !(caseDetails.Status && caseDetails.Status.toLowerCase() == 'resolved')
+    }
+
+    handleChange = (e) => {
+        let status = e.target.value;
+        this.setState({
+          newStatus: status
+        });
+      }
+  
+      updateStatus = () =>{
+        console.log("In updateStatus in case display")
+        console.log(this.state.newStatus);
+        let {caseDetails} = this.state
+        if(this.state.newStatus !== "" && caseDetails.Status !== this.state.newStatus){
+          console.log("in if block")
+          console.log("In status")
+          console.log(this.state.newStatus)
+          console.log("in old status")
+          console.log(caseDetails.Status);
+          let data = {
+            caseID: caseDetails.CaseID,
+            status: this.state.newStatus,
+            userID: caseDetails.UserID
+          }
+          axios('http://' + config.hostname + ':' + config.backendPort + '/updateStatus',{
+            method: 'post',
+            data: data
+          }).then((response) => {
+          if (response.status == 500) {
+            throw new Error("Bad response from server");
+          }else{
+            console.log("in update status..")
+            this.props.getHistory();
+            swal("Status updated successfully").then((val)=> this.props.changeActiveKey("history"))
+            console.log(response);
+          }
+        }).catch(function (err) {
+            console.log(err)
+          });
+          caseDetails.Status = this.state.newStatus; 
+      }
+    }
+
+    render(){
+        let {caseDetails} = this.state;
+        return(
+            <>
+             <Container className="caseDetailsTab">
+                <Row>
+                    <Col><b>Description:</b></Col>
+                </Row>
+                <Row>
+                    <Col>{caseDetails.Information}</Col>
+                </Row>
+                <br></br>
+                <br></br>
+                <Row>
+                    <Col><b>Status:</b></Col>
+                    <Col><b>Category:</b></Col> 
+                </Row>
+                <Row>
+                    <Col>
+                        <select id="Status" defaultValue={caseDetails.Status} onChange={this.handleChange}>
+                        <option value="Assigned">Assigned</option>
+                        <option value="InProgress">In Progress</option>
+                        <option value="Resolved">Resolved</option>
+                        </select>
+                    </Col>
+                    <Col>{caseDetails.Category}</Col>
+                </Row>
+            </Container>
+        <br/>
+        {this.showAddMessage() && <AddAgentMessage caseId = {caseDetails.CaseID} changeActiveKey = {this.props.changeActiveKey} handleClose={this.props.handleClose} getHistory = {this.props.getHistory} updateStatus = {this.updateStatus}/>}
+         </>
+        )
+    }
+}

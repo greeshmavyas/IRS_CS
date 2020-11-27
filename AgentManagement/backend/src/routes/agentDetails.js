@@ -116,10 +116,10 @@ router.post('/updateProfile', function (req, res) {
 
 router.route("/history/:userID/:caseID").get(function (req, res) {
     console.log("End Point to retreive the history of a case");
-    let userID = req.params.userID;
+    //let userID = req.params.userID;
     let caseID = req.params.caseID;
 
-      CaseHistory.find({ UserID: userID, CaseID: caseID }, function (err, resCase) {
+      CaseHistory.find({ CaseID: caseID }, function (err, resCase) {
         if (err ||!resCase) {
           console.log(err);
         } else {
