@@ -42,6 +42,7 @@ router.route("/org/agent").put(function (req, res) {
   updateCategories.$set.FirstName = req.body.FirstName;
   updateCategories.$set.LastName = req.body.LastName;
   updateCategories.$set.Email = req.body.Email;
+  updateCategories.$set.PhoneNumber = req.body.PhoneNumber;
   
 
   Agent.findOneAndUpdate(

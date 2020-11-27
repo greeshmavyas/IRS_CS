@@ -36,7 +36,7 @@ function ConnectionProvider() {
         this.client = new kafka.Client("localhost:2181");
         this.client.zk.client.getChildren("/brokers/topics", (err, children, stats) => {
             children.forEach(child => {
-                console.log("topic_name:", child);
+                //console.log("topic_name:", child);
                 var consumer = this.getConsumer(child);
                 var producer = this.getProducer();
 
