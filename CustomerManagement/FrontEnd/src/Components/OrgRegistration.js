@@ -65,8 +65,8 @@ class OrgRegistration extends Component{
               this.setState({
                 registered: true
               })
-              localStorage.setItem("orgId", response.data.org._id)
-              localStorage.setItem("orgCategories", response.data.Categories);
+              localStorage.setItem("orgId", response.data.org._id);
+              localStorage.setItem("orgCategories", response.data.org.Categories);
               alert(response.data.responseMessage)
             } else {
              alert("Cannot register the organization")
