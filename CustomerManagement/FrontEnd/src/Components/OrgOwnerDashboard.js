@@ -54,6 +54,7 @@ class OrgOwnerDashboard extends Component {
     this.state = {
       pieChartData: [],
       barGraphData: [],
+      casesAvailable: true
     };
     this.getCasesByOrgID = this.getCasesByOrgID.bind(this);
     this.populateBarGraphData = this.populateBarGraphData.bind(this);
@@ -79,6 +80,11 @@ class OrgOwnerDashboard extends Component {
         let categoriesToCases = new HashMap();
 
         if (response.data && response.status == 200) {
+          if(response.data.cases.length == 0){
+            this.setState({
+             casesAvailable: false
+            });
+          }
           for (let i = 0; i < response.data.cases.length; i++) {
             let myCase = response.data.cases[i];
             if (myCase.Status == "Resolved") {
@@ -139,13 +145,16 @@ class OrgOwnerDashboard extends Component {
           <div className="col-2">
             <Sidebar />
           </div>
+          
         </div>
+        {this.state.casesAvailable? (
         <Container>
           <div style={{ textAlign: "center" }}>
             <div className="Dashboard">
               <div style={{ textAlign: "center", marginTop: "90px" }}>
                 <div style={{ marginLeft: "120px" }}>
                   <h4>Cases by Status</h4>
+                  
                 </div>
                 {/* cases by status */}
                 <PieChart width={500} height={400} margin={{ left: 100 }}>
@@ -207,6 +216,12 @@ class OrgOwnerDashboard extends Component {
             </div>
           </div>
         </Container>
+         ) : (
+          <div>
+            <h4 style={{ marginLeft: "8em" }}>No existing cases to display the dashboard!</h4>
+          </div>
+        )}
+      
       </div>
     );
   }

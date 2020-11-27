@@ -191,6 +191,7 @@ class OrgCasesDisplay extends Component {
           <div className="col-2">
             <Sidebar />
           </div>
+          {this.state.allCases.length > 0 ? (
           <div className="container col-9">
             <div className="filter-item">
               {this.state.allCases.map(function (item) {
@@ -223,7 +224,7 @@ class OrgCasesDisplay extends Component {
               <tbody>{casedetails}</tbody>
             </Table>
 
-            {this.state.allCases.length > 0 ? (
+            
               <div className="col-10">
                 {this.state.viewcase != null ? (
                   <div>
@@ -248,12 +249,12 @@ class OrgCasesDisplay extends Component {
                   {paginationBasic}
                 </div>
               </div>
-            ) : (
-              <div>
-                <h4 style={{ margin: "3em" }}>No new cases to display!</h4>
-              </div>
-            )}
+            ) 
+          </div>):(
+            <div>
+            <h4 style={{ marginLeft: "1em" }}>There are no cases available!</h4>
           </div>
+        )}
         </div>
       </div>
     );
