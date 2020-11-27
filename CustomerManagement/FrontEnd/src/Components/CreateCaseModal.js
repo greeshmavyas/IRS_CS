@@ -121,6 +121,7 @@ class CreateCaseModal extends Component {
                           name="Information"
                           value={this.state.Information}
                           onChange={this.changeHandler}
+                          maxLength="160"
                         />
                       </div>
 
