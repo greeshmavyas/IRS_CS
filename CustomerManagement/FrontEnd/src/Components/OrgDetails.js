@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import axios from 'axios';
 import { getOrganizationID, addOrgId, removeOrgId } from './utils.js'
-import {Button, Card, Form, Col, Row} from 'react-bootstrap'
+import {Button, Card, Form, Col, Row, Table, Container} from 'react-bootstrap'
 import  config from '../config/settings'
 import NavbarDash from "./NavbarDash";
 import Sidebar from './Sidebar'
@@ -60,7 +60,6 @@ class OrgDetails extends Component{
         if(idx !== -1){
             newCategories.splice(idx, 1);
             this.setState({
-                currCategoryVal: "",
                 newCategories: newCategories
             })
         }
@@ -115,7 +114,6 @@ class OrgDetails extends Component{
     }
 
     render(){
-        debugger;
         if(this.state.orgDetails){
             let categories = this.state.orgCategories
             let catStr = "";
@@ -124,7 +122,8 @@ class OrgDetails extends Component{
             }
             if(catStr.charAt(catStr.length-1) == ',')
                 catStr = catStr.substr(0,catStr.length-1);
-            
+            let {orgDetails} = this.state;
+
             return (
                 <div>
                      <NavbarDash />
@@ -133,25 +132,46 @@ class OrgDetails extends Component{
                             <Sidebar />
                             </div>
                         </div>
-                        <div className="container col-8">
-                            <Row>
-                                <Col className="col-5 offset-md-5"><h4> Organization Details</h4></Col>
-                            </Row>
+                        
+                        <div className="container col-8" style={{ width: '25rem' }}>
+                            
+                            <h4> Organization Details</h4>
+                           
                             <br></br>
-                            <Row><Col className="col-2 offset-md-5">OrgName: </Col> <Col>{this.state.orgDetails.OrgName} </Col></Row>
-                            <Row> <Col className="col-2 offset-md-5">Domain: </Col><Col> {this.state.orgDetails.Domain} </Col></Row>
-                            <Row><Col className="col-2 offset-md-5">Categories:</Col> <Col>{catStr} </Col></Row>
-                            <br/>
+                            <div >
+                            <Table borderless >
+                                <tbody>
+                                    <tr>
+                                        <td>Organisation Name:</td>
+                                        <td>{orgDetails.OrgName}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Domain:</td>
+                                        <td>{orgDetails.Domain}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Categories:</td>
+                                        <td>{catStr}</td>
+                                    </tr>
+                                </tbody>
+                            </Table>
+                            </div>
+                            <Container>
                             <Row>
-                                <Col className="offset-md-5">
+                                <Col>
                                 <Form.Control placeholder="Add Category" name="categoryVal" onChange={this.categoryChangeHandler} value={this.state.currCategoryVal}/>
                                 </Col>
-                                <Col><Button className="btn btn-info" onClick={this.updateCategoryInState}>Add</Button></Col>
+                                <Col>
+                                <Button className="btn btn-info" onClick={this.updateCategoryInState}>Add</Button>
+                                </Col>
                             </Row>
                             <br/>
-                            <Col className="offset-md-5">{this.renderNewCategories()}</Col>
+                            <Row>
+                            <Col>{this.renderNewCategories()}</Col>
+                            </Row>
+                            </Container>
                             <br/>
-                            <Col className="col-2 offset-md-5"><Button className="btn btn-info btn-block" onClick = {this.submitCategories}>Submit</Button></Col>
+                            <Col><Button className="btn btn-info btn-block" onClick = {this.submitCategories}>Submit</Button></Col>
                         </div>
                 </div>
                 )

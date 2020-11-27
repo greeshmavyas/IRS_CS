@@ -75,7 +75,7 @@ class AgentsList extends Component{
        
         let orgId = getOrganizationID()
         if(!orgId){
-            return <div style={{ marginTop: '6rem' }}><NoOrgFound/></div>
+            return <div><NoOrgFound/></div>
         }
         
         let getDisplayText = () =>{

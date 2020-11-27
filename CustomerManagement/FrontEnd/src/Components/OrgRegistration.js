@@ -65,7 +65,7 @@ class OrgRegistration extends Component{
               this.setState({
                 registered: true
               })
-              localStorage.setItem("orgId", response.data.org._id);
+              localStorage.setItem("orgId", response.data.org._id)
               localStorage.setItem("orgCategories", response.data.org.Categories);
               alert(response.data.responseMessage)
             } else {
@@ -100,6 +100,10 @@ class OrgRegistration extends Component{
 
     updateCategoryInState =()=>{
         let {currCategoryVal, newCategories} = this.state
+        if(!currCategoryVal){
+          swal("Please enter category value")
+          return;
+        }
         if(newCategories.indexOf(currCategoryVal) !== -1){
           swal("Category already exists")
           this.setState({
@@ -107,6 +111,7 @@ class OrgRegistration extends Component{
           })
         } else {
           //console.log(newCategories)
+          currCategoryVal = currCategoryVal.toLowerCase();
           this.setState({
               newCategories: [...newCategories, currCategoryVal],
               currCategoryVal: ""
