@@ -3,7 +3,9 @@ import axios from "axios";
 import { Row, Col, Container } from "react-bootstrap";
 import { Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import "./css/orgowner.css";
-import {} from "./utils.js";
+import {getUserName} from "./utils.js";
+import { Redirect } from 'react-router'
+
 const config = require("../config/settings.js");
 
 class OrgCase extends Component {
@@ -106,6 +108,10 @@ class OrgCase extends Component {
   };
 
   render() {
+    if(!getUserName()){
+      return <Redirect to="/OrgOwnerLogin" />
+    }
+    
     let { caseDetails, isLoaded } = this.state;
     const closeBtn = (
       <button className="close" onClick={() => this.props.showModal()}>

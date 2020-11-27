@@ -1,6 +1,6 @@
 import React, {Component, useState} from 'react';
 import axios from 'axios';
-import { getOrganizationID, getOrgCategories, addOrgId, removeOrgId } from './utils.js'
+import { getOrganizationID, getOrgCategories, addOrgId, removeOrgId, getUserName } from './utils.js'
 import {Button, Col, Row, Table, Form, Modal} from 'react-bootstrap'
 import  config from '../config/settings'
 //import NavbarDash from "./NavbarDash";
@@ -9,6 +9,7 @@ import Sidebar from './Sidebar'
 import swal from 'sweetalert'
 import NoOrgFound from './NoOrgFound.js';
 import AgentDisplay from './AgentDisplay';
+import { Redirect } from 'react-router'
 
 class AgentsList extends Component{
     constructor(){
@@ -68,6 +69,9 @@ class AgentsList extends Component{
     }
 
     render(){
+        if(!getUserName()){
+            return <Redirect to="/OrgOwnerLogin" />
+        }
 
         if(this.state.isLoading){
             return <div></div>

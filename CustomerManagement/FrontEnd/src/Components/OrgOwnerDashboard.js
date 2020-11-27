@@ -4,8 +4,10 @@ import Sidebar from "./Sidebar";
 import axios from "axios";
 import { Container } from "react-bootstrap";
 import config from "../config/settings";
-import { getOrganizationID } from "./utils";
+import { getOrganizationID, getUserName } from "./utils";
 import NoOrgFound from './NoOrgFound.js';
+import { Redirect } from 'react-router';
+
 import {
   PieChart,
   Pie,
@@ -132,6 +134,10 @@ class OrgOwnerDashboard extends Component {
   }
 
   render() {
+    if(!getUserName()){
+      return <Redirect to="/OrgOwnerLogin" />
+    }
+    
     let redirectVar = null;
     let orgId = getOrganizationID()
     if(!orgId){

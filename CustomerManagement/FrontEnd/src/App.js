@@ -6,7 +6,7 @@ import CustomerOrgLogin from "./Components/CustomerOrgLogin";
 import { withCookies } from "react-cookie";
 import CustomerDashboard from "./Components/CustomerDashboard";
 import OrgOwnerDashboard from "./Components/OrgOwnerDashboard";
-import updateProfile from "./Components/updateProfile";
+//import updateProfile from "./Components/updateProfile";
 import OrgOwnerReg from "./Components/OrgOwnerReg";
 import OrgOwnerLogin from "./Components/OrgOwnerLogin";
 import Organization from "./Components/Organization";
@@ -32,7 +32,6 @@ function App() {
         <Route exact path="/OrgOwnerLogin" component={OrgOwnerLogin} />
         <Route exact path="/OrgOwnerDashboard" component={OrgOwnerDashboard} />
         <Route exact path="/Organization" component={Organization} />
-        <Route exact path="/updateProfile" component={updateProfile} />
         <Route exact path="/OrgRegistration" component={OrgRegistration} />
         <Route exact path="/Agents" component={AgentsList} />
         <Route exact path="/OrgCases" component={OrgCasesDisplay} />

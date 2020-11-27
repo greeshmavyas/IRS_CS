@@ -7,6 +7,7 @@ import NavbarDash from "./NavbarDash";
 import Sidebar from './Sidebar'
 import OrgDetails from './OrgDetails';
 import NoOrgFound from './NoOrgFound.js';
+import { Redirect } from 'react-router'
 
 class Organization extends Component{
     constructor(){
@@ -49,6 +50,9 @@ class Organization extends Component{
     }
 
     render(){
+        if(!getUserName()){
+            return <Redirect to="/OrgOwnerLogin" />
+        }
         if(!this.state.isLoading)
             return <div></div>
             
