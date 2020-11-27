@@ -212,8 +212,8 @@ class PassWordChange extends Component{
 
       let userName = getUserName();
          axios({
-            method: 'post',
-            url: config.rooturl+"/updateOwnerPassword",       
+            method: 'put',
+            url: config.rooturl+"/orgOwner/passwordUpdate",       
             data: { "Username": userName, "CurrentPassword": currentPassword, "NewPassword": newPassword
            },
             config: { headers: { 'Content-Type': 'multipart/form-data' } }
