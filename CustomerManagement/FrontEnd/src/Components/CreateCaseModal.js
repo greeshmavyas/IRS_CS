@@ -72,7 +72,11 @@ class CreateCaseModal extends Component {
         if(nlpResp && nlpResp.data){
           let category = nlpResp.data.category;
           if(!category)
-            category = "Others"
+            category = "others"
+          else
+            category = category.toLowerCase()
+          console.log("category is:", category);
+
           const data = {
             UserID: getCustomerId(),
             OrganisationID: getCustomerOrgId(),
@@ -82,20 +86,25 @@ class CreateCaseModal extends Component {
             Status: "New",
             ResolutionComments: ""
           }
-          let addResp = axios.post(config.rooturl + "/add", data)
+          let addResp = await axios.post(config.rooturl + "/add", data)
           if (addResp.status === 200) {
             this.setState({
               Response: "Case Created Successfully CaseID: " + cid.toString(),
-              Information: "",
+              Information: ""
             });
           } else {
             this.setState({
-              Response: "Case cannot be created"
+              Response: "Case cannot be created",
+              Information: ""
             });
           }
         }
 
       }catch(err){
+        this.setState({
+          Response: "Case cannot be created",
+          Information: ""
+        });
         console.log(err);
       }
   };

@@ -211,9 +211,9 @@ class CustomerDashboard extends Component {
     searchResults = searchResults.slice(startIndex, endIndex);
 
     if (this.state.flag) {
-      casedetails = searchResults.map((ticket) => {
+      casedetails = searchResults.map((ticket,id) => {
           return (
-            <tr onClick={() => this.showModal1(ticket)}>
+            <tr key={id} onClick={() => this.showModal1(ticket)}>
                   <td>{ticket.CaseID}</td>
                   <td>{ticket.CreatedOn}</td>
                   <td>{ticket.Status}</td>
@@ -226,14 +226,12 @@ class CustomerDashboard extends Component {
     return (
       <div style ={ {height: '100%'}} >
         <CustomerNavbarDash />
-        
-          
           <div className="container col-9">
 
             <div className="filter-item">
-              {this.state.allCases.map(function (item) {
+              {this.state.allCases.map(function (item, id) {
                 return (
-                  <div>{item.name}</div>
+                  <div key={id}>{item.name}</div>
                 );
               })}
             </div>
@@ -251,13 +249,14 @@ class CustomerDashboard extends Component {
               <br></br>
             <div style={{ minHeight: '400px' }}>
               <Table striped bordered hover className="cursorPointer">
+              <tbody>
                 <tr>
                   <th style={{ width: '10rem' }}>ID</th>
                   <th style={{ width: '10rem' }}>Date</th>
                   <th style={{ width: '15rem' }}>Status</th>
                   <th style={{ width: '50rem' }}>Details</th>
                 </tr>
-                <tbody>
+               
                 {casedetails}
                 </tbody>
               </Table>
