@@ -1,7 +1,7 @@
 module.exports = {
     "hostname": "localhost",
-    "backendPort": 3001,
+    "backendPort": 4001,
     'frontendHostName': 'localhost',
-    'frontendPort': 3000,
-    "rooturl" : "http://localhost:3001",
+    'frontendPort': 3001,
+    "rooturl" : "http://localhost:4001",
 };

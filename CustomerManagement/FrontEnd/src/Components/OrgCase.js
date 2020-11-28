@@ -3,7 +3,7 @@ import axios from "axios";
 import { Row, Col, Container } from "react-bootstrap";
 import { Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import "./css/orgowner.css";
-import {getUserName} from "./utils.js";
+import {getUserName, removeOrgId} from "./utils.js";
 import { Redirect } from 'react-router'
 
 const config = require("../config/settings.js");
@@ -157,17 +157,9 @@ class OrgCase extends Component {
               </Row>
               <Row>
                 <Col>
-                  <select
-                    id="Status"
-                    value={caseDetails.Status}
-                    onChange={this.handleChange}
-                  >
-                    <option value="Assigned">Assigned</option>
-                    <option value="InProgress">In Progress</option>
-                    <option value="Resolved">Resolved</option>
-                  </select>
+                  {caseDetails.Status}
                 </Col>
-                <Col>{caseDetails.Category}</Col>
+                <Col>{removeOrgId(caseDetails.Category)}</Col>
               </Row>
             </Container>
 

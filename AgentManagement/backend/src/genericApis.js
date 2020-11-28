@@ -5,13 +5,19 @@ let Case = require("../src/models/CaseModel");
 let CaseHistory = require("../src/models/CaseHistory");
 
 const getTodayDate = () =>{
-    var today = new Date();
-    var date =
-    today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate();
-    var time =
-    today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-    var dateTime = date + " " + time;
-    return dateTime
+  var today = new Date();
+  var date =
+  today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + round(today.getDate());
+  var time =
+  round(today.getHours()) + ":" + round(today.getMinutes()) + ":" + round(today.getSeconds());
+  var dateTime = date + " " + time;
+  return dateTime
+}
+
+const round = (value) =>{
+  console.log(value);
+  value=value+"";
+  return (value && value.length < 2 ? "0"+value : value)
 }
 
 const sendNotification = (caseId, subject, body) =>{

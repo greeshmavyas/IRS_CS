@@ -15,7 +15,7 @@ import AgentCaseHistory from './AgentCaseHistory';
 import Messages from './Messages';
 import {} from "./utils.js";
 import swal from 'sweetalert'
-import {getEmailId, getAgentId, getOrganisationId} from './utils';
+import {getEmailId, getAgentId, getOrganisationId, removeOrgId} from './utils';
 import AddAgentMessage from './AddAgentMessage'
 
 const config = require("../config/settings.js");
@@ -138,9 +138,9 @@ class CaseDetails extends Component{
         }
     }
 
-    showAddMessage = () =>{
+    isNotResolvedCase = () =>{
          let {caseDetails} = this.state;
-         console.log("showAddMessage:"+ !(caseDetails.Status && caseDetails.Status.toLowerCase() == 'resolved'))
+         console.log("isNotResolvedCase:"+ !(caseDetails.Status && caseDetails.Status.toLowerCase() == 'resolved'))
          return !(caseDetails.Status && caseDetails.Status.toLowerCase() == 'resolved')
     }
 
@@ -203,18 +203,23 @@ class CaseDetails extends Component{
                     <Col><b>Category:</b></Col> 
                 </Row>
                 <Row>
-                    <Col>
+                    {this.isNotResolvedCase() && <Col>
                         <select id="Status" defaultValue={caseDetails.Status} onChange={this.handleChange}>
                         <option value="Assigned">Assigned</option>
                         <option value="InProgress">In Progress</option>
                         <option value="Resolved">Resolved</option>
                         </select>
-                    </Col>
-                    <Col>{caseDetails.Category}</Col>
+                    </Col>}
+
+                    {!this.isNotResolvedCase() && <Col>
+                       {caseDetails.Status}
+                    </Col>}
+
+                    <Col>{removeOrgId(caseDetails.Category)}</Col>
                 </Row>
             </Container>
         <br/>
-        {this.showAddMessage() && <AddAgentMessage caseId = {caseDetails.CaseID} changeActiveKey = {this.props.changeActiveKey} handleClose={this.props.handleClose} getHistory = {this.props.getHistory} updateStatus = {this.updateStatus}/>}
+        {this.isNotResolvedCase() && <AddAgentMessage caseId = {caseDetails.CaseID} changeActiveKey = {this.props.changeActiveKey} handleClose={this.props.handleClose} getHistory = {this.props.getHistory} updateStatus = {this.updateStatus}/>}
          </>
         )
     }

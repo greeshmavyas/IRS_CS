@@ -53,7 +53,7 @@ router.get("/getCases", async function (req, res) {
 
     let { agentID, organisationID } = req.query;
 
-    cases.find({ $and: [{ "AgentID": agentID }, { "OrgID": organisationID }] }).then(cases => {
+    cases.find({ $and: [{ "AgentID": agentID }, { "OrganisationID": organisationID }] }).then(cases => {
         console.log(cases)
         if (!cases) {
             res.status(500).json({ responseMessage: 'Cases not found' });

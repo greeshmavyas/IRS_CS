@@ -231,7 +231,7 @@ class Dashboard extends Component {
               })}
             </div>
             <div>
-              Filter by Status: < nbsp />
+              Status: < nbsp />
               <select id="Status" value={this.state.status} onChange={this.handleChange}>
                 <option value="">All</option>
                 <option value="Assigned">Assigned</option>

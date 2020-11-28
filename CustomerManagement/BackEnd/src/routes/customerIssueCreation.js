@@ -218,6 +218,7 @@ router.route("/add").post(function (req, res) {
   console.log("map" + JSON.stringify(global.agents_to_count));
   var newCase = {
     UserID: req.body.UserID,
+    CaseID: req.body.CaseID,
     Category: req.body.Category,
     Information: req.body.Information,
     Status: "Assigned",

@@ -7,10 +7,11 @@ let CaseHistory = require("../src/models/CaseHistory");
 const getTodayDate = () =>{
     var today = new Date();
     var date =
-    today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate();
+    today.getFullYear() + "-" + round(today.getMonth() + 1) + "-" + round(today.getDate());
     var time =
     round(today.getHours()) + ":" + round(today.getMinutes()) + ":" + round(today.getSeconds());
     var dateTime = date + " " + time;
+    console.log("date time is:"+dateTime);
     return dateTime
 }
 
