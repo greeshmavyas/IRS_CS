@@ -157,7 +157,7 @@ class Dashboard extends Component {
             <Sidebar />
           </div>
           </div>
-          <div className="container col-9">
+          <div className="container col-9" style={{marginTop:'6rem'}}>
           <h4 style={{ margin: "3em" }}>No new cases to display!</h4>
           </div>
       </>
@@ -215,7 +215,7 @@ class Dashboard extends Component {
       });
     }
     return (
-      <div style ={ {height: '100rem'}} >
+      <div style ={ { marginTop:'6rem'}} >
         <NavbarDash />
         <div className="row">
           <div className="col-2">

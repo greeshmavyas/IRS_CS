@@ -9,7 +9,7 @@ class NavbarDash extends Component {
 
   render() {
     return (
-      <nav className="navbar navbar-expand-sm navbar-dark bg-dark mb-4">
+      <nav className="navbar navbar-expand-sm navbar-dark bg-dark mb-4 fixed-top">
         
           <img  src={logo}
            width="33"
