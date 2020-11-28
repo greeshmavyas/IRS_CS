@@ -42,7 +42,8 @@ router.route("/org/agent").put(function (req, res) {
   updateCategories.$set.FirstName = req.body.FirstName;
   updateCategories.$set.LastName = req.body.LastName;
   updateCategories.$set.Email = req.body.Email;
-  console.log(req.body)
+  updateCategories.$set.PhoneNumber = req.body.PhoneNumber;
+  
 
   Agent.findOneAndUpdate(
     { Username: req.body.Username, OrgID: req.body.OrgId },
@@ -54,8 +55,6 @@ router.route("/org/agent").put(function (req, res) {
         console.log("unable to update database");
         res.status(400).json({ responseMessage: "unable to update database" });
       } else {
-        console.log("agent is..");
-        console.log(agent)
         if(req.body.Categories != null && req.body.Categories.length >0 ){
           for (i = 0; i < req.body.Categories.length; i++) {
             if (global.topics_to_agents.has(req.body.Categories[i])) {

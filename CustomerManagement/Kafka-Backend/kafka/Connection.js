@@ -36,7 +36,7 @@ function ConnectionProvider() {
         this.client = new kafka.Client("localhost:2181");
         this.client.zk.client.getChildren("/brokers/topics", (err, children, stats) => {
             children.forEach(child => {
-                console.log("topic_name:", child);
+                //console.log("topic_name:", child);
                 var consumer = this.getConsumer(child);
                 var producer = this.getProducer();
 
@@ -44,21 +44,16 @@ function ConnectionProvider() {
                     console.log("Kafka Error: Consumer - " + err);
                 });
                 consumer.on("message", function(message) {
-                    try{
-                        console.log(JSON.stringify(message.value));
-                        var data = JSON.parse(message.value);
-                        customerIssueCreationBilling.customerIssueCreationBillingService(
-                            data.data,
-                            function(err, res) {
-                                console.log("abcdef")
-                                response(data, res, producer);
-                                return;
-                            }
-                        );
-                    } catch(err){
-                        console.log(err)
-                    }
-                    
+                    console.log(JSON.stringify(message.value));
+                    var data = JSON.parse(message.value);
+                    customerIssueCreationBilling.customerIssueCreationBillingService(
+                        data.data,
+                        function(err, res) {
+                            console.log("abcdef")
+                            response(data, res, producer);
+                            return;
+                        }
+                    );
                 });
             });
         });
