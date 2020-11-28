@@ -73,8 +73,14 @@ class CreateCaseModal extends Component {
           let category = nlpResp.data.category;
           if(!category)
             category = "others"
-          else
+          else{
+            if(category === "Returns/Refund")
+              category = "returns"
+            if(category === "Coupons/GiftCards")
+              category = "promotion"
             category = category.toLowerCase()
+          }
+            
           console.log("category is:", category);
 
           const data = {
