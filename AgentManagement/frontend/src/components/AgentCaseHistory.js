@@ -85,7 +85,7 @@ class AgentCaseHistory extends Component{
                 });
             return <div className="caseHistoryTab">{history}</div>
         } else {
-            return <div>No Case History</div>
+            return <div className="caseHistoryTab"><Col>No Case History</Col></div>
         }
     }
 }
