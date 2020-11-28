@@ -31,13 +31,8 @@ class CustomerNavbarLogin extends Component {
                 </a>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="/">
-                  About us
-                </a>
-              </li>
-              <li className="nav-item">
                 <a className="nav-link" href="/" onClick={this.handleLogout}>
-                  Help
+                  Logout
                 </a>
               </li>
             </ul>
