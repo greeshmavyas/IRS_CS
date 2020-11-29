@@ -11,10 +11,10 @@ var config = require('./config/settings');
 var connStr = config.mongoDB_connection_string;
 
 app.set("view engine", "ejs");
-app.use(cors({ origin: "http://localhost:3001", credentials: true }));
+app.use(cors({ origin: "http://ec2-54-67-107-187.us-west-1.compute.amazonaws.com:3001", credentials: true }));
 
 app.use(function (req, res, next) {
-  res.setHeader("Access-Control-Allow-Origin", "http://localhost:3001");
+  res.setHeader("Access-Control-Allow-Origin", "http://ec2-54-67-107-187.us-west-1.compute.amazonaws.com:3001");
   res.setHeader("Access-Control-Allow-Credentials", "true");
   res.setHeader(
     "Access-Control-Allow-Methods",

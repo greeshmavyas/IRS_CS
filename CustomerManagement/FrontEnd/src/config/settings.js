@@ -1,9 +1,9 @@
 module.exports = {
-  hostname: "localhost",
+  hostname: "ec2-54-67-107-187.us-west-1.compute.amazonaws.com",
   backendPort: 4000,
-  frontendHostName: "localhost",
+  frontendHostName: "ec2-54-67-107-187.us-west-1.compute.amazonaws.com",
   frontendPort: 3000,
   //remember to put slash at the end of URL
-  rooturl: "http://localhost:4000/irs",
+  rooturl: "http://ec2-54-67-107-187.us-west-1.compute.amazonaws.com:4000/irs",
   awsLambda: ""
 };

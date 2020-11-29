@@ -65,15 +65,15 @@ class AddAgentMessage extends Component{
                 })
                 .then((responseData) => {
                     if(responseData.status){
-                        console.log("message added");
+                        console.log("Comment added");
                         this.props.getHistory()
-                        swal("Message is added successfully").then((val)=>{this.props.changeActiveKey("history")});
+                        swal("Comment is added successfully").then((val)=>{this.props.changeActiveKey("history")});
                         this.setState({
                             messageText:""
                         })
                     } else {
-                        swal("Cannot add a message");
-                        console.log("message cannot be added")
+                        swal("Cannot add comment");
+                        console.log("Comment cannot be added")
                     }
                 }).catch(function (err) {
                     console.log(err)
