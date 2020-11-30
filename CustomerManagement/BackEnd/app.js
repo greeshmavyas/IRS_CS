@@ -50,7 +50,7 @@ app.use(
 //Allow Access Control
 //replace here with ec2 instance id
 app.use(function (req, res, next) {
-  res.setHeader("Access-Control-Allow-Origin", "http://ec2-13-57-225-16.us-west-1.compute.amazonaws.com:3000");
+  res.setHeader("Access-Control-Allow-Origin", "http://ec2-18-144-161-116.us-west-1.compute.amazonaws.com:3000");
   res.setHeader("Access-Control-Allow-Credentials", "true");
   res.setHeader(
     "Access-Control-Allow-Methods",
@@ -80,7 +80,7 @@ app.use(express.static("uploads"));
 //use cors to allow cross origin resource sharing
 app.use(
   cors({
-    origin: "http://ec2-13-57-225-16.us-west-1.compute.amazonaws.com:3000",
+    origin: "http://ec2-18-144-161-116.us-west-1.compute.amazonaws.com:3000",
     credentials: true,
   })
 );
