@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const port = process.env.PORT || 3001;
+const port = process.env.PORT || 4001;
 
 const agentDetails = require('./src/routes/agentDetails')
 const caseDetails = require('./src/routes/agentComments')
@@ -11,10 +11,10 @@ var config = require('./config/settings');
 var connStr = config.mongoDB_connection_string;
 
 app.set("view engine", "ejs");
-app.use(cors({ origin: "http://localhost:3000", credentials: true }));
+app.use(cors({ origin: "http://54.219.173.10:3000", credentials: true }));
 
 app.use(function (req, res, next) {
-  res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+  res.setHeader("Access-Control-Allow-Origin", "http://54.219.173.10:3000");
   res.setHeader("Access-Control-Allow-Credentials", "true");
   res.setHeader(
     "Access-Control-Allow-Methods",

@@ -7,14 +7,17 @@ let CaseHistory = require("../src/models/CaseHistory");
 const getTodayDate = () =>{
     var today = new Date();
     var date =
-    today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate();
+    today.getFullYear() + "-" + round(today.getMonth() + 1) + "-" + round(today.getDate());
     var time =
     round(today.getHours()) + ":" + round(today.getMinutes()) + ":" + round(today.getSeconds());
     var dateTime = date + " " + time;
+    console.log("date time is:"+dateTime);
     return dateTime
 }
 
 const round = (value) =>{
+  console.log(value);
+  value=value+"";
   return (value && value.length < 2 ? "0"+value : value)
 }
 
@@ -61,50 +64,53 @@ const notify = async (subscribers, subject, body) => {
 
 }
 
-const addHistory = (userID, caseID, comment)=>{
+/*const addHistory = (userID, caseID, comment)=>{
     console.log("userID:"+userID+"..caseID:"+caseID+"..comment:"+comment)
-    Case.findOne({ UserID: userID, CaseID: caseID }, function (err, resCase) {
-        if (err) {
-          console.log(err);
+      let history = new CaseHistory();
+      history.UserID = userID;
+      history.CaseID = caseID;
+      history.Comment = comment;
+      history.UpdatedOn =  getTodayDate();
+      history
+        .save()
+        .then((history) => {
+            console.log("history updated")
+            return true;
+        })
+        .catch((err) => {
+          console.log(err)
           return false;
-        } else {
-          //console.log(resIssue);
-          //resCase.Status = comment;
-          //resCase.save();
-          let history = new CaseHistory();
-          history.UserID = userID;
-          history.CaseID = caseID;
-          history.Comment = comment;
-         /* var today = new Date();
-          var date =
-            today.getFullYear() +
-            "-" +
-            (today.getMonth() + 1) +
-            "-" +
-            today.getDate();
-          var time =
-            today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-          var dateTime = getTodayDate();*/
-          history.UpdatedOn =  getTodayDate();
-          history
-            .save()
-            .then((history) => {
-              /*res
-                .status(200)
-                .json({ Case: "Your case updated in history successfully" });*/
-                console.log("history updated")
-                return true;
-            })
-            .catch((err) => {
-              //res.status(400).send("Can not create Case");
-              console.log(err)
-              return false;
-            });
-            return false;
-          //res.json(resCase);
-        }
+        });
+        return false;
+}*/
+
+const addHistory = async (userID, caseID, comment)=>{
+  console.log("userID:"+userID+"..caseID:"+caseID+"..comment:"+comment)
+    let history = new CaseHistory();
+    history.UserID = userID;
+    history.CaseID = caseID;
+    history.Comment = comment;
+    history.UpdatedOn =  getTodayDate();
+    try{
+      let resp = await history.save()
+      return resp ? true: false
+    } catch(err){
+      console.log(err);
+      return false;
+    }
+  /*  await history
+      .save()
+      .then((history) => {
+          console.log("history updated")
+          return true;
+      })
+      .catch((err) => {
+        console.log(err)
+        return false;
       });
+      return false;*/
 }
+
 module.exports = {
     getTodayDate: getTodayDate,
     addHistory: addHistory,

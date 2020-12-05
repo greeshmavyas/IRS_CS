@@ -92,7 +92,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"Username\":\"greeshmavyas2\",\n\t\"FirstName\":\"greeshmaaaav\",\n\t\"LastName\":\"vyasss\",\n\t\"ZipCode\":\"95135\",\n\t\"Email\": \"xyz@abc.com\",\n    \"Password\": \"password1\"\n}",
+					"raw": "{\n\t\"Username\":\"g\",\n\t\"FirstName\":\"abc\",\n\t\"LastName\":\"def\",\n\t\"ZipCode\":\"95135\",\n\t\"Email\": \"xyz@abc.com\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -110,6 +110,36 @@
 						"irs",
 						"orgOwner",
 						"profileSave"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update org owner password",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"Username\": \"g\",\n    \"CurrentPassword\":\"abcdefg\",\n    \"NewPassword\":\"abc\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:4000/irs/orgOwner/passwordUpdate",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"irs",
+						"orgOwner",
+						"passwordUpdate"
 					]
 				}
 			},
@@ -144,7 +174,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\"token\":\"JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmYTIxYjYzMTY2ZTEwZTMxYWZjZWU5MyIsInVzZXJuYW1lIjoiZ3JlZXNobWF2eWFzMiIsImlhdCI6MTYwNTU4MjgwMiwiZXhwIjoxNjA1NTkwMDAyfQ.tc8-iUONLkMusb6tJSbE2WODymPhTlmTYbe0wYvrRLo\",\n\"OrgName\" : \"flipkart\",\n\"Categories\": [\"5fa21b63166e10e31afcee93billing\",\"5fa21b63166e10e31afcee93taxes\",\"5fa21b63166e10e31afcee93salary\",\"5fa21b63166e10e31afcee93others\"],\n\"Domain\":\"ecommerce\"\n}",
+					"raw": "{\n\"token\":\"JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmYzA0MDU5Mzg0OWJmZWViOGFmMzQzNCIsInVzZXJuYW1lIjoiZyIsImlhdCI6MTYwNjQzNzEzNSwiZXhwIjoxNjA2NDQ0MzM1fQ.OvrN-Oh752v_nkuXLToQLuyXoh7bLoX_7MuJarZ08hQ\",\n\"OrgName\" : \"ekart\",\n\"Categories\": [\"billing\",\"taxes\",\"salary\",\"others\"],\n\"Domain\":\"health\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"

@@ -175,7 +175,7 @@ this.setState({
         <Sidebar />
         <NavbarDash />
         <center>
-        <div style={{ width: '25rem' }}>
+        <div style={{ width: '25rem',marginTop:'6rem' }}>
           <h2>Update Profile</h2>
           <br></br>
           <br></br>

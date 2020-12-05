@@ -7,4 +7,5 @@ module.exports = {
   database_host: "cluster0-fqeeb.mongodb.net",
   database_name: "test",
   backend_port: "4000",
+  awsEndpoint: "http://ec2-52-13-119-241.us-west-2.compute.amazonaws.com:5000/"
 };

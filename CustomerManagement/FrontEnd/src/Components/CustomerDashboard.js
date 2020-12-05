@@ -4,7 +4,7 @@ import CustomerNavbarDash from "./CustomerNavbarDash";
 import config from '../config/settings'
 import Table from 'react-bootstrap/Table'
 import Pagination from 'react-bootstrap/Pagination'
-import {getOrganisationId, getCustomerId} from './utils'
+import {getCustomerOrgId, getCustomerId} from './utils'
 import CustomerCaseDisplay from './CustomerCaseDisplay'
 import CreateCaseModal from './CreateCaseModal'
 
@@ -82,7 +82,7 @@ class CustomerDashboard extends Component {
     axios.defaults.withCredentials = true;
     let customerId = getCustomerId();
   
-    let organisationID = getOrganisationId()
+    let organisationID = getCustomerOrgId()
     //let count = 0
     axios.defaults.withCredentials = true;
     if (customerId) {
@@ -132,12 +132,14 @@ class CustomerDashboard extends Component {
           else {
             this.setState({ allCases: [] });
           }
+        
           this.setState({
             isLoading: false
           })
         })
         .catch(error => {
           console.log(error);
+        
           this.setState({ 
             allCases: [] ,
             isLoading: false
@@ -153,6 +155,22 @@ class CustomerDashboard extends Component {
 
 
   render() {
+    console.log("customer dashboard");
+    console.log(this.state)
+  
+    if(this.state.isLoading){
+      return <div><CustomerNavbarDash/></div>
+    } else if(!this.state.allCases || this.state.allCases.length == 0){
+      return (
+        <div>
+          <CustomerNavbarDash/>
+          <div className="container col-9 flexBox offset-md-3" style={{ marginTop: "5em" }}>
+          <h4 > { "No new cases to display!"}</h4> &nbsp; &nbsp; &nbsp;
+          <CreateCaseModal/>
+          </div>
+        </div>
+      )
+    }
     console.log("status");
     console.log(this.state.status);
     var casedetails;
@@ -193,9 +211,9 @@ class CustomerDashboard extends Component {
     searchResults = searchResults.slice(startIndex, endIndex);
 
     if (this.state.flag) {
-      casedetails = searchResults.map((ticket) => {
+      casedetails = searchResults.map((ticket,id) => {
           return (
-            <tr onClick={() => this.showModal1(ticket)}>
+            <tr key={id} onClick={() => this.showModal1(ticket)}>
                   <td>{ticket.CaseID}</td>
                   <td>{ticket.CreatedOn}</td>
                   <td>{ticket.Status}</td>
@@ -208,14 +226,12 @@ class CustomerDashboard extends Component {
     return (
       <div style ={ {height: '100%'}} >
         <CustomerNavbarDash />
-        
-          
           <div className="container col-9">
 
             <div className="filter-item">
-              {this.state.allCases.map(function (item) {
+              {this.state.allCases.map(function (item, id) {
                 return (
-                  <div>{item.name}</div>
+                  <div key={id}>{item.name}</div>
                 );
               })}
             </div>
@@ -232,14 +248,15 @@ class CustomerDashboard extends Component {
             </div>
               <br></br>
             <div style={{ minHeight: '400px' }}>
-              <Table striped bordered hover>
+              <Table striped bordered hover className="cursorPointer">
+              <tbody>
                 <tr>
                   <th style={{ width: '10rem' }}>ID</th>
                   <th style={{ width: '10rem' }}>Date</th>
                   <th style={{ width: '15rem' }}>Status</th>
                   <th style={{ width: '50rem' }}>Details</th>
                 </tr>
-                <tbody>
+               
                 {casedetails}
                 </tbody>
               </Table>
@@ -270,10 +287,6 @@ class CustomerDashboard extends Component {
               
               
           </div>
-        
-              
-        
-           
       </div>
     );
   }

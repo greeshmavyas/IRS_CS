@@ -109,14 +109,17 @@ class login extends Component {
                     <br></br>
                     <Form className="input">
                       <Form.Row>
-                        <Form.Label>Email address</Form.Label>
+                      
                         <Form.Control placeholder="Email ID" onChange={this.emailIDChangeHandler} />
-                        
-                        <Form.Label>Password</Form.Label>
+                        </Form.Row>
+                        <br></br>
+                        <Form.Row>
                         <Form.Control placeholder="Password" type="password" onChange={this.passwordChangeHandler} />
+                        
+                        </Form.Row>
                         <br></br>
                         <Button className="btn btn-info btn-block mt-4" onClick={this.submitLogin} >Login</Button>
-                      </Form.Row>
+                        
                       <p className="text-danger">{this.state.message}</p>
                       <br></br>
                       <br></br>

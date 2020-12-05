@@ -9,7 +9,7 @@ const genericApis = require("../genericApis")
 var router = express.Router();
 let Case = require("../models/CaseModel");
 
-router.route('/addMessage').post(function(req, res) {
+router.route('/addMessage').post( (req, res) => {
     console.log("End Point to add message");
     let {message, caseId, userType, userId, userName} = req.body;
     
@@ -20,20 +20,25 @@ router.route('/addMessage').post(function(req, res) {
         res.status(200).json({ status: false, message: "message cannot be added!" });
     } else {
         //add message
-        Case.updateOne({"CaseID": caseId}, {$push:{'Messages': { UserType: userType, Message: message, UserID: userId,TimeStamp:genericApis.getTodayDate(), UserName: userName } } }, (err, result)=>{
+        Case.updateOne({"CaseID": caseId}, {$push:{'Messages': { UserType: userType, Message: message, UserID: userId,TimeStamp:genericApis.getTodayDate(), UserName: userName } } }, async (err, result)=>{
             if (err) {
                 console.log("unable to insert into database", err);
                 res.status(500).send('Can not add message');
             } else {
                 if(result){
                    //TODO: send true status to client after adding value in history
-                    genericApis.addHistory(userId, caseId, message +" (added by " + userName +")")
                     if(userType !== "customer"){
                         let subject = "Case "+caseId+" has been updated";
                         let body = userName + " posted the following message: \n'" + message + "'";
                         genericApis.sendNotification(caseId, subject, body)
                     }
-                    res.status(200).json({ status: true, message: "message is added successfully!" });
+                    let histAdded = await genericApis.addHistory(userId, caseId, message +" (added by " + userName +")")
+                    if(histAdded){
+                        console.log("history added");
+                        res.status(200).json({ status: true, message: "message is added successfully!" });
+                    }
+                    else
+                        res.status(200).json({ status: false, message: "message cannot be added!" });
                 } else {
                     console.log("case not found");
                     res.status(200).json({ status: false, message: "message cannot be added!" });

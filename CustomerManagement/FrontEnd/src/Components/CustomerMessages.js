@@ -149,11 +149,12 @@ Format:
             });
 
       }
+      
       render(){
         return (
             <Form className = "addMessage">
             <Form.Group controlId="addmessage">
-                <Form.Control type="text" as="textarea" className = "messageTextArea" value={this.state.messageText} placeholder="Add Comment" onChange={this.changeHandler}/>
+                <Form.Control type="text" as="textarea" className = "messageTextArea"  value={this.state.messageText} placeholder="Add Comment" onChange={this.changeHandler}/>
             </Form.Group>
             <Button variant="info" className="float-right"  onClick = {this.submitHandler}>
                 Submit

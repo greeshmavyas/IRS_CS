@@ -148,6 +148,21 @@ class Dashboard extends Component {
 
 
   render() {
+    if(!this.state.allCases || this.state.allCases.length == 0){
+      return(
+        <>
+        <NavbarDash />
+        <div className="row">
+          <div className="col-2">
+            <Sidebar />
+          </div>
+          </div>
+          <div className="container col-9" style={{marginTop:'6rem'}}>
+          <h4 style={{ margin: "3em" }}>No new cases to display!</h4>
+          </div>
+      </>
+      )
+    }
     console.log("status");
     console.log(this.state.status);
     var casedetails;
@@ -199,9 +214,8 @@ class Dashboard extends Component {
           );
       });
     }
-
     return (
-      <div style ={ {height: '100rem'}} >
+      <div style ={ { marginTop:'6rem'}} >
         <NavbarDash />
         <div className="row">
           <div className="col-2">
@@ -217,7 +231,7 @@ class Dashboard extends Component {
               })}
             </div>
             <div>
-              Filter by Status: < nbsp />
+              Status: < nbsp />
               <select id="Status" value={this.state.status} onChange={this.handleChange}>
                 <option value="">All</option>
                 <option value="Assigned">Assigned</option>
@@ -227,7 +241,7 @@ class Dashboard extends Component {
             </div>
               <br></br>
               <div style={{ minHeight: '600px' }}>  
-            <Table striped bordered hover>
+            <Table striped bordered hover cursorPointer>
               <tr>
                 <th style={{ width: '10rem' }}>ID</th>
                 <th style={{ width: '10rem' }}>Date</th>
